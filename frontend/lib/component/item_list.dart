@@ -2,8 +2,8 @@ import 'package:csi5112_frontend/dataModal/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'appBar.dart';
-import 'centeredText.dart';
+import 'app_bar.dart';
+import 'centered_text.dart';
 import 'divider.dart';
 
 class ItemList extends StatefulWidget {

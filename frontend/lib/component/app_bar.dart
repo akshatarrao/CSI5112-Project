@@ -5,7 +5,7 @@ class DefaultAppBar {
     // Extracted app bar to avoid code copy paste
     return AppBar(
       //TODO: name the app
-      title: Text("TBD text"),
+      title: const Text("TBD text"),
     );
   }
 }

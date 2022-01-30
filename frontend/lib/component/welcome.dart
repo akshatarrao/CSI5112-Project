@@ -1,5 +1,5 @@
-import 'package:csi5112_frontend/component/appBar.dart';
-import 'package:csi5112_frontend/component/itemList.dart';
+import 'package:csi5112_frontend/component/app_bar.dart';
+import 'package:csi5112_frontend/component/item_list.dart';
 import 'package:flutter/material.dart';
 
 class Welcome extends StatelessWidget {
@@ -17,7 +17,7 @@ class Welcome extends StatelessWidget {
             // navigate to item list page
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ItemList()),
+              MaterialPageRoute(builder: (context) => const ItemList()),
             );
           },
         ),
