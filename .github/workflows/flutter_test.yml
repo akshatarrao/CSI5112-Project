@@ -1,0 +1,25 @@
+name: flutter_test
+on: push
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v2.2.1
+        with:
+          flutter-version: '2.8.1'
+      - name: Restore packages
+        working-directory: ./frontend
+        run: flutter pub get
+      - name: Analyze
+        run: flutter analyze
+        working-directory: ./frontend
+      - name: Run tests
+        run: flutter test --coverage
+        working-directory: ./frontend
+      - name: Upload coverage to codecov
+        run: curl -s https://codecov.io/bash
+        working-directory: ./frontend
+        shell: bash
