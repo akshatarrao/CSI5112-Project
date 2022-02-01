@@ -2,9 +2,9 @@ import 'package:csi5112_frontend/dataModal/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'app_bar.dart';
-import 'centered_text.dart';
-import 'divider.dart';
+import '../component/app_bar.dart';
+import '../component/centered_text.dart';
+import '../component/divider.dart';
 
 class ItemList extends StatefulWidget {
   const ItemList({Key? key}) : super(key: key);

@@ -1,5 +1,5 @@
 import 'package:csi5112_frontend/component/app_bar.dart';
-import 'package:csi5112_frontend/component/item_list.dart';
+import 'package:csi5112_frontend/page/item_list.dart';
 import 'package:flutter/material.dart';
 
 class Welcome extends StatelessWidget {

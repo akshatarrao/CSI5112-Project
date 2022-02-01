@@ -1,4 +1,4 @@
-import 'package:csi5112_frontend/component/welcome.dart';
+import 'package:csi5112_frontend/page/welcome.dart';
 import 'package:flutter/material.dart';
 
 void main() {
