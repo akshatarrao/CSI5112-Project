@@ -83,7 +83,7 @@ class _ItemListState extends State<ItemList> {
                                   const EdgeInsets.fromLTRB(400, 50, 200, 50),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    maximumSize: Size(120, 50)),
+                                    maximumSize: const Size(120, 50)),
                                 child: CenteredText.getCenteredText(
                                     'Load more...'),
                                 onPressed: () {
@@ -102,7 +102,7 @@ class _ItemListState extends State<ItemList> {
                     Column(
                       children: [
                         Container(
-                            padding: EdgeInsets.all(50),
+                            padding: const EdgeInsets.all(50),
                             child: Center(
                                 child: CenteredText.getCenteredText(
                                     "Total: " + total.toStringAsFixed(2)))),
@@ -114,9 +114,8 @@ class _ItemListState extends State<ItemList> {
                                     setState(() {
                                       isReviewStage = true;
                                     });
-                                  } else {
-                                    //  TODO: add popup for empty cart
                                   }
+                                  //  TODO: add popup for empty cart
                                 },
                                 child: CenteredText.getCenteredText("Review"),
                               )
@@ -130,7 +129,7 @@ class _ItemListState extends State<ItemList> {
 }
 
 class ListItem extends StatefulWidget {
-  ListItem(
+  const ListItem(
       {Key? key,
       required this.item,
       required this.updateTotal,
@@ -139,8 +138,8 @@ class ListItem extends StatefulWidget {
       required this.count})
       : super(key: key);
   final Item item;
-  bool isReviewStage;
-  int count;
+  final bool isReviewStage;
+  final int count;
 
   // This is passed down so ListItem can update ItemList's state
   final Function(double) updateTotal;
@@ -175,7 +174,7 @@ class _ListItem extends State<ListItem> {
             Expanded(
               flex: 4,
               child: ElevatedButton(
-                child: Text('Details'),
+                child: const Text('Details'),
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -258,9 +257,9 @@ Widget itemDetail(BuildContext context, Item item) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(item.category),
-        Text(" "),
+        const Text(" "),
         Text(item.description),
-        Text(" "),
+        const Text(" "),
         Text(item.price.toStringAsFixed(2))
       ],
     ),
