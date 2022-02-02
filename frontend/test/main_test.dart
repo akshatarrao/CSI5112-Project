@@ -5,7 +5,7 @@ void main() {
   testWidgets('The application loads', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
-    var startButton = find.text('Start');
+    var startButton = find.text('Login');
 
     expect(startButton, findsOneWidget);
   });

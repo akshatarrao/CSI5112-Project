@@ -5,8 +5,8 @@ class DefaultDivider {
   static getDefaultDivider(context) {
     return Divider(
         thickness: 1,
-        indent: 200,
-        endIndent: 200,
+        indent: 100,
+        endIndent: 100,
         color: Theme.of(context).primaryColor);
   }
 }

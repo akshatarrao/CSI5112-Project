@@ -12,7 +12,7 @@ class Welcome extends StatelessWidget {
       // TODO: Add more team/project info
       body: Center(
         child: ElevatedButton(
-          child: const Text('Start'),
+          child: const Text('Login'),
           onPressed: () {
             // navigate to item list page
             Navigator.push(
