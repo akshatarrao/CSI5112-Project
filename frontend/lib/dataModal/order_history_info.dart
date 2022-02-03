@@ -1,10 +1,10 @@
 class OrderHistoryInfo {
   DateTime orderDate;
-  String merchant;
+  int orderId;
   String ispaid;
   int amount;
   int itemsCount;
 
   OrderHistoryInfo(
-      this.orderDate, this.ispaid, this.merchant, this.amount, this.itemsCount);
+      this.orderDate, this.ispaid, this.orderId, this.amount, this.itemsCount);
 }

@@ -34,7 +34,7 @@ class _OrderHistoryState extends State<OrderHistory> {
           Expanded(
             child: GridView(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: countWidth, childAspectRatio: 1.75),
+                  crossAxisCount: countWidth, childAspectRatio: 1.9),
               //gridDelegate:
               //  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
               children: orders.map((order) {
@@ -54,11 +54,11 @@ class _OrderHistoryState extends State<OrderHistory> {
                             children: [
                               Padding(
                                 padding:
-                                    const EdgeInsets.only(top: 32, left: 40),
+                                    const EdgeInsets.only(top: 24, left: 40),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Order Fulfilled By:",
+                                    Text("Order Number:",
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
                                             textStyle: TextStyle(
@@ -66,7 +66,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                                 fontSize: 10),
                                             fontWeight: FontWeight.w500,
                                             decoration: TextDecoration.none)),
-                                    Text(order.merchant,
+                                    Text("#" + order.orderId.toString(),
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
                                             textStyle: TextStyle(
@@ -147,7 +147,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                                 fontSize: 10),
                                             fontWeight: FontWeight.w500,
                                             decoration: TextDecoration.none)),
-                                    Text(order.amount.toString(),
+                                    Text("\$" + order.amount.toString(),
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
                                             textStyle: TextStyle(

@@ -1,12 +1,8 @@
-<<<<<<< Updated upstream
 // ignore_for_file: sized_box_for_whitespace
 // It is easier for type check to pass if we just use containers
 
 import 'package:csi5112_frontend/dataModal/item.dart';
 import 'package:csi5112_frontend/dataModal/user.dart';
-=======
-import 'package:csi5112_frontend/dataModel/item.dart';
->>>>>>> Stashed changes
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
@@ -335,7 +331,7 @@ class _ListItem extends State<ListItem> {
         child: buildDetailsButton(context),
       ),
       Expanded(flex: 4, child: CenteredText.getCenteredText(
-        // price format X.XX
+          // price format X.XX
           widget.item.price.toStringAsFixed(2))),
       // The add + remove + input together take 4 unit space
       Expanded(

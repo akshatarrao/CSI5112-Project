@@ -18,7 +18,7 @@ class Welcome extends StatelessWidget {
             // navigate to item list page
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ItemList()),
+              MaterialPageRoute(builder: (context) => OrderHistory()),
             );
           },
         ),
