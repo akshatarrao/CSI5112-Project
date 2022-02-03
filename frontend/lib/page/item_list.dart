@@ -50,27 +50,7 @@ class _ItemListState extends State<ItemList> {
             Expanded(
                 // most useful component, take 5 unit space
                 flex: 5,
-                child: ListView.separated(
-                  itemCount:
-                      isReviewStage ? getMinSelectedItems().length : perPage,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      DefaultDivider.getDefaultDivider(context),
-                  itemBuilder: (BuildContext context, int index) {
-                    selectedItems = getMinSelectedItems();
-                    return ListItem(
-                        item: isReviewStage
-                            ? selectedItems.keys.elementAt(index)
-                            : items[index],
-                        updateTotal: updateTotal,
-                        isReviewStage: isReviewStage,
-                        updateMap: updateMap,
-                        count: isReviewStage
-                            ? selectedItems[
-                                    selectedItems.keys.elementAt(index)] ??
-                                0
-                            : 0);
-                  },
-                )),
+                child: buildItemList()),
             Expanded(
                 flex: 2,
                 // Only display the load button if there are more to load
@@ -78,52 +58,87 @@ class _ItemListState extends State<ItemList> {
                   children: [
                     Center(
                       child: perPage < items.length && !isReviewStage
-                          ? Container(
-                              padding:
-                                  const EdgeInsets.fromLTRB(400, 50, 200, 50),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    maximumSize: const Size(120, 50)),
-                                child: CenteredText.getCenteredText(
-                                    'Load more...'),
-                                onPressed: () {
-                                  setState(() {
-                                    perPage = perPage + 5;
-                                  });
-                                },
-                              ))
+                          ? buildLoadButton()
                           // Empty placeholder to prevent itemList change grid
-                          : Container(
-                              height: 50,
-                              padding:
-                                  const EdgeInsets.fromLTRB(520, 50, 200, 50),
-                            ),
+                          : buildLoadButtonPlaceholder(),
                     ),
                     Column(
                       children: [
                         Container(
                             padding: const EdgeInsets.all(50),
-                            child: Center(
-                                child: CenteredText.getCenteredText(
-                                    "Total: " + total.toStringAsFixed(2)))),
-                        isReviewStage
-                            ? Container()
-                            : ElevatedButton(
-                                onPressed: () {
-                                  if (true) {
-                                    setState(() {
-                                      isReviewStage = true;
-                                    });
-                                  }
-                                  //  TODO: add popup for empty cart
-                                },
-                                child: CenteredText.getCenteredText("Review"),
-                              )
+                            child: buildTotalText()),
+                        isReviewStage ? Container() : buildReviewButton()
                       ],
                     )
                   ],
                 )),
           ])),
+    );
+  }
+
+  ElevatedButton buildReviewButton() {
+    return ElevatedButton(
+      onPressed: () {
+        if (getMinSelectedItems().isNotEmpty) {
+          setState(() {
+            isReviewStage = true;
+          });
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => emptyCartErrorPopup(context),
+          );
+        }
+      },
+      child: CenteredText.getCenteredText("Review"),
+    );
+  }
+
+  Center buildTotalText() {
+    return Center(
+        child:
+            CenteredText.getCenteredText("Total: " + total.toStringAsFixed(2)));
+  }
+
+  Container buildLoadButtonPlaceholder() {
+    return Container(
+      height: 50,
+      padding: const EdgeInsets.fromLTRB(520, 50, 200, 50),
+    );
+  }
+
+  Container buildLoadButton() {
+    return Container(
+        padding: const EdgeInsets.fromLTRB(400, 50, 200, 50),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(maximumSize: const Size(120, 50)),
+          child: CenteredText.getCenteredText('Load more...'),
+          onPressed: () {
+            setState(() {
+              perPage = perPage + 5;
+            });
+          },
+        ));
+  }
+
+  ListView buildItemList() {
+    return ListView.separated(
+      itemCount: isReviewStage ? getMinSelectedItems().length : perPage,
+      separatorBuilder: (BuildContext context, int index) =>
+          DefaultDivider.getDefaultDivider(context),
+      itemBuilder: (BuildContext context, int index) {
+        selectedItems = getMinSelectedItems();
+        return ListItem(
+            item: isReviewStage
+                ? selectedItems.keys.elementAt(index)
+                : items[index],
+            updateTotal: updateTotal,
+            isReviewStage: isReviewStage,
+            updateMap: updateMap,
+            count: isReviewStage
+                ? selectedItems[selectedItems.keys.elementAt(index)] ?? 0
+                : 0);
+      },
     );
   }
 }
@@ -164,88 +179,101 @@ class _ListItem extends State<ListItem> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Default grid side to 4
-            Expanded(
-                flex: 4, child: CenteredText.getCenteredText(widget.item.name)),
-            Expanded(
-                flex: 4,
-                child: CenteredText.getCenteredText(widget.item.category)),
-            Expanded(
-              flex: 4,
-              child: ElevatedButton(
-                child: const Text('Details'),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        itemDetail(context, widget.item),
-                  );
-                },
-              ),
-            ),
-            Expanded(flex: 4, child: CenteredText.getCenteredText(
-                // price format X.XX
-                widget.item.price.toStringAsFixed(2))),
-            // The add + remove + input together take 4 unit space
-            Expanded(
-                flex: 1,
-                // Only display if the count is larger than 0
-                child: count != 0 && !widget.isReviewStage
-                    ? IconButton(
-                        onPressed: () => setState(() {
-                              count--;
-                              widget.updateTotal(0 - widget.item.price);
-                              // Ideally we want to map count value automatically to the field. However, due to in-place count value update. The trigger is messed up so we have to manually set them everywhere
-                              controller.text = count.toString();
-                              widget.updateMap(widget.item, count);
-                            }),
-                        icon: const Icon(Icons.remove))
-                    : Container()),
-            Expanded(
-                flex: 2,
-                child: TextField(
-                  controller: controller,
-                  enabled: !widget.isReviewStage,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), hintText: 'Enter a number'),
-                  keyboardType: TextInputType.number,
-                  textAlign: TextAlign.center,
-                  onChanged: (String value) async {
-                    if (value.isNotEmpty) {
-                      widget.updateTotal(
-                          (int.parse(value) - count) * widget.item.price);
-                      count = int.parse(value);
-                      controller.text = count.toString();
-                      widget.updateMap(widget.item, count);
-                    } else {
-                      widget.updateTotal((0 - count) * widget.item.price);
-                      count = 0;
-                      controller.text = count.toString();
-                      widget.updateMap(widget.item, count);
-                    }
-                    controller.selection = TextSelection.fromPosition(
-                        TextPosition(offset: controller.text.length));
-                  },
-                  // Only allow number input for user experience
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                )),
-            Expanded(
-                flex: 1,
-                child: !widget.isReviewStage
-                    ? IconButton(
-                        onPressed: () => setState(() {
-                              count++;
-                              widget.updateTotal(widget.item.price);
-                              controller.text = count.toString();
-                              widget.updateMap(widget.item, count);
-                            }),
-                        icon: const Icon(Icons.add))
-                    : Container())
-          ],
+          children: buildRow(context),
         ));
+  }
+
+  List<Widget> buildRow(BuildContext context) {
+    return [
+      // Default grid side to 4
+      Expanded(flex: 4, child: CenteredText.getCenteredText(widget.item.name)),
+      Expanded(
+          flex: 4, child: CenteredText.getCenteredText(widget.item.category)),
+      Expanded(
+        flex: 4,
+        child: buildDetailsButton(context),
+      ),
+      Expanded(flex: 4, child: CenteredText.getCenteredText(
+          // price format X.XX
+          widget.item.price.toStringAsFixed(2))),
+      // The add + remove + input together take 4 unit space
+      Expanded(
+          flex: 1,
+          // Only display if the count is larger than 0
+          child: count != 0 && !widget.isReviewStage
+              ? buildMinusButton()
+              : Container()),
+      Expanded(flex: 2, child: buildCountTextField()),
+      Expanded(
+          flex: 1,
+          child: !widget.isReviewStage ? buildPlusIconButton() : Container())
+    ];
+  }
+
+  IconButton buildPlusIconButton() {
+    return IconButton(
+        onPressed: () => setState(() {
+              count++;
+              widget.updateTotal(widget.item.price);
+              // Ideally we want to map count value automatically to the field. However, due to
+              // in-place count value update. The trigger is messed up so we have to manually set them everywhere
+              controller.text = count.toString();
+              widget.updateMap(widget.item, count);
+            }),
+        icon: const Icon(Icons.add));
+  }
+
+  TextField buildCountTextField() {
+    return TextField(
+      controller: controller,
+      enabled: !widget.isReviewStage,
+      decoration: const InputDecoration(
+          border: OutlineInputBorder(), hintText: 'Enter a number'),
+      keyboardType: TextInputType.number,
+      textAlign: TextAlign.center,
+      onChanged: (String value) async {
+        if (value.isNotEmpty) {
+          widget.updateTotal((int.parse(value) - count) * widget.item.price);
+          count = int.parse(value);
+          controller.text = count.toString();
+          widget.updateMap(widget.item, count);
+        } else {
+          widget.updateTotal((0 - count) * widget.item.price);
+          count = 0;
+          controller.text = count.toString();
+          widget.updateMap(widget.item, count);
+        }
+        controller.selection = TextSelection.fromPosition(
+            TextPosition(offset: controller.text.length));
+      },
+      // Only allow number input for user experience
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+    );
+  }
+
+  IconButton buildMinusButton() {
+    return IconButton(
+        onPressed: () => setState(() {
+              count--;
+              widget.updateTotal(0 - widget.item.price);
+              controller.text = count.toString();
+              widget.updateMap(widget.item, count);
+            }),
+        icon: const Icon(Icons.remove));
+  }
+
+  ElevatedButton buildDetailsButton(BuildContext context) {
+    return ElevatedButton(
+      child: const Text('Details'),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => itemDetail(context, widget.item),
+        );
+      },
+    );
   }
 }
 
@@ -263,6 +291,20 @@ Widget itemDetail(BuildContext context, Item item) {
         Text(item.price.toStringAsFixed(2))
       ],
     ),
+    actions: <Widget>[
+      ElevatedButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: const Text('Close'),
+      ),
+    ],
+  );
+}
+
+Widget emptyCartErrorPopup(BuildContext context) {
+  return AlertDialog(
+    title: const Text("Please select at least one item"),
     actions: <Widget>[
       ElevatedButton(
         onPressed: () {
