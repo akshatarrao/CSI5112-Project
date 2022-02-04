@@ -32,20 +32,29 @@ class _ItemListState extends State<ItemList> {
   User user = User.getRandomUser();
   DateTime? invoiceTime;
 
+  updateItemCount(Item item, int delta) {
+    setState(() {
+      if (selectedItems.containsKey(item)) {
+        // ?? 0 is only for type check
+        selectedItems[item] = (selectedItems[item] ?? 0) + delta;
+      } else {
+        selectedItems[item] = delta;
+      }
+    });
+  }
+
+  getItemCount(Item item) {
+    return selectedItems.containsKey(item) ? selectedItems[item] : 0;
+  }
+
   updateTotal(double delta) {
     setState(() {
       total = total + delta;
     });
   }
 
-  updateMap(Item item, int count) {
-    setState(() {
-      selectedItems[item] = count;
-    });
-  }
-
   Map<Item, int> getMinSelectedItems() {
-    // If a user switch the count from X to 0, we do not want to count them in the items
+    // If a user switch the count from X to 0, we do not want to display them at checkout and invoice
     selectedItems.removeWhere((key, value) => value == 0);
     return selectedItems;
   }
@@ -64,74 +73,73 @@ class _ItemListState extends State<ItemList> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             children: [
-              Text(isInvoice ? getInvoiceHeaderText() : 'Buy what you want!',
-                  style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                        color: Color(0xff525151),
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
-                        decoration: TextDecoration.none),
-                  )),
-              Expanded(
-                  flex: 7,
-                  child: GridView(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: countWidth, childAspectRatio: 1.9),
-                      children:
-                          // if the user is not actively selecting items, we just display what they already selected
-                          (isReviewStage || isInvoice
-                                  ? getMinSelectedItems().keys.toList()
-                                  : items)
-                              .sublist(
-                                  0,
-                                  isReviewStage || isInvoice
-                                      ? getMinSelectedItems().length
-                                      : perPage)
-                              .map<Widget>((item) {
-                        return ListItem(
-                            item: item,
-                            // Passing some of the parent functions so children can notify parent for state update
-                            updateTotal: updateTotal,
-                            isReviewStage: isReviewStage,
-                            updateMap: updateMap,
-                            // carry-over or restore already selected count
-                            count: isReviewStage || isInvoice
-                                ? (selectedItems[item] ?? 0)
-                                : (isRevisit ? (selectedItems[item] ?? 0) : 0),
-                            isInvoice: isInvoice);
-                      }).toList())),
-              Expanded(
-                  flex: 1,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Center(
-                          // This button can only be shown on the first selecting page
-                          child: perPage < items.length &&
-                                  (!isReviewStage && !isInvoice)
-                              ? buildLoadButton()
-                              // Empty placeholder to prevent itemList change grid
-                              : buildLoadButtonPlaceholder(),
-                        ),
-                        Container(
-                          width: 20,
-                        ),
-                        buildTotalText(),
-                        Container(
-                          width: 20,
-                        ),
-                        // Show buttons at different stage
-                        isReviewStage
-                            ? Row(children: [
-                                buildGoBackButton(),
-                                buildConfirmButton()
-                              ])
-                            : isInvoice
-                                ? buildPrintButton()
-                                : buildReviewButton()
-                      ]))
+              buildHeader(),
+              Expanded(flex: 7, child: buildItemListGridView(countWidth)),
+              Expanded(flex: 1, child: buildFooter())
             ],
           ),
+        ));
+  }
+
+  Row buildFooter() {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Center(
+        // This button can only be shown on the first selecting page
+        child: perPage < items.length && (!isReviewStage && !isInvoice)
+            ? buildLoadButton()
+            // Empty placeholder to prevent itemList change grid
+            : buildLoadButtonPlaceholder(),
+      ),
+      Container(
+        width: 20,
+      ),
+      buildTotalText(),
+      Container(
+        width: 20,
+      ),
+      // Show buttons at different stage
+      isReviewStage
+          ? Row(children: [buildGoBackButton(), buildConfirmButton()])
+          : isInvoice
+              ? buildPrintButton()
+              : buildReviewButton()
+    ]);
+  }
+
+  GridView buildItemListGridView(int countWidth) {
+    return GridView(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: countWidth, childAspectRatio: 1.9),
+        children:
+            // if the user is not actively selecting items, we just display what they already selected
+            (isReviewStage || isInvoice
+                    ? getMinSelectedItems().keys.toList()
+                    : items)
+                .sublist(
+                    0,
+                    isReviewStage || isInvoice
+                        ? getMinSelectedItems().length
+                        : perPage)
+                .map<Widget>((item) {
+          return ListItem(
+              item: item,
+              // Passing some of the parent functions/fields so children can read state and notify parent for state update
+              updateTotal: updateTotal,
+              isReviewStage: isReviewStage,
+              isInvoice: isInvoice,
+              getItemCount: getItemCount,
+              updateItemCount: updateItemCount);
+        }).toList());
+  }
+
+  Text buildHeader() {
+    return Text(isInvoice ? getInvoiceHeaderText() : 'Buy what you want!',
+        style: GoogleFonts.poppins(
+          textStyle: const TextStyle(
+              color: Color(0xff525151),
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
+              decoration: TextDecoration.none),
         ));
   }
 
@@ -160,7 +168,7 @@ class _ItemListState extends State<ItemList> {
           await Printing.layoutPdf(
               onLayout: (PdfPageFormat format) async => doc.save()); //
         },
-        child: const Text("Print"),
+        child: const Text("Print Invoice"),
       ),
     );
   }
@@ -174,6 +182,9 @@ class _ItemListState extends State<ItemList> {
           return pw.Center(
             child: pw.Column(
                 children: [
+                      // We probably can style this, but most printed invoices/receipts do not have design.
+                      // It is cheaper and quicker to print with large volume.
+                      // That is why this is plain text format
                       pw.Text("Invoice"),
                       pw.Container(height: 20),
                       pw.Text(getInvoiceHeaderText()),
@@ -284,25 +295,24 @@ class ListItem extends StatefulWidget {
       required this.item,
       required this.updateTotal,
       required this.isReviewStage,
-      required this.updateMap,
-      required this.count,
+      required this.updateItemCount,
+      required this.getItemCount,
       required this.isInvoice})
       : super(key: key);
   final Item item;
   final bool isReviewStage;
   final bool isInvoice;
-  final int count;
 
   // This is passed down so ListItem can update ItemList's state
   final Function(double) updateTotal;
-  final Function(Item, int) updateMap;
+  final Function(Item, int) updateItemCount;
+  final Function(Item) getItemCount;
 
   @override
   State<StatefulWidget> createState() => _ListItem();
 }
 
 class _ListItem extends State<ListItem> {
-  int count = 0;
 
 
   @override
@@ -311,6 +321,7 @@ class _ListItem extends State<ListItem> {
   }
 
   Widget buildCard(BuildContext context) {
+    int count = widget.getItemCount(widget.item);
     return Container(
       margin: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
       width: 480,
@@ -326,75 +337,9 @@ class _ListItem extends State<ListItem> {
                 children: [
                   Expanded(
                     flex: 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(widget.item.category,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    color: Color(0xffffffff), fontSize: 10),
-                                fontWeight: FontWeight.w500,
-                                decoration: TextDecoration.none)),
-                        Container(
-                          height: 14,
-                          width: 14,
-                        ),
-                        Text(widget.item.name,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    color: Color(0xffffffff), fontSize: 16),
-                                fontWeight: FontWeight.w700,
-                                decoration: TextDecoration.none)),
-                        Container(
-                          height: 20,
-                          width: 14,
-                        ),
-                        buildDetailsButton(context),
-                      ],
-                    ),
+                    child: buildCardLeftSide(context),
                   ),
-                  Expanded(
-                      flex: 5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            widget.item.price.toStringAsFixed(2),
-                            textAlign: TextAlign.left,
-                            style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                    color: Color(0xffffffff), fontSize: 16),
-                                fontWeight: FontWeight.w700,
-                                decoration: TextDecoration.none),
-                            // price format X.XX
-                          ),
-                          Container(
-                            height: 14,
-                            width: 14,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Expanded(
-                                  child: count != 0 &&
-                                          !widget.isReviewStage &&
-                                          !widget.isInvoice
-                                      ? buildMinusButton()
-                                      : Container(
-                                          width: 6,
-                                        )),
-                              buildCountTextLabel(),
-                              Expanded(
-                                  child:
-                                      !widget.isReviewStage && !widget.isInvoice
-                                          ? buildPlusIconButton()
-                                          : Container())
-                            ],
-                          )
-                        ],
-                      ))
+                  Expanded(flex: 5, child: buildCardRightSide(count))
                 ],
               ))
         ],
@@ -402,12 +347,93 @@ class _ListItem extends State<ListItem> {
     );
   }
 
+  Column buildCardRightSide(int count) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        buildPriceText(),
+        Container(
+          height: 14,
+          width: 14,
+        ),
+        buildCountEditRow(count)
+      ],
+    );
+  }
+
+  Row buildCountEditRow(int count) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+            child: count != 0 && !widget.isReviewStage && !widget.isInvoice
+                ? buildMinusButton()
+                : Container(
+                    width: 6,
+                  )),
+        buildCountTextLabel(),
+        Expanded(
+            child: !widget.isReviewStage && !widget.isInvoice
+                ? buildPlusIconButton()
+                : Container())
+      ],
+    );
+  }
+
+  Text buildPriceText() {
+    return Text(
+      widget.item.price.toStringAsFixed(2),
+      textAlign: TextAlign.left,
+      style: GoogleFonts.poppins(
+          textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
+          fontWeight: FontWeight.w700,
+          decoration: TextDecoration.none),
+      // price format X.XX
+    );
+  }
+
+  Column buildCardLeftSide(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        buildCategoryText(),
+        Container(
+          height: 14,
+          width: 14,
+        ),
+        buildItemNameText(),
+        Container(
+          height: 20,
+          width: 14,
+        ),
+        buildDetailsButton(context),
+      ],
+    );
+  }
+
+  Text buildItemNameText() {
+    return Text(widget.item.name,
+        textAlign: TextAlign.center,
+        style: GoogleFonts.poppins(
+            textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
+            fontWeight: FontWeight.w700,
+            decoration: TextDecoration.none));
+  }
+
+  Text buildCategoryText() {
+    return Text(widget.item.category,
+        textAlign: TextAlign.center,
+        style: GoogleFonts.poppins(
+            textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 10),
+            fontWeight: FontWeight.w500,
+            decoration: TextDecoration.none));
+  }
+
   IconButton buildPlusIconButton() {
     return IconButton(
         onPressed: () => setState(() {
-              count++;
               widget.updateTotal(widget.item.price);
-              widget.updateMap(widget.item, count);
+              widget.updateItemCount(widget.item, 1);
             }),
         icon: const Icon(
           Icons.add,
@@ -417,7 +443,7 @@ class _ListItem extends State<ListItem> {
 
   Widget buildCountTextLabel() {
     return Text(
-      count.toString(),
+      widget.getItemCount(widget.item).toString(),
       textAlign: TextAlign.left,
       style: GoogleFonts.poppins(
           textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
@@ -429,9 +455,8 @@ class _ListItem extends State<ListItem> {
   IconButton buildMinusButton() {
     return IconButton(
         onPressed: () => setState(() {
-              count--;
               widget.updateTotal(0 - widget.item.price);
-              widget.updateMap(widget.item, count);
+              widget.updateItemCount(widget.item, -1);
             }),
         icon: const Icon(
           Icons.remove,
@@ -469,16 +494,16 @@ Widget itemDetail(BuildContext context, Item item) {
         textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
         fontWeight: FontWeight.w500,
         decoration: TextDecoration.none),
-    title: Text(item.name),
+    title: Text(item.category),
     content: Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(item.category),
+        CenteredText.getCenteredText(item.name),
         const Text(" "),
         Text(item.description),
         const Text(" "),
-        Text(item.price.toStringAsFixed(2))
+        CenteredText.getCenteredText(item.price.toStringAsFixed(2))
       ],
     ),
     actions: <Widget>[
