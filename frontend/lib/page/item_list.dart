@@ -5,6 +5,7 @@ import 'package:csi5112_frontend/dataModal/item.dart';
 import 'package:csi5112_frontend/dataModal/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -53,60 +54,135 @@ class _ItemListState extends State<ItemList> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> header =
-        isInvoice ? [buildInvoiceHeader()] : [Container(width: 0, height: 0)];
+    final screenWidth = MediaQuery.of(context).size.width;
+    int countWidth = screenWidth >= 1600
+        ? 4
+        : screenWidth >= 800
+            ? 2
+            : 1;
     return Scaffold(
-      appBar: DefaultAppBar.getAppBar(),
-      body: Center(
+        appBar: DefaultAppBar.getAppBar(context),
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
-              // Set grid alignment
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: header +
-                  [
-                    Expanded(
-                        // most useful component, take 5 unit space
-                        flex: 5,
-                        child: buildItemList()),
-                    Expanded(
-                        flex: 2,
-                        // Only display the load button if there are more to load
-                        child: Row(
-                          children: [
-                            Expanded(child: Container(), flex: 2),
-                            Expanded(
-                                flex: 4,
-                                child: Center(
-                                  // This button can only be shown on the first selecting page
-                                  child: perPage < items.length &&
-                                          (!isReviewStage && !isInvoice)
-                                      ? buildLoadButton()
-                                      // Empty placeholder to prevent itemList change grid
-                                      : buildLoadButtonPlaceholder(),
-                                )),
-                            Expanded(
-                                flex: 2,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                        padding: const EdgeInsets.all(50),
-                                        child: buildTotalText()),
-                                    // Show buttons at different stage
-                                    isReviewStage
-                                        ? Row(children: [
-                                            buildGoBackButton(),
-                                            buildConfirmButton()
-                                          ])
-                                        : isInvoice
-                                            ? buildPrintButton()
-                                            : buildReviewButton()
-                                  ],
-                                ))
-                          ],
-                        )),
-                  ])),
-    );
+            children: [
+              isInvoice ? buildInvoiceHeader() : Container(width: 0, height: 0),
+              Text('Checkout what you want!',
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                        color: Color(0xff525151),
+                        fontSize: 24,
+                        fontWeight: FontWeight.w800,
+                        decoration: TextDecoration.none),
+                  )),
+              Expanded(
+                  flex: 7,
+                  child: GridView(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: countWidth, childAspectRatio: 1.9),
+                      children:
+                          // if the user is not actively selecting items, we just display what they already selected
+                          (isReviewStage || isInvoice
+                                  ? getMinSelectedItems().keys.toList()
+                                  : items)
+                              .sublist(
+                                  0,
+                                  isReviewStage || isInvoice
+                                      ? getMinSelectedItems().length
+                                      : perPage)
+                              .map<Widget>((item) {
+                        return ListItem(
+                            item: item,
+                            // Passing some of the parent functions so children can notify parent for state update
+                            updateTotal: updateTotal,
+                            isReviewStage: isReviewStage,
+                            updateMap: updateMap,
+                            // carry-over or restore already selected count
+                            count: isReviewStage || isInvoice
+                                ? (selectedItems[item] ?? 0)
+                                : (isRevisit ? (selectedItems[item] ?? 0) : 0),
+                            isInvoice: isInvoice);
+                      }).toList())),
+              Expanded(
+                  flex: 1,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          // This button can only be shown on the first selecting page
+                          child: perPage < items.length &&
+                                  (!isReviewStage && !isInvoice)
+                              ? buildLoadButton()
+                              // Empty placeholder to prevent itemList change grid
+                              : buildLoadButtonPlaceholder(),
+                        ),
+
+                        Container(
+                            padding: const EdgeInsets.all(50),
+                            child: buildTotalText()),
+                        // Show buttons at different stage
+                        isReviewStage
+                            ? Row(children: [
+                                buildGoBackButton(),
+                                buildConfirmButton()
+                              ])
+                            : isInvoice
+                                ? buildPrintButton()
+                                : buildReviewButton()
+                      ]))
+            ],
+          ),
+        ));
   }
+
+  // Center(
+  //         child: Column(
+  //             // Set grid alignment
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             crossAxisAlignment: CrossAxisAlignment.center,
+  //             children: header +
+  //                 [
+  //                   Expanded(
+  //                       // most useful component, take 5 unit space
+  //                       flex: 5,
+  //                       child: buildItemList()),
+  //                   Expanded(
+  //                       flex: 2,
+  //                       // Only display the load button if there are more to load
+  //                       child: Row(
+  //                         children: [
+  //                           Expanded(child: Container(), flex: 2),
+  //                           Expanded(
+  //                               flex: 4,
+  //                               child: Center(
+  //                                 // This button can only be shown on the first selecting page
+  //                                 child: perPage < items.length &&
+  //                                         (!isReviewStage && !isInvoice)
+  //                                     ? buildLoadButton()
+  //                                     // Empty placeholder to prevent itemList change grid
+  //                                     : buildLoadButtonPlaceholder(),
+  //                               )),
+  //                           Expanded(
+  //                               flex: 2,
+  //                               child: Column(
+  //                                 children: [
+  //                                   Container(
+  //                                       padding: const EdgeInsets.all(50),
+  //                                       child: buildTotalText()),
+  //                                   // Show buttons at different stage
+  //                                   isReviewStage
+  //                                       ? Row(children: [
+  //                                           buildGoBackButton(),
+  //                                           buildConfirmButton()
+  //                                         ])
+  //                                       : isInvoice
+  //                                           ? buildPrintButton()
+  //                                           : buildReviewButton()
+  //                                 ],
+  //                               ))
+  //                         ],
+  //                       )),
+  //                 ])),
 
   Row buildInvoiceHeader() {
     return Row(children: [
@@ -311,13 +387,111 @@ class _ListItem extends State<ListItem> {
     if (widget.count != 0) {
       controller.text = widget.count.toString();
     }
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: buildRow(context),
-        ));
+    //   return Padding(
+    //       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: buildRow(context),
+    //       ));
+    // }
+    return buildCard(context);
+  }
+
+  Widget buildCard(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
+      width: 480,
+      decoration: BoxDecoration(
+          color: Color(0xff1E273C),
+          borderRadius: BorderRadius.all(Radius.circular(25))),
+      child: Column(
+        children: [
+          Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 4,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(widget.item.category,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: Color(0xffffffff), fontSize: 10),
+                                fontWeight: FontWeight.w500,
+                                decoration: TextDecoration.none)),
+                        Container(
+                          height: 14,
+                          width: 14,
+                        ),
+                        Text(widget.item.name,
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: Color(0xffffffff), fontSize: 16),
+                                fontWeight: FontWeight.w700,
+                                decoration: TextDecoration.none)),
+                        Container(
+                          height: 20,
+                          width: 14,
+                        ),
+                        buildDetailsButton(context),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                      flex: 5,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.item.price.toStringAsFixed(2),
+                            textAlign: TextAlign.left,
+                            style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: Color(0xffffffff), fontSize: 16),
+                                fontWeight: FontWeight.w700,
+                                decoration: TextDecoration.none),
+                            // price format X.XX
+                          ),
+                          Container(
+                            height: 14,
+                            width: 14,
+                          ),
+                          buildCountTextField(),
+                          Container(
+                            height: 14,
+                            width: 14,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                  child: count != 0 &&
+                                          !widget.isReviewStage &&
+                                          !widget.isInvoice
+                                      ? buildMinusButton()
+                                      : Container(
+                                          width: 6,
+                                        )),
+                              Expanded(
+                                  child:
+                                      !widget.isReviewStage && !widget.isInvoice
+                                          ? buildPlusIconButton()
+                                          : Container())
+                            ],
+                          )
+                        ],
+                      ))
+                ],
+              ))
+        ],
+      ),
+    );
   }
 
   List<Widget> buildRow(BuildContext context) {
@@ -359,15 +533,24 @@ class _ListItem extends State<ListItem> {
               controller.text = count.toString();
               widget.updateMap(widget.item, count);
             }),
-        icon: const Icon(Icons.add));
+        icon: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ));
   }
 
-  TextField buildCountTextField() {
+  Widget buildCountTextField() {
     return TextField(
+      style: const TextStyle(color: Colors.white),
       controller: controller,
       enabled: !widget.isReviewStage,
-      decoration: const InputDecoration(
-          border: OutlineInputBorder(), hintText: 'Enter a number'),
+      decoration: InputDecoration(
+          hintStyle: TextStyle(color: Colors.white),
+          enabledBorder: OutlineInputBorder(
+              borderSide: new BorderSide(color: Colors.white)),
+          focusedBorder: UnderlineInputBorder(
+              borderSide: new BorderSide(color: Colors.white)),
+          hintText: 'Enter a number'),
       keyboardType: TextInputType.number,
       textAlign: TextAlign.center,
       onChanged: (String value) async {
@@ -403,15 +586,20 @@ class _ListItem extends State<ListItem> {
               controller.text = count.toString();
               widget.updateMap(widget.item, count);
             }),
-        icon: const Icon(Icons.remove));
+        icon: const Icon(
+          Icons.remove,
+          color: Colors.white,
+        ));
   }
 
   Container buildDetailsButton(BuildContext context) {
     return Container(
-        height: 50,
-        width: 120,
+        height: 40,
+        width: 100,
         child: ElevatedButton(
           child: const Text('Details'),
+          style: ElevatedButton.styleFrom(
+              primary: Colors.blueGrey, shadowColor: Colors.white),
           onPressed: () {
             showDialog(
               context: context,
