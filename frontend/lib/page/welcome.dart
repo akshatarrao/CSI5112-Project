@@ -23,11 +23,11 @@ class Welcome extends StatelessWidget {
                 // navigate to item list page
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ItemList()),
+                  MaterialPageRoute(builder: (context) => const ItemList()),
                 );
               },
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               child: const Text('Discussion Forum (to be deleted)'),
               onPressed: () {

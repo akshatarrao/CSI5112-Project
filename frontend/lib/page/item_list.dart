@@ -487,7 +487,7 @@ Widget itemDetail(BuildContext context, Item item) {
   return AlertDialog(
     backgroundColor: const Color(0xff525151),
     contentTextStyle: GoogleFonts.poppins(
-        textStyle: TextStyle(color: const Color(0xffffffff), fontSize: 16),
+        textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
         fontWeight: FontWeight.w500,
         decoration: TextDecoration.none),
     titleTextStyle: GoogleFonts.poppins(
@@ -523,11 +523,11 @@ Widget emptyCartErrorPopup(BuildContext context) {
   return AlertDialog(
     backgroundColor: const Color(0xff525151),
     contentTextStyle: GoogleFonts.poppins(
-        textStyle: TextStyle(color: const Color(0xffffffff), fontSize: 16),
+        textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
         fontWeight: FontWeight.w500,
         decoration: TextDecoration.none),
     titleTextStyle: GoogleFonts.poppins(
-        textStyle: TextStyle(color: const Color(0xffffffff), fontSize: 16),
+        textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
         fontWeight: FontWeight.w500,
         decoration: TextDecoration.none),
     title: const Text("Please select at least one item"),
