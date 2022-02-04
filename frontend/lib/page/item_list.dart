@@ -4,7 +4,6 @@
 import 'package:csi5112_frontend/dataModal/item.dart';
 import 'package:csi5112_frontend/dataModal/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -12,7 +11,6 @@ import 'package:printing/printing.dart';
 
 import '../component/app_bar.dart';
 import '../component/centered_text.dart';
-import '../component/divider.dart';
 
 class ItemList extends StatefulWidget {
   const ItemList({Key? key}) : super(key: key);
@@ -66,8 +64,7 @@ class _ItemListState extends State<ItemList> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             children: [
-              isInvoice ? buildInvoiceHeader() : Container(width: 0, height: 0),
-              Text('Checkout what you want!',
+              Text(isInvoice ? getInvoiceHeaderText() : 'Buy what you want!',
                   style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                         color: Color(0xff525151),
@@ -116,10 +113,13 @@ class _ItemListState extends State<ItemList> {
                               // Empty placeholder to prevent itemList change grid
                               : buildLoadButtonPlaceholder(),
                         ),
-
                         Container(
-                            padding: const EdgeInsets.all(50),
-                            child: buildTotalText()),
+                          width: 20,
+                        ),
+                        buildTotalText(),
+                        Container(
+                          width: 20,
+                        ),
                         // Show buttons at different stage
                         isReviewStage
                             ? Row(children: [
@@ -135,66 +135,6 @@ class _ItemListState extends State<ItemList> {
         ));
   }
 
-  // Center(
-  //         child: Column(
-  //             // Set grid alignment
-  //             mainAxisAlignment: MainAxisAlignment.start,
-  //             crossAxisAlignment: CrossAxisAlignment.center,
-  //             children: header +
-  //                 [
-  //                   Expanded(
-  //                       // most useful component, take 5 unit space
-  //                       flex: 5,
-  //                       child: buildItemList()),
-  //                   Expanded(
-  //                       flex: 2,
-  //                       // Only display the load button if there are more to load
-  //                       child: Row(
-  //                         children: [
-  //                           Expanded(child: Container(), flex: 2),
-  //                           Expanded(
-  //                               flex: 4,
-  //                               child: Center(
-  //                                 // This button can only be shown on the first selecting page
-  //                                 child: perPage < items.length &&
-  //                                         (!isReviewStage && !isInvoice)
-  //                                     ? buildLoadButton()
-  //                                     // Empty placeholder to prevent itemList change grid
-  //                                     : buildLoadButtonPlaceholder(),
-  //                               )),
-  //                           Expanded(
-  //                               flex: 2,
-  //                               child: Column(
-  //                                 children: [
-  //                                   Container(
-  //                                       padding: const EdgeInsets.all(50),
-  //                                       child: buildTotalText()),
-  //                                   // Show buttons at different stage
-  //                                   isReviewStage
-  //                                       ? Row(children: [
-  //                                           buildGoBackButton(),
-  //                                           buildConfirmButton()
-  //                                         ])
-  //                                       : isInvoice
-  //                                           ? buildPrintButton()
-  //                                           : buildReviewButton()
-  //                                 ],
-  //                               ))
-  //                         ],
-  //                       )),
-  //                 ])),
-
-  Row buildInvoiceHeader() {
-    return Row(children: [
-      Container(
-          padding: const EdgeInsets.all(20),
-          child: Text(
-            getInvoiceHeaderText(),
-            textAlign: TextAlign.left,
-          ))
-    ]);
-  }
-
   String getInvoiceHeaderText() =>
       "User: " + user.name + "   " + "Time: " + invoiceTime.toString();
 
@@ -205,6 +145,8 @@ class _ItemListState extends State<ItemList> {
       width: 120,
       height: 50,
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            primary: Colors.blueGrey, shadowColor: Colors.white),
         onPressed: () async {
           Map<Item, int> itemList = getMinSelectedItems();
           List<pw.Text> printableItemChildren = [];
@@ -232,10 +174,16 @@ class _ItemListState extends State<ItemList> {
           return pw.Center(
             child: pw.Column(
                 children: [
+                      pw.Text("Invoice"),
+                      pw.Container(height: 20),
                       pw.Text(getInvoiceHeaderText()),
+                      pw.Container(height: 20),
                     ] +
                     printableItemChildren +
-                    [pw.Text("Total: " + total.toStringAsFixed(2))]),
+                    [
+                      pw.Container(height: 20),
+                      pw.Text("Total: " + total.toStringAsFixed(2))
+                    ]),
           ); // Center
         }));
     return doc;
@@ -247,6 +195,8 @@ class _ItemListState extends State<ItemList> {
       height: 90,
       padding: const EdgeInsets.all(20),
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            primary: Colors.blueGrey, shadowColor: Colors.white),
         onPressed: () {
           setState(() {
             isInvoice = true;
@@ -265,6 +215,8 @@ class _ItemListState extends State<ItemList> {
         width: 160,
         height: 90,
         child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                primary: Colors.blueGrey, shadowColor: Colors.white),
             onPressed: () {
               setState(() {
                 isRevisit = true;
@@ -279,6 +231,8 @@ class _ItemListState extends State<ItemList> {
         height: 50,
         width: 120,
         child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: Colors.blueGrey, shadowColor: Colors.white),
           onPressed: () {
             // Guard against zero item cart
             if (getMinSelectedItems().isNotEmpty) {
@@ -297,9 +251,7 @@ class _ItemListState extends State<ItemList> {
   }
 
   Center buildTotalText() {
-    return Center(
-        child:
-            CenteredText.getCenteredText("Total: " + total.toStringAsFixed(2)));
+    return Center(child: Text("Total: " + total.toStringAsFixed(2)));
   }
 
   Container buildLoadButtonPlaceholder() {
@@ -314,6 +266,8 @@ class _ItemListState extends State<ItemList> {
         height: 50,
         width: 120,
         child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: Colors.blueGrey, shadowColor: Colors.white),
           child: CenteredText.getCenteredText('Load more...'),
           onPressed: () {
             setState(() {
@@ -321,34 +275,6 @@ class _ItemListState extends State<ItemList> {
             });
           },
         ));
-  }
-
-  ListView buildItemList() {
-    // The logic here is kinda complex because we have to account for different stage and revisit
-    return ListView.separated(
-      itemCount:
-          // if the user is not actively selecting items, we just display what they already selected
-          isReviewStage || isInvoice ? getMinSelectedItems().length : perPage,
-      separatorBuilder: (BuildContext context, int index) =>
-          DefaultDivider.getDefaultDivider(context),
-      itemBuilder: (BuildContext context, int index) {
-        selectedItems = getMinSelectedItems();
-        return ListItem(
-            // if the user is not actively selecting items, we just display what they already selected
-            item: isReviewStage || isInvoice
-                ? selectedItems.keys.elementAt(index)
-                : items[index],
-            // Passing some of the parent functions so children can notify parent for state update
-            updateTotal: updateTotal,
-            isReviewStage: isReviewStage,
-            updateMap: updateMap,
-            // carry-over or restore already selected count
-            count: isReviewStage || isInvoice
-                ? (selectedItems[selectedItems.keys.elementAt(index)] ?? 0)
-                : (isRevisit ? (selectedItems[items[index]] ?? 0) : 0),
-            isInvoice: isInvoice);
-      },
-    );
   }
 }
 
@@ -378,23 +304,9 @@ class ListItem extends StatefulWidget {
 class _ListItem extends State<ListItem> {
   int count = 0;
 
-  var controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    // This whole text field is not working as expected. Lots of hacks and random code made it work
-    // It is magical, do not change unless you know what you are doing
-    if (widget.count != 0) {
-      controller.text = widget.count.toString();
-    }
-    //   return Padding(
-    //       padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-    //       child: Row(
-    //         mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //         crossAxisAlignment: CrossAxisAlignment.center,
-    //         children: buildRow(context),
-    //       ));
-    // }
     return buildCard(context);
   }
 
@@ -402,7 +314,7 @@ class _ListItem extends State<ListItem> {
     return Container(
       margin: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
       width: 480,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           color: Color(0xff1E273C),
           borderRadius: BorderRadius.all(Radius.circular(25))),
       child: Column(
@@ -420,7 +332,7 @@ class _ListItem extends State<ListItem> {
                         Text(widget.item.category,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
+                                textStyle: const TextStyle(
                                     color: Color(0xffffffff), fontSize: 10),
                                 fontWeight: FontWeight.w500,
                                 decoration: TextDecoration.none)),
@@ -431,7 +343,7 @@ class _ListItem extends State<ListItem> {
                         Text(widget.item.name,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
+                                textStyle: const TextStyle(
                                     color: Color(0xffffffff), fontSize: 16),
                                 fontWeight: FontWeight.w700,
                                 decoration: TextDecoration.none)),
@@ -452,17 +364,12 @@ class _ListItem extends State<ListItem> {
                             widget.item.price.toStringAsFixed(2),
                             textAlign: TextAlign.left,
                             style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
+                                textStyle: const TextStyle(
                                     color: Color(0xffffffff), fontSize: 16),
                                 fontWeight: FontWeight.w700,
                                 decoration: TextDecoration.none),
                             // price format X.XX
                           ),
-                          Container(
-                            height: 14,
-                            width: 14,
-                          ),
-                          buildCountTextField(),
                           Container(
                             height: 14,
                             width: 14,
@@ -478,6 +385,7 @@ class _ListItem extends State<ListItem> {
                                       : Container(
                                           width: 6,
                                         )),
+                              buildCountTextLabel(),
                               Expanded(
                                   child:
                                       !widget.isReviewStage && !widget.isInvoice
@@ -494,43 +402,11 @@ class _ListItem extends State<ListItem> {
     );
   }
 
-  List<Widget> buildRow(BuildContext context) {
-    return [
-      // Default grid side to 4
-      Expanded(flex: 4, child: CenteredText.getCenteredText(widget.item.name)),
-      Expanded(
-          flex: 4, child: CenteredText.getCenteredText(widget.item.category)),
-      Expanded(
-        flex: 4,
-        child: buildDetailsButton(context),
-      ),
-      Expanded(flex: 4, child: CenteredText.getCenteredText(
-          // price format X.XX
-          widget.item.price.toStringAsFixed(2))),
-      // The add + remove + input together take 4 unit space
-      Expanded(
-          flex: 1,
-          // Only display if the count is larger than 0
-          child: count != 0 && !widget.isReviewStage && !widget.isInvoice
-              ? buildMinusButton()
-              : Container()),
-      Expanded(flex: 2, child: buildCountTextField()),
-      Expanded(
-          flex: 1,
-          child: !widget.isReviewStage && !widget.isInvoice
-              ? buildPlusIconButton()
-              : Container())
-    ];
-  }
-
   IconButton buildPlusIconButton() {
     return IconButton(
         onPressed: () => setState(() {
               count++;
               widget.updateTotal(widget.item.price);
-              // Ideally we want to map count value automatically to the field. However, due to
-              // in-place count value update. The trigger is messed up so we have to manually set them everywhere
-              controller.text = count.toString();
               widget.updateMap(widget.item, count);
             }),
         icon: const Icon(
@@ -539,42 +415,14 @@ class _ListItem extends State<ListItem> {
         ));
   }
 
-  Widget buildCountTextField() {
-    return TextField(
-      style: const TextStyle(color: Colors.white),
-      controller: controller,
-      enabled: !widget.isReviewStage,
-      decoration: InputDecoration(
-          hintStyle: TextStyle(color: Colors.white),
-          enabledBorder: OutlineInputBorder(
-              borderSide: new BorderSide(color: Colors.white)),
-          focusedBorder: UnderlineInputBorder(
-              borderSide: new BorderSide(color: Colors.white)),
-          hintText: 'Enter a number'),
-      keyboardType: TextInputType.number,
-      textAlign: TextAlign.center,
-      onChanged: (String value) async {
-        if (value.isNotEmpty) {
-          // This code would be much easier and maintainable if we just get rid of the +/- buttons
-          // Possible future refactor
-          widget.updateTotal((int.parse(value) - count) * widget.item.price);
-          count = int.parse(value);
-          controller.text = count.toString();
-          widget.updateMap(widget.item, count);
-        } else {
-          widget.updateTotal((0 - count) * widget.item.price);
-          count = 0;
-          controller.text = count.toString();
-          widget.updateMap(widget.item, count);
-        }
-        // hack, no idea why it works, but it make sure the cursor does not jump
-        controller.selection = TextSelection.fromPosition(
-            TextPosition(offset: controller.text.length));
-      },
-      // Only allow number input for user experience
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly
-      ],
+  Widget buildCountTextLabel() {
+    return Text(
+      count.toString(),
+      textAlign: TextAlign.left,
+      style: GoogleFonts.poppins(
+          textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
+          fontWeight: FontWeight.w700,
+          decoration: TextDecoration.none),
     );
   }
 
@@ -583,7 +431,6 @@ class _ListItem extends State<ListItem> {
         onPressed: () => setState(() {
               count--;
               widget.updateTotal(0 - widget.item.price);
-              controller.text = count.toString();
               widget.updateMap(widget.item, count);
             }),
         icon: const Icon(
@@ -613,6 +460,15 @@ class _ListItem extends State<ListItem> {
 
 Widget itemDetail(BuildContext context, Item item) {
   return AlertDialog(
+    backgroundColor: const Color(0xff525151),
+    contentTextStyle: GoogleFonts.poppins(
+        textStyle: TextStyle(color: const Color(0xffffffff), fontSize: 16),
+        fontWeight: FontWeight.w500,
+        decoration: TextDecoration.none),
+    titleTextStyle: GoogleFonts.poppins(
+        textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
+        fontWeight: FontWeight.w500,
+        decoration: TextDecoration.none),
     title: Text(item.name),
     content: Column(
       mainAxisSize: MainAxisSize.min,
@@ -627,6 +483,8 @@ Widget itemDetail(BuildContext context, Item item) {
     ),
     actions: <Widget>[
       ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            primary: Colors.blueGrey, shadowColor: Colors.white),
         onPressed: () {
           Navigator.of(context).pop();
         },
@@ -638,9 +496,20 @@ Widget itemDetail(BuildContext context, Item item) {
 
 Widget emptyCartErrorPopup(BuildContext context) {
   return AlertDialog(
+    backgroundColor: const Color(0xff525151),
+    contentTextStyle: GoogleFonts.poppins(
+        textStyle: TextStyle(color: const Color(0xffffffff), fontSize: 16),
+        fontWeight: FontWeight.w500,
+        decoration: TextDecoration.none),
+    titleTextStyle: GoogleFonts.poppins(
+        textStyle: TextStyle(color: const Color(0xffffffff), fontSize: 16),
+        fontWeight: FontWeight.w500,
+        decoration: TextDecoration.none),
     title: const Text("Please select at least one item"),
     actions: <Widget>[
       ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            primary: Colors.blueGrey, shadowColor: Colors.white),
         onPressed: () {
           Navigator.of(context).pop();
         },
