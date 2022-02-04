@@ -13,6 +13,7 @@ import '../component/app_bar.dart';
 import '../component/centered_text.dart';
 
 class ItemList extends StatefulWidget {
+  static const routeName = '/dashboard';
   const ItemList({Key? key}) : super(key: key);
 
   @override
