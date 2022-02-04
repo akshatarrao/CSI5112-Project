@@ -1,5 +1,3 @@
-import 'package:csi5112_frontend/component/app_bar.dart';
-import 'package:csi5112_frontend/page/item_list.dart';
 import 'package:flutter/material.dart';
 import 'package:csi5112_frontend/data.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +14,7 @@ class _OrderHistoryState extends State<OrderHistory> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final f = new DateFormat('yMMMd');
+    final f =  DateFormat('yMMMd');
 
     int countWidth = screenWidth >= 1200 ? 4 : 1;
     return Container(
@@ -25,7 +23,7 @@ class _OrderHistoryState extends State<OrderHistory> {
         children: <Widget>[
           Text('Order History',
               style: GoogleFonts.poppins(
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     color: Color(0xff525151),
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
@@ -43,9 +41,9 @@ class _OrderHistoryState extends State<OrderHistory> {
                         top: 8, bottom: 8, left: 8, right: 8),
                     //height: 180,
                     width: 480,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: Color(0xff1E273C),
-                        borderRadius: BorderRadius.all(Radius.circular(25))),
+                        borderRadius: BorderRadius.all( Radius.circular(25))),
                     child: Column(children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +59,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                     Text("Order Number:",
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
+                                            textStyle: const TextStyle(
                                                 color: Color(0xffffffff),
                                                 fontSize: 10),
                                             fontWeight: FontWeight.w500,
@@ -69,8 +67,8 @@ class _OrderHistoryState extends State<OrderHistory> {
                                     Text("#" + order.orderId.toString(),
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                                color: Color(0xffffffff),
+                                            textStyle: const TextStyle(
+                                                color:  Color(0xffffffff),
                                                 fontSize: 22),
                                             fontWeight: FontWeight.w700,
                                             decoration: TextDecoration.none)),
@@ -80,21 +78,21 @@ class _OrderHistoryState extends State<OrderHistory> {
                             ],
                           ),
                           Container(
-                            margin: EdgeInsets.only(right: 16),
+                            margin: const EdgeInsets.only(right: 16),
                             height: 28,
                             width: 60,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 color: Color(0xffD9F3E3),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(40))),
+                                     BorderRadius.all(Radius.circular(40))),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(order.ispaid,
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                            color: Color(0xff40C075),
+                                        textStyle: const TextStyle(
+                                            color:  Color(0xff40C075),
                                             fontSize: 8),
                                         fontWeight: FontWeight.w500,
                                         decoration: TextDecoration.none)),
@@ -117,16 +115,16 @@ class _OrderHistoryState extends State<OrderHistory> {
                                     Text("# of items",
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                                color: Color(0xffffffff),
+                                            textStyle: const TextStyle(
+                                                color:  Color(0xffffffff),
                                                 fontSize: 10),
                                             fontWeight: FontWeight.w500,
                                             decoration: TextDecoration.none)),
                                     Text(order.itemsCount.toString(),
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                                color: Color(0xffffffff),
+                                            textStyle: const TextStyle(
+                                                color:  Color(0xffffffff),
                                                 fontSize: 16),
                                             fontWeight: FontWeight.w700,
                                             decoration: TextDecoration.none)),
@@ -142,15 +140,15 @@ class _OrderHistoryState extends State<OrderHistory> {
                                     Text("Total Amount:",
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                                color: Color(0xffffffff),
+                                            textStyle: const TextStyle(
+                                                color:  Color(0xffffffff),
                                                 fontSize: 10),
                                             fontWeight: FontWeight.w500,
                                             decoration: TextDecoration.none)),
                                     Text("\$" + order.amount.toString(),
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
+                                            textStyle: const TextStyle(
                                                 color: Color(0xffffffff),
                                                 fontSize: 16),
                                             fontWeight: FontWeight.w700,
@@ -167,7 +165,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                     Text("Order Date:",
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
+                                            textStyle: const TextStyle(
                                                 color: Color(0xffffffff),
                                                 fontSize: 10),
                                             fontWeight: FontWeight.w500,
@@ -175,8 +173,8 @@ class _OrderHistoryState extends State<OrderHistory> {
                                     Text(f.format(order.orderDate).toString(),
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                                color: Color(0xffffffff),
+                                            textStyle: const TextStyle(
+                                                color:  Color(0xffffffff),
                                                 fontSize: 16),
                                             fontWeight: FontWeight.w700,
                                             decoration: TextDecoration.none)),
