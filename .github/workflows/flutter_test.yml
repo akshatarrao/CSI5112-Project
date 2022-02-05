@@ -19,6 +19,7 @@ jobs:
       - uses: stelynx/dart-full-coverage@v1.0.5
         with:
           package: csi5112_frontend
+          use_git_root: false
           main_dir: ./frontend
       - name: Run tests
         run: flutter test --coverage
