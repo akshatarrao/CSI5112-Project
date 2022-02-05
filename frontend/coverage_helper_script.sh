@@ -1,4 +1,5 @@
 #!/bin/sh
+# Reference https://github.com/flutter/flutter/issues/27997
 cd ./frontend
 file=test/coverage_helper_test.dart
 printf "// Helper file to make coverage work for all dart files\n" > $file
