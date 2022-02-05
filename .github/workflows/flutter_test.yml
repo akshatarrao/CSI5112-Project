@@ -20,6 +20,6 @@ jobs:
         run: flutter test --coverage
         working-directory: ./frontend
       - name: Upload coverage to codecov
-        uses: codecov/codecov-action@v1.0.2
+        uses: codecov/codecov-action@v2
         with:
           directory: ./frontend//coverage/
