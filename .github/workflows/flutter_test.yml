@@ -16,11 +16,9 @@ jobs:
       - name: Analyze
         run: flutter analyze
         working-directory: ./frontend
-      - uses: stelynx/dart-full-coverage@v1.0.5
-        with:
-          package: csi5112_frontend
-          use_git_root: false
-          main_dir: ./frontend
+      - name: script
+        run: ./frontend/coverage_helper_script.sh
+        shell: bash
       - name: Run tests
         run: flutter test --coverage
         working-directory: ./frontend
