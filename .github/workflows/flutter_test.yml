@@ -16,7 +16,7 @@ jobs:
       - name: Analyze
         run: flutter analyze
         working-directory: ./frontend
-      - name: script
+      - name: Hack to get full coverage
         run: ./frontend/coverage_helper_script.sh
         shell: bash
       - name: Run tests
