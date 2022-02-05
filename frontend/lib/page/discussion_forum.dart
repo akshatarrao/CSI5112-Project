@@ -1,6 +1,7 @@
 import 'package:csi5112_frontend/component/app_bar.dart';
 import 'package:flutter/material.dart';
-import '../dataModal/question.dart';
+import 'package:csi5112_frontend/dataModal/question.dart';
+import 'package:csi5112_frontend/page/answer_page.dart';
 
 class DiscussionForum extends StatefulWidget{
   const DiscussionForum({Key? key}) : super(key: key);
@@ -12,9 +13,10 @@ class DiscussionForum extends StatefulWidget{
 class _DiscussionForumState extends State<DiscussionForum> {
 
   static List<Question> questions = [
-    Question("Question 1", "Description 1", "UserA", "Feb2020", 2),
-    Question("Question 2", "Description 2", "UserB", "Feb2020", 7),
-    Question("Question 3", "Description 3", "UserA", "Feb2020", 0),
+    Question(0, "Question 0", "Description 0", "UserA", "Feb2020"),
+    Question(1, "Question 1", "Description 1", "UserA", "Feb2020"),
+    Question(2, "Question 2", "Description 2", "UserB", "Feb2020"),
+    Question(3, "Question 3", "Description 3", "UserA", "Feb2020"),
   ];
 
   @override
@@ -41,7 +43,13 @@ class _DiscussionForumState extends State<DiscussionForum> {
                       ListTile(
                         title: TextButton(
                           child: Text(questions[index].title),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AnswerPage(questions[index].id)),
+                            );
+                          },
                         ),
                         subtitle: Text(questions[index].description),
                       ),
