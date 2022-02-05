@@ -22,11 +22,42 @@ class _DiscussionForumState extends State<DiscussionForum> {
     return Scaffold(
       appBar: DefaultAppBar.getAppBar(context),
       body: ListView.builder(
-          itemCount: questions.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Text(questions[index].title);
-          }
-      )
+              itemCount: questions.length + 1,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return const TextField(
+                    obscureText: false,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Search here...',
+                      ),
+                  );
+                }
+                index -= 1;
+                return Card( // Card class template: https://api.flutter.dev/flutter/material/Card-class.html
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      ListTile(
+                        title: TextButton(
+                          child: Text(questions[index].title),
+                          onPressed: () {},
+                        ),
+                        subtitle: Text(questions[index].description),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(questions[index].user),
+                          const SizedBox(width: 10),
+                          Text(questions[index].date)
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              }
+          )
     );
   }
 
