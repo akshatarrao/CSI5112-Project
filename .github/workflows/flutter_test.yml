@@ -16,6 +16,10 @@ jobs:
       - name: Analyze
         run: flutter analyze
         working-directory: ./frontend
+      - uses: stelynx/dart-full-coverage@v1.0.5
+        with:
+          package: csi5112_frontend
+          main_dir: ./frontend
       - name: Run tests
         run: flutter test --coverage
         working-directory: ./frontend
