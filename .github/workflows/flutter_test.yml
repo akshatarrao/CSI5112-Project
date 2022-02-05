@@ -22,4 +22,4 @@ jobs:
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v2
         with:
-          directory: ./frontend//coverage/
+          files: ./frontend//coverage/lcov.info
