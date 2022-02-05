@@ -20,6 +20,6 @@ jobs:
         run: flutter test --coverage
         working-directory: ./frontend
       - name: Upload coverage to codecov
-        run: curl -s https://codecov.io/bash
-        working-directory: ./frontend
-        shell: bash
+        uses: codecov/codecov-action@v1.0.2
+        with:
+          working-directory: ./frontend
