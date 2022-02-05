@@ -1,3 +1,4 @@
+import 'package:csi5112_frontend/component/app_bar.dart';
 import 'package:flutter/material.dart';
 import '../dataModal/question.dart';
 
@@ -19,6 +20,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: DefaultAppBar.getAppBar(context),
       body: ListView.builder(
           itemCount: questions.length,
           itemBuilder: (BuildContext context, int index) {
