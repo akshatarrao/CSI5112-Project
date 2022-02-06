@@ -5,19 +5,16 @@ import 'dart:math';
 
 import 'package:csi5112_frontend/dataModal/item.dart';
 import 'package:csi5112_frontend/dataModal/user.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-
-import '../component/app_bar.dart';
 import '../component/centered_text.dart';
 import '../component/theme_data.dart';
 
 class ItemList extends StatefulWidget {
-  static const routeName = '/dashboard';
+  static const routeName = '/itemlist';
   const ItemList({Key? key}) : super(key: key);
 
   @override
@@ -73,8 +70,8 @@ class _ItemListState extends State<ItemList> {
             : 1;
     return MaterialApp(
       home: Scaffold(
-          backgroundColor: Color(0xffE5E5E5),
-          appBar: DefaultAppBar.getAppBar(context),
+          backgroundColor: const Color(0xffE5E5E5),
+          // appBar: DefaultAppBar.getAppBar(context),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Column(
@@ -408,7 +405,7 @@ class _ListItem extends State<ListItem> {
     Random rnd;
     int min = 0;
     int max = 250;
-    rnd = new Random();
+    rnd = Random();
     var r = min + rnd.nextInt(max - min);
     String Url = 'https://picsum.photos/250?image=' + r.toString();
     return Column(
@@ -452,8 +449,7 @@ class _ListItem extends State<ListItem> {
               widget.updateTotal(widget.item.price);
               widget.updateItemCount(widget.item, 1);
             }),
-        icon: const Icon(Icons.add_circle,
-            color: CustomColors.accentColors, size: 30.0));
+        icon: Icon(Icons.add_circle, color: Colors.pink.shade900, size: 30.0));
   }
 
   Widget buildCountTextLabel() {
@@ -474,9 +470,9 @@ class _ListItem extends State<ListItem> {
               widget.updateTotal(0 - widget.item.price);
               widget.updateItemCount(widget.item, -1);
             }),
-        icon: const Icon(
+        icon: Icon(
           Icons.remove_circle,
-          color: CustomColors.accentColors,
+          color: Colors.pink.shade900,
           size: 30.0,
         ));
   }

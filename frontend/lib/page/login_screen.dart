@@ -1,10 +1,8 @@
-import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'package:csi5112_frontend/page/item_list.dart';
+import 'package:csi5112_frontend/page/home.dart';
 import 'package:csi5112_frontend/util/constants.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
 import 'package:csi5112_frontend/util/users.dart';
@@ -24,7 +22,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreentState extends State<LoginScreen> {
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
-  Future<String?> _loginUser(LoginData data) {
+  Future<String?> _loginUser(LoginData data, bool isSwitched) {
     return Future.delayed(loginTime).then((_) {
       if (!mockUsers.containsKey(data.name)) {
         return 'User not exists';
@@ -47,6 +45,9 @@ class _LoginScreentState extends State<LoginScreen> {
       return null;
     });
   }
+
+  static bool isDesktop(BuildContext context) =>
+      MediaQuery.of(context).size.width >= 1200;
 
   bool isSwitched = false;
   @override
@@ -77,8 +78,8 @@ class _LoginScreentState extends State<LoginScreen> {
             showOnOff: true,
             activeText: "Merchant",
             inactiveText: "Customer",
-            inactiveColor: Colors.green,
-            activeColor: Colors.orange,
+            inactiveColor: Colors.blue,
+            activeColor: Colors.red,
             activeTextFontWeight: FontWeight.bold,
             inactiveTextFontWeight: FontWeight.bold,
             onToggle: (val) {
@@ -93,38 +94,41 @@ class _LoginScreentState extends State<LoginScreen> {
             alignment: Alignment.topLeft,
             child: SizedBox(
               width: 300.0,
-              child: DefaultTextStyle(
-                style: GoogleFonts.oswald(
-                  textStyle: Theme.of(context).textTheme.headline4,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                child: AnimatedTextKit(
-                  animatedTexts: [
-                    RotateAnimatedText('Daily essentials'),
-                    RotateAnimatedText('Fresh fruits & veggies'),
-                    RotateAnimatedText('Snacks & indulgences'),
-                    RotateAnimatedText('Delivered to your doorstep 24/7, from'),
-                    ColorizeAnimatedText(
-                      'House of eGro',
-                      textStyle: GoogleFonts.oswald(
+              child: isDesktop(context) == true
+                  ? DefaultTextStyle(
+                      style: GoogleFonts.oswald(
                         textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 40,
+                        fontSize: 30,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
-                      colors: [
-                        Colors.purple,
-                        Colors.blue,
-                        Colors.yellow,
-                        Colors.red,
-                      ],
-                    ),
-                  ],
-                  onTap: () {},
-                ),
-              ),
+                      child: AnimatedTextKit(
+                        animatedTexts: [
+                          RotateAnimatedText('Sell your products online with'),
+                          RotateAnimatedText('unbeatable reach'),
+                          RotateAnimatedText('Stress-free delivery'),
+                          RotateAnimatedText(
+                              'to your customer\'s doorstep 24/7, from'),
+                          ColorizeAnimatedText(
+                            'House of eGro',
+                            textStyle: GoogleFonts.oswald(
+                              textStyle: Theme.of(context).textTheme.headline4,
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            colors: [
+                              Colors.purple,
+                              Colors.blue,
+                              Colors.yellow,
+                              Colors.red,
+                            ],
+                          ),
+                        ],
+                        onTap: () {},
+                      ),
+                    )
+                  : Container(),
             )),
         Container(
             margin: const EdgeInsets.only(bottom: 500.0),
@@ -155,8 +159,8 @@ class _LoginScreentState extends State<LoginScreen> {
         primaryColor: Colors.teal,
         accentColor: Colors.yellow,
         errorColor: Colors.deepOrange,
-        pageColorLight: CustomColors.accentColors,
-        pageColorDark: CustomColors.accentColors,
+        pageColorLight: Colors.pink.shade900,
+        pageColorDark: Colors.pink.shade900,
         logoWidth: 0.80,
         titleStyle: const TextStyle(
             color: Colors.greenAccent,
@@ -221,7 +225,7 @@ class _LoginScreentState extends State<LoginScreen> {
         debugPrint('Login info');
         debugPrint('Name: ${loginData.name}');
         debugPrint('Password: ${loginData.password}');
-        return _loginUser(loginData);
+        return _loginUser(loginData, isSwitched);
       },
       onSignup: (signupData) {
         debugPrint('Signup info');
@@ -242,8 +246,8 @@ class _LoginScreentState extends State<LoginScreen> {
       },
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => const ItemList(),
-          settings: const RouteSettings(name: '/dashboard'),
+          builder: (context) => const MyHomePage(),
+          settings: const RouteSettings(name: '/home'),
         ));
       },
       hideForgotPasswordButton: true,
