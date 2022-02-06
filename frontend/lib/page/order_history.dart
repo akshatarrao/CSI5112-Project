@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:csi5112_frontend/data.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import '../component/app_bar.dart';
 
 class OrderHistory extends StatefulWidget {
   const OrderHistory({Key? key}) : super(key: key);
@@ -21,20 +20,11 @@ class _OrderHistoryState extends State<OrderHistory> {
     int countWidth = screenWidth >= 1200 ? 4 : 1;
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xffE5E5E5),
-        appBar: DefaultAppBar.getAppBar(context),
+        backgroundColor: const Color(0xffE5E5E5),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             children: <Widget>[
-              Text('Order History',
-                  style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                        color: Color(0xff525151),
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
-                        decoration: TextDecoration.none),
-                  )),
               Expanded(
                 child: GridView(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -54,10 +44,10 @@ class _OrderHistoryState extends State<OrderHistory> {
                               color: Colors.black.withOpacity(0.25),
                               blurRadius: 4,
                               spreadRadius: 0,
-                              offset: Offset(0, 4),
+                              offset: const Offset(0, 4),
                             ),
                           ],
-                          borderRadius: BorderRadius.all(Radius.circular(25)),
+                          borderRadius: const BorderRadius.all(Radius.circular(25)),
                         ),
                         child: Column(children: <Widget>[
                           Row(
@@ -101,10 +91,10 @@ class _OrderHistoryState extends State<OrderHistory> {
                                 margin: const EdgeInsets.only(right: 16),
                                 height: 28,
                                 width: 60,
-                                decoration: const BoxDecoration(
-                                    color: CustomColors.accentColors,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(40))),
+                                decoration: BoxDecoration(
+                                    color: Colors.pink.shade900,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(40))),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
