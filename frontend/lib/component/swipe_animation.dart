@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-const SIDE_MENU_WIDTH = 240.0;
-const MIN_SCALE = 0.5;
-const MAX_SCALE = 1.0;
+
+const sideMenuWidth = 240.0;
+const minScale = 0.5;
+const maxScale = 1.0;
 
 class SwipeAnimation extends StatefulWidget {
   final Widget child;
@@ -32,7 +33,7 @@ class SwipeAnimationState extends State<SwipeAnimation>
     controller = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
     animation =
-        IntTween(begin: 0, end: SIDE_MENU_WIDTH.toInt()).animate(controller)
+        IntTween(begin: 0, end: sideMenuWidth.toInt()).animate(controller)
           ..addListener(() {
             _translateX(animation.value.toDouble());
           });
@@ -44,13 +45,13 @@ class SwipeAnimationState extends State<SwipeAnimation>
     double scale = 0;
     if (swipingLeft) {
       // To hide the menu, when user swipes back/left
-      scaleFactor = ((SIDE_MENU_WIDTH - lastX) / SIDE_MENU_WIDTH) + 0.3;
-      scale = scaleFactor < MIN_SCALE ? MIN_SCALE : scaleFactor;
-      scale = scale > MAX_SCALE ? MAX_SCALE : scale;
+      scaleFactor = ((sideMenuWidth - lastX) / sideMenuWidth) + 0.3;
+      scale = scaleFactor < minScale ? minScale : scaleFactor;
+      scale = scale > maxScale ? maxScale : scale;
     } else {
       // To show the menu, when user swipes right/forward
-      scaleFactor = (SIDE_MENU_WIDTH - lastX) / SIDE_MENU_WIDTH;
-      scale = scaleFactor < MIN_SCALE ? MIN_SCALE : scaleFactor;
+      scaleFactor = (sideMenuWidth - lastX) / sideMenuWidth;
+      scale = scaleFactor < minScale ? minScale : scaleFactor;
     }
 
     return GestureDetector(
@@ -60,7 +61,7 @@ class SwipeAnimationState extends State<SwipeAnimation>
       },
       onHorizontalDragUpdate: (details) {
         lastX = (details.globalPosition.dx);
-        if (lastX <= SIDE_MENU_WIDTH) {
+        if (lastX <= sideMenuWidth) {
           swipingLeft = lastX < initialX;
           if (!swipingLeft) {
             lastX = lastX / 2;
@@ -74,18 +75,18 @@ class SwipeAnimationState extends State<SwipeAnimation>
       },
       onHorizontalDragEnd: (details) {
         if (swipingLeft) {
-          if (lastX > SIDE_MENU_WIDTH) {
+          if (lastX > sideMenuWidth) {
             // Do nothing
-          } else if (initialX - lastX < SIDE_MENU_WIDTH / 4) {
-            _translateX(SIDE_MENU_WIDTH);
+          } else if (initialX - lastX < sideMenuWidth / 4) {
+            _translateX(sideMenuWidth);
           } else {
             _resetPosition(200);
           }
         } else {
-          if (lastX > SIDE_MENU_WIDTH) {
+          if (lastX > sideMenuWidth) {
             // Do nothing
-          } else if (lastX - initialX > (SIDE_MENU_WIDTH / 4)) {
-            _translateX(SIDE_MENU_WIDTH);
+          } else if (lastX - initialX > (sideMenuWidth / 4)) {
+            _translateX(sideMenuWidth);
           } else {
             _resetPosition(200);
           }
@@ -110,7 +111,7 @@ class SwipeAnimationState extends State<SwipeAnimation>
     });
   }
 
-  void hideNavigationDrawer([double dx = SIDE_MENU_WIDTH]) {
+  void hideNavigationDrawer([double dx = sideMenuWidth]) {
     controller.reverse(from: dx);
   }
 
@@ -120,12 +121,12 @@ class SwipeAnimationState extends State<SwipeAnimation>
 
   void _translateX(double dx) {
     setState(() {
-      this.lastX = dx;
+      lastX = dx;
     });
 
     if (lastX == 0.0) {
       widget.navigationDrawerOpened(false);
-    } else if (lastX >= SIDE_MENU_WIDTH) {
+    } else if (lastX >= sideMenuWidth) {
       widget.navigationDrawerOpened(true);
     }
   }

@@ -407,20 +407,19 @@ class _ListItem extends State<ListItem> {
     int max = 250;
     rnd = Random();
     var r = min + rnd.nextInt(max - min);
-    String Url = 'https://picsum.photos/250?image=' + r.toString();
+    String url = 'https://picsum.photos/250?image=' + r.toString();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ClipRRect(
             borderRadius: BorderRadius.circular(25.0),
             child:
-                Image.network(Url, width: 120, height: 120, fit: BoxFit.fill)),
+                Image.network(url, width: 120, height: 120, fit: BoxFit.fill)),
       ],
     );
   }
 
   Text buildItemNameText() {
-    crossAxisAlignment:
     CrossAxisAlignment.start;
     return Text(widget.item.name,
         textAlign: TextAlign.left,
@@ -432,7 +431,6 @@ class _ListItem extends State<ListItem> {
   }
 
   Text buildCategoryText() {
-    crossAxisAlignment:
     CrossAxisAlignment.start;
     return Text(widget.item.category,
         textAlign: TextAlign.left,
