@@ -1,8 +1,11 @@
 // ignore_for_file: sized_box_for_whitespace
 // It is easier for type check to pass if we just use containers
 
+import 'dart:math';
+
 import 'package:csi5112_frontend/dataModal/item.dart';
 import 'package:csi5112_frontend/dataModal/user.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
@@ -11,6 +14,7 @@ import 'package:printing/printing.dart';
 
 import '../component/app_bar.dart';
 import '../component/centered_text.dart';
+import '../component/theme_data.dart';
 
 class ItemList extends StatefulWidget {
   static const routeName = '/dashboard';
@@ -22,7 +26,6 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   final items = Item.getDefaultFakeData();
-
   // states
   Map<Item, int> selectedItems = {};
   int perPage = 10;
@@ -68,18 +71,21 @@ class _ItemListState extends State<ItemList> {
         : screenWidth >= 800
             ? 2
             : 1;
-    return Scaffold(
-        appBar: DefaultAppBar.getAppBar(context),
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Column(
-            children: [
-              buildHeader(),
-              Expanded(flex: 7, child: buildItemListGridView(countWidth)),
-              Expanded(flex: 1, child: buildFooter())
-            ],
-          ),
-        ));
+    return MaterialApp(
+      home: Scaffold(
+          backgroundColor: Color(0xffE5E5E5),
+          appBar: DefaultAppBar.getAppBar(context),
+          body: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: Column(
+              children: [
+                buildHeader(),
+                Expanded(flex: 7, child: buildItemListGridView(countWidth)),
+                Expanded(flex: 1, child: buildFooter())
+              ],
+            ),
+          )),
+    );
   }
 
   Row buildFooter() {
@@ -137,7 +143,7 @@ class _ItemListState extends State<ItemList> {
     return Text(isInvoice ? getInvoiceHeaderText() : 'Buy what you want!',
         style: GoogleFonts.poppins(
           textStyle: const TextStyle(
-              color: Color(0xff525151),
+              color: CustomColors.textColorPrimary,
               fontSize: 24,
               fontWeight: FontWeight.w800,
               decoration: TextDecoration.none),
@@ -314,8 +320,6 @@ class ListItem extends StatefulWidget {
 }
 
 class _ListItem extends State<ListItem> {
-
-
   @override
   Widget build(BuildContext context) {
     return buildCard(context);
@@ -327,12 +331,12 @@ class _ListItem extends State<ListItem> {
       margin: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
       width: 480,
       decoration: const BoxDecoration(
-          color: Color(0xff1E273C),
+          color: CustomColors.cardColor,
           borderRadius: BorderRadius.all(Radius.circular(25))),
       child: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.only(left: 12, top: 16, right: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -350,14 +354,24 @@ class _ListItem extends State<ListItem> {
 
   Column buildCardRightSide(int count) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        buildPriceText(),
-        Container(
-          height: 14,
-          width: 14,
-        ),
-        buildCountEditRow(count)
+        buildItemNameText(),
+        buildCategoryText(),
+        detailText(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            buildPriceText(),
+            Row(
+              children: [
+                buildCountEditRow(count)
+
+                //buildCountEditRow(count),
+              ],
+            ),
+          ],
+        )
       ],
     );
   }
@@ -366,17 +380,13 @@ class _ListItem extends State<ListItem> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Expanded(
-            child: count != 0 && !widget.isReviewStage && !widget.isInvoice
-                ? buildMinusButton()
-                : Container(
-                    width: 6,
-                  )),
+        count != 0 && !widget.isReviewStage && !widget.isInvoice
+            ? buildMinusButton()
+            : Container(),
         buildCountTextLabel(),
-        Expanded(
-            child: !widget.isReviewStage && !widget.isInvoice
-                ? buildPlusIconButton()
-                : Container())
+        !widget.isReviewStage && !widget.isInvoice
+            ? buildPlusIconButton()
+            : Container()
       ],
     );
   }
@@ -386,7 +396,8 @@ class _ListItem extends State<ListItem> {
       widget.item.price.toStringAsFixed(2),
       textAlign: TextAlign.left,
       style: GoogleFonts.poppins(
-          textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
+          textStyle: const TextStyle(
+              color: CustomColors.textColorPrimary, fontSize: 16),
           fontWeight: FontWeight.w700,
           decoration: TextDecoration.none),
       // price format X.XX
@@ -394,38 +405,43 @@ class _ListItem extends State<ListItem> {
   }
 
   Column buildCardLeftSide(BuildContext context) {
+    Random rnd;
+    int min = 0;
+    int max = 250;
+    rnd = new Random();
+    var r = min + rnd.nextInt(max - min);
+    String Url = 'https://picsum.photos/250?image=' + r.toString();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        buildCategoryText(),
-        Container(
-          height: 14,
-          width: 14,
-        ),
-        buildItemNameText(),
-        Container(
-          height: 20,
-          width: 14,
-        ),
-        buildDetailsButton(context),
+        ClipRRect(
+            borderRadius: BorderRadius.circular(25.0),
+            child:
+                Image.network(Url, width: 120, height: 120, fit: BoxFit.fill)),
       ],
     );
   }
 
   Text buildItemNameText() {
+    crossAxisAlignment:
+    CrossAxisAlignment.start;
     return Text(widget.item.name,
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
         style: GoogleFonts.poppins(
-            textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
+            textStyle: const TextStyle(
+                color: CustomColors.textColorPrimary, fontSize: 20),
             fontWeight: FontWeight.w700,
             decoration: TextDecoration.none));
   }
 
   Text buildCategoryText() {
+    crossAxisAlignment:
+    CrossAxisAlignment.start;
     return Text(widget.item.category,
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
         style: GoogleFonts.poppins(
-            textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 10),
+            textStyle: const TextStyle(
+                color: CustomColors.textColorSecondary, fontSize: 8),
             fontWeight: FontWeight.w500,
             decoration: TextDecoration.none));
   }
@@ -436,10 +452,8 @@ class _ListItem extends State<ListItem> {
               widget.updateTotal(widget.item.price);
               widget.updateItemCount(widget.item, 1);
             }),
-        icon: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ));
+        icon: const Icon(Icons.add_circle,
+            color: CustomColors.accentColors, size: 30.0));
   }
 
   Widget buildCountTextLabel() {
@@ -447,7 +461,8 @@ class _ListItem extends State<ListItem> {
       widget.getItemCount(widget.item).toString(),
       textAlign: TextAlign.left,
       style: GoogleFonts.poppins(
-          textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
+          textStyle: const TextStyle(
+              color: CustomColors.textColorPrimary, fontSize: 16),
           fontWeight: FontWeight.w700,
           decoration: TextDecoration.none),
     );
@@ -460,9 +475,22 @@ class _ListItem extends State<ListItem> {
               widget.updateItemCount(widget.item, -1);
             }),
         icon: const Icon(
-          Icons.remove,
-          color: Colors.white,
+          Icons.remove_circle,
+          color: CustomColors.accentColors,
+          size: 30.0,
         ));
+  }
+
+  Widget detailText() {
+    return Text(
+      widget.item.description,
+      textAlign: TextAlign.left,
+      style: GoogleFonts.poppins(
+          textStyle: const TextStyle(
+              color: CustomColors.textColorSecondary, fontSize: 8),
+          fontWeight: FontWeight.w500,
+          decoration: TextDecoration.none),
+    );
   }
 
   Container buildDetailsButton(BuildContext context) {
@@ -488,11 +516,13 @@ Widget itemDetail(BuildContext context, Item item) {
   return AlertDialog(
     backgroundColor: const Color(0xff525151),
     contentTextStyle: GoogleFonts.poppins(
-        textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
+        textStyle:
+            const TextStyle(color: CustomColors.textColorPrimary, fontSize: 16),
         fontWeight: FontWeight.w500,
         decoration: TextDecoration.none),
     titleTextStyle: GoogleFonts.poppins(
-        textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
+        textStyle:
+            const TextStyle(color: CustomColors.textColorPrimary, fontSize: 16),
         fontWeight: FontWeight.w500,
         decoration: TextDecoration.none),
     title: Text(item.category),

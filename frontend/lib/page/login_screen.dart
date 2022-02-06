@@ -1,3 +1,4 @@
+import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
@@ -154,8 +155,8 @@ class _LoginScreentState extends State<LoginScreen> {
         primaryColor: Colors.teal,
         accentColor: Colors.yellow,
         errorColor: Colors.deepOrange,
-        pageColorLight: Colors.pink.shade900,
-        pageColorDark: Colors.pink.shade900,
+        pageColorLight: CustomColors.accentColors,
+        pageColorDark: CustomColors.accentColors,
         logoWidth: 0.80,
         titleStyle: const TextStyle(
             color: Colors.greenAccent,
