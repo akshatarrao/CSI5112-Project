@@ -60,6 +60,7 @@ class _AnswerPageState extends State<AnswerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(),
         body: ListView.builder(
             itemCount: answers.length + 2,
             itemBuilder: (BuildContext context, int index) {
