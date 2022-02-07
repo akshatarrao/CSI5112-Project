@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:csi5112_frontend/dataModal/model.dart';
+import 'package:flutter/material.dart';
 
 class SideMenu extends StatefulWidget {
   final Function(int) _onMenuItemSelection;
@@ -55,12 +54,14 @@ class _SideMenuState extends State<SideMenu> {
                             ),
                           ],
                         ),
-                        onTap: () {
-                          widget._onMenuItemSelection(index);
-                          setState(() {
-                            _currentPage = index;
-                          });
-                        },
+                        onTap: _currentPage == index
+                            ? () {}
+                            : () {
+                                widget._onMenuItemSelection(index);
+                                setState(() {
+                                  _currentPage = index;
+                                });
+                              },
                       ),
                     );
                   },

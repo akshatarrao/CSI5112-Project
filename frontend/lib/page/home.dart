@@ -1,28 +1,39 @@
+import 'package:after_layout/after_layout.dart';
+import 'package:csi5112_frontend/dataModal/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:csi5112_frontend/dataModal/model.dart';
+
 import '../component/side_menu.dart';
 import '../component/swipe_animation.dart';
 import 'discussion_forum.dart';
 import 'item_list.dart';
 import 'order_history.dart';
 
+// The state values are not intended to be final
+//ignore: must_be_immutable
 class MyHomePage extends StatefulWidget {
   static const routeName = '/home';
-  const MyHomePage({Key? key}) : super(key: key);
+  Widget? redirected;
+
+  MyHomePage({Key? key, this.redirected}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AfterLayoutMixin<MyHomePage> {
   int currentPage = 0;
   late Animation<double> animation;
   late AnimationController controller;
   bool isNavigationDrawerOpened = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   GlobalKey<SwipeAnimationState> swipeAnimationKey = GlobalKey();
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    widget.redirected = null;
+  }
 
   @override
   void initState() {
@@ -82,8 +93,9 @@ class _MyHomePageState extends State<MyHomePage>
                   color: Colors.pink.shade900,
                   height: double.infinity,
                   width: double.infinity,
-                  child:
-                      Center(child: _getbody(context, menuItems[currentPage])),
+                  child: Center(
+                      child: widget.redirected ??
+                          _getbody(context, menuItems[currentPage])),
                 ),
               ),
             )
@@ -96,13 +108,13 @@ class _MyHomePageState extends State<MyHomePage>
   Widget _getbody(BuildContext context, MenuItem menuItem) {
     switch (menuItem.menuName) {
       case 'Item List':
-        return const ItemList();
+        return ItemList.getDefaultEmptyPage();
       case 'Order History':
         return const OrderHistory();
       case 'Discussion forum':
         return const DiscussionForum();
       default:
-        return const ItemList();
+        return ItemList.getDefaultEmptyPage();
     }
   }
 }
