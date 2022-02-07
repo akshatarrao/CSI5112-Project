@@ -1,3 +1,4 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:csi5112_frontend/dataModal/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +9,8 @@ import 'discussion_forum.dart';
 import 'item_list.dart';
 import 'order_history.dart';
 
+// The state values are not intended to be final
+//ignore: must_be_immutable
 class MyHomePage extends StatefulWidget {
   static const routeName = '/home';
   Widget? redirected;
@@ -19,13 +22,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AfterLayoutMixin<MyHomePage> {
   int currentPage = 0;
   late Animation<double> animation;
   late AnimationController controller;
   bool isNavigationDrawerOpened = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   GlobalKey<SwipeAnimationState> swipeAnimationKey = GlobalKey();
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    widget.redirected = null;
+  }
 
   @override
   void initState() {

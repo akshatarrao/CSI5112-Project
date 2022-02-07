@@ -15,6 +15,8 @@ import 'package:printing/printing.dart';
 import '../component/centered_text.dart';
 import '../component/theme_data.dart';
 
+// The state values are not intended to be final
+//ignore: must_be_immutable
 class ItemList extends StatefulWidget {
   static const routeName = '/itemlist';
   Map<Item, int> selectedItems;
@@ -41,6 +43,8 @@ class ItemList extends StatefulWidget {
 
   static ItemList getDefaultEmptyPage() {
     return ItemList(
+      // {} is changing
+      //ignore: prefer_const_literals_to_create_immutables
       selectedItems: {},
       total: 0,
       isInvoice: false,
@@ -335,7 +339,7 @@ class _ItemListState extends State<ItemList> {
 }
 
 class ListItem extends StatefulWidget {
-  ListItem(
+  const ListItem(
       {Key? key,
       required this.item,
       required this.updateTotal,
