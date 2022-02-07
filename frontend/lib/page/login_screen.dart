@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart' show timeDilation;
-import 'package:flutter_login/flutter_login.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:csi5112_frontend/page/home.dart';
 import 'package:csi5112_frontend/util/constants.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
 import 'package:csi5112_frontend/util/users.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show timeDilation;
+import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -22,8 +22,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreentState extends State<LoginScreen> {
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
+  bool bypassLogin = true;
+
   Future<String?> _loginUser(LoginData data, bool isSwitched) {
     return Future.delayed(loginTime).then((_) {
+      if (bypassLogin) {
+        return null;
+      }
       if (!mockUsers.containsKey(data.name)) {
         return 'User not exists';
       }
@@ -64,95 +69,111 @@ class _LoginScreentState extends State<LoginScreen> {
         UserFormField(keyName: 'Surname'),
       ],
       initialAuthMode: AuthMode.login,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 450.0),
-          child: FlutterSwitch(
-            width: 130.0,
-            height: 45.0,
-            valueFontSize: 16.0,
-            toggleSize: 20.0,
-            value: isSwitched,
-            borderRadius: 30.0,
-            padding: 15.0,
-            showOnOff: true,
-            activeText: "Merchant",
-            inactiveText: "Customer",
-            inactiveColor: Colors.blue,
-            activeColor: Colors.red,
-            activeTextFontWeight: FontWeight.bold,
-            inactiveTextFontWeight: FontWeight.bold,
-            onToggle: (val) {
-              setState(() {
-                isSwitched = val;
-              });
-            },
-          ),
-        ),
-        Container(
-            margin: const EdgeInsets.only(bottom: 500.0, left: 50),
-            alignment: Alignment.topLeft,
-            child: SizedBox(
-              width: 300.0,
-              child: isDesktop(context) == true
-                  ? DefaultTextStyle(
-                      style: GoogleFonts.oswald(
-                        textStyle: Theme.of(context).textTheme.headline4,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      child: AnimatedTextKit(
-                        animatedTexts: [
-                          RotateAnimatedText('Sell your products online with'),
-                          RotateAnimatedText('unbeatable reach'),
-                          RotateAnimatedText('Stress-free delivery'),
-                          RotateAnimatedText(
-                              'to your customer\'s doorstep 24/7, from'),
-                          ColorizeAnimatedText(
-                            'House of eGro',
-                            textStyle: GoogleFonts.oswald(
-                              textStyle: Theme.of(context).textTheme.headline4,
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                            colors: [
-                              Colors.purple,
-                              Colors.blue,
-                              Colors.yellow,
-                              Colors.red,
-                            ],
-                          ),
-                        ],
-                        onTap: () {},
-                      ),
-                    )
-                  : Container(),
-            )),
-        Container(
-            margin: const EdgeInsets.only(bottom: 500.0),
-            alignment: Alignment.topCenter,
-            child: SizedBox(
-              width: 280.0,
-              child: DefaultTextStyle(
-                style: GoogleFonts.oswald(
-                  textStyle: Theme.of(context).textTheme.headline4,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                child: TextLiquidFill(
-                  text: 'eGro',
-                  waveColor: Colors.orange.shade900,
-                  boxBackgroundColor: Colors.pink.shade900,
-                  textStyle: const TextStyle(
-                    fontSize: 80.0,
-                    fontWeight: FontWeight.bold,
+      children: bypassLogin
+          ? <Widget>[
+              ElevatedButton(
+                child: const Text('Bypass Login'),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(FadePageRoute(
+                    builder: (context) => MyHomePage(),
+                    settings: const RouteSettings(name: '/home'),
+                  ));
+                },
+              )
+            ]
+          : <Widget>[] +
+              [
+                Container(
+                  margin: const EdgeInsets.only(top: 450.0),
+                  child: FlutterSwitch(
+                    width: 130.0,
+                    height: 45.0,
+                    valueFontSize: 16.0,
+                    toggleSize: 20.0,
+                    value: isSwitched,
+                    borderRadius: 30.0,
+                    padding: 15.0,
+                    showOnOff: true,
+                    activeText: "Merchant",
+                    inactiveText: "Customer",
+                    inactiveColor: Colors.blue,
+                    activeColor: Colors.red,
+                    activeTextFontWeight: FontWeight.bold,
+                    inactiveTextFontWeight: FontWeight.bold,
+                    onToggle: (val) {
+                      setState(() {
+                        isSwitched = val;
+                      });
+                    },
                   ),
-                  boxHeight: 180.0,
                 ),
-              ),
+                Container(
+                    margin: const EdgeInsets.only(bottom: 500.0, left: 50),
+                    alignment: Alignment.topLeft,
+                    child: SizedBox(
+                      width: 300.0,
+                      child: isDesktop(context) == true
+                          ? DefaultTextStyle(
+                              style: GoogleFonts.oswald(
+                                textStyle:
+                                    Theme.of(context).textTheme.headline4,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              child: AnimatedTextKit(
+                                animatedTexts: [
+                                  RotateAnimatedText(
+                                      'Sell your products online with'),
+                                  RotateAnimatedText('unbeatable reach'),
+                                  RotateAnimatedText('Stress-free delivery'),
+                                  RotateAnimatedText(
+                                      'to your customer\'s doorstep 24/7, from'),
+                                  ColorizeAnimatedText(
+                                    'House of eGro',
+                                    textStyle: GoogleFonts.oswald(
+                                      textStyle:
+                                          Theme.of(context).textTheme.headline4,
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                    colors: [
+                                      Colors.purple,
+                                      Colors.blue,
+                                      Colors.yellow,
+                                      Colors.red,
+                                    ],
+                                  ),
+                                ],
+                                onTap: () {},
+                              ),
+                            )
+                          : Container(),
+                    )),
+                Container(
+                    margin: const EdgeInsets.only(bottom: 500.0),
+                    alignment: Alignment.topCenter,
+                    child: SizedBox(
+                      width: 280.0,
+                      child: DefaultTextStyle(
+                        style: GoogleFonts.oswald(
+                          textStyle: Theme.of(context).textTheme.headline4,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        child: TextLiquidFill(
+                          text: 'eGro',
+                          waveColor: Colors.orange.shade900,
+                          boxBackgroundColor: Colors.pink.shade900,
+                          textStyle: const TextStyle(
+                            fontSize: 80.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          boxHeight: 180.0,
+                        ),
+                      ),
             )),
       ],
       theme: LoginTheme(
@@ -210,12 +231,18 @@ class _LoginScreentState extends State<LoginScreen> {
 
       // ),
       userValidator: (value) {
+        if (bypassLogin) {
+          return null;
+        }
         if (!value!.contains('@') || !value.endsWith('.com')) {
           return "Email must contain '@' and end with '.com'";
         }
         return null;
       },
       passwordValidator: (value) {
+        if (bypassLogin) {
+          return null;
+        }
         if (value!.isEmpty) {
           return 'Password is empty';
         }
@@ -246,7 +273,7 @@ class _LoginScreentState extends State<LoginScreen> {
       },
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => const MyHomePage(),
+          builder: (context) => MyHomePage(),
           settings: const RouteSettings(name: '/home'),
         ));
       },

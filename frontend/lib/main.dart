@@ -3,7 +3,6 @@ import 'package:csi5112_frontend/page/item_list.dart';
 import 'package:csi5112_frontend/page/login_screen.dart';
 import 'package:csi5112_frontend/page/transition_route_observer.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter/services.dart';
 
 void main() {
@@ -61,8 +60,8 @@ class MyApp extends StatelessWidget {
       initialRoute: LoginScreen.routeName,
       routes: {
         LoginScreen.routeName: (context) => const LoginScreen(),
-        ItemList.routeName: (context) => const ItemList(),
-        MyHomePage.routeName: (context) => const MyHomePage(),
+        ItemList.routeName: (context) => ItemList.getDefaultEmptyPage(),
+        MyHomePage.routeName: (context) => MyHomePage(),
       },
     );
   }
