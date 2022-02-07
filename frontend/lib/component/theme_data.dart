@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomColors {
-  static Color primaryTextColor = Colors.white;
 //static Color unpaidLabel= Color(0xff);
-  static Color paidLabel = Color(0xff);
+  static const Color paidLabel = Color(0xffffffff);
 //static Color unpaidText=Color(0xff);
-  static Color paidText = Color(0xff);
+  static const Color paidText = Color(0xff040105);
+  static const Color cardColor = Color(0xffffffff);
+  static const Color textColorPrimary = Color(0xff000000);
+  static const Color textColorSecondary = Color(0xff514E4E);
+  static const Color accentColors = Color(0xff8F011B);
 }

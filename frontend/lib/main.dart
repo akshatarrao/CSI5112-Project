@@ -1,7 +1,17 @@
-import 'package:csi5112_frontend/page/welcome.dart';
+import 'package:csi5112_frontend/page/login_screen.dart';
+import 'package:csi5112_frontend/page/transition_route_observer.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter/services.dart';
+
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor:
+          SystemUiOverlayStyle.dark.systemNavigationBarColor,
+    ),
+  );
+
   runApp(const MyApp());
 }
 
@@ -14,9 +24,42 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'CSI 5112',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        textSelectionTheme:
+            const TextSelectionThemeData(cursorColor: Colors.orange),
+        textTheme: TextTheme(
+          headline3: const TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 45.0,
+            color: Colors.orange,
+          ),
+          button: const TextStyle(
+            fontFamily: 'OpenSans',
+          ),
+          caption: TextStyle(
+            fontFamily: 'NotoSans',
+            fontSize: 12.0,
+            fontWeight: FontWeight.normal,
+            color: Colors.deepPurple[300],
+          ),
+          headline1: const TextStyle(fontFamily: 'Quicksand'),
+          headline2: const TextStyle(fontFamily: 'Quicksand'),
+          headline4: const TextStyle(fontFamily: 'Quicksand'),
+          headline5: const TextStyle(fontFamily: 'NotoSans'),
+          headline6: const TextStyle(fontFamily: 'NotoSans'),
+          subtitle1: const TextStyle(fontFamily: 'NotoSans'),
+          bodyText1: const TextStyle(fontFamily: 'NotoSans'),
+          bodyText2: const TextStyle(fontFamily: 'NotoSans'),
+          subtitle2: const TextStyle(fontFamily: 'NotoSans'),
+          overline: const TextStyle(fontFamily: 'NotoSans'),
+        ),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple)
+            .copyWith(secondary: Colors.orange),
       ),
-      home: const Welcome(),
+      navigatorObservers: [TransitionRouteObserver()],
+      initialRoute: LoginScreen.routeName,
+      routes: {
+        LoginScreen.routeName: (context) => const LoginScreen(),
+      },
     );
   }
 }

@@ -9,17 +9,20 @@ jobs:
       - name: Install and set Flutter version
         uses: subosito/flutter-action@v2.2.1
         with:
-          flutter-version: '2.8.1'
+          flutter-version: '2.10.0'
       - name: Restore packages
         working-directory: ./frontend
         run: flutter pub get
       - name: Analyze
         run: flutter analyze
         working-directory: ./frontend
+      - name: Hack to get full coverage
+        run: ./frontend/coverage_helper_script.sh csi5112_frontend
+        shell: bash
       - name: Run tests
         run: flutter test --coverage
         working-directory: ./frontend
       - name: Upload coverage to codecov
-        run: curl -s https://codecov.io/bash
-        working-directory: ./frontend
-        shell: bash
+        uses: codecov/codecov-action@v2
+        with:
+          files: ./frontend//coverage/lcov.info
