@@ -12,59 +12,90 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-import '../component/app_bar.dart';
 import '../component/centered_text.dart';
 import '../component/theme_data.dart';
 
+// The state values are not intended to be final
+//ignore: must_be_immutable
 class ItemList extends StatefulWidget {
-  static const routeName = '/dashboard';
-  const ItemList({Key? key}) : super(key: key);
+  static const routeName = '/itemlist';
+  Map<Item, int> selectedItems;
+
+  double total;
+  bool isInvoice;
+  User user;
+  DateTime invoiceTime;
+  String orderId;
+
+  // It is unfortunate that we have to input lots of optional data, but nullable check is just impossible to deal with in a clean way
+  ItemList(
+      {Key? key,
+      required this.selectedItems,
+      required this.total,
+      required this.isInvoice,
+      required this.user,
+      required this.invoiceTime,
+      required this.orderId})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ItemListState();
+
+  static ItemList getDefaultEmptyPage() {
+    return ItemList(
+      // {} is changing
+      //ignore: prefer_const_literals_to_create_immutables
+      selectedItems: {},
+      total: 0,
+      isInvoice: false,
+      user: User.getRandomUser(),
+      invoiceTime: DateTime.fromMillisecondsSinceEpoch(0),
+      orderId: "",
+    );
+  }
 }
 
 class _ItemListState extends State<ItemList> {
   final items = Item.getDefaultFakeData();
   // states
-  Map<Item, int> selectedItems = {};
+
   int perPage = 10;
-  double total = 0;
   bool isReviewStage = false;
   bool isRevisit = false;
-  bool isInvoice = false;
-  User user = User.getRandomUser();
-  DateTime? invoiceTime;
 
   updateItemCount(Item item, int delta) {
     setState(() {
-      if (selectedItems.containsKey(item)) {
+      if (widget.selectedItems.containsKey(item)) {
         // ?? 0 is only for type check
-        selectedItems[item] = (selectedItems[item] ?? 0) + delta;
+        widget.selectedItems[item] = (widget.selectedItems[item] ?? 0) + delta;
       } else {
-        selectedItems[item] = delta;
+        widget.selectedItems[item] = delta;
       }
     });
   }
 
   getItemCount(Item item) {
-    return selectedItems.containsKey(item) ? selectedItems[item] : 0;
+    return widget.selectedItems.containsKey(item)
+        ? widget.selectedItems[item]
+        : 0;
   }
 
   updateTotal(double delta) {
     setState(() {
-      total = total + delta;
+      widget.total = widget.total + delta;
     });
   }
 
   Map<Item, int> getMinSelectedItems() {
     // If a user switch the count from X to 0, we do not want to display them at checkout and invoice
-    selectedItems.removeWhere((key, value) => value == 0);
-    return selectedItems;
+    widget.selectedItems.removeWhere((key, value) => value == 0);
+    return widget.selectedItems;
   }
 
   @override
   Widget build(BuildContext context) {
+    widget.selectedItems = widget.selectedItems;
+    widget.user = widget.user;
     final screenWidth = MediaQuery.of(context).size.width;
     int countWidth = screenWidth >= 1600
         ? 4
@@ -73,8 +104,7 @@ class _ItemListState extends State<ItemList> {
             : 1;
     return MaterialApp(
       home: Scaffold(
-          backgroundColor: Color(0xffE5E5E5),
-          appBar: DefaultAppBar.getAppBar(context),
+          backgroundColor: const Color(0xffE5E5E5),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Column(
@@ -90,13 +120,6 @@ class _ItemListState extends State<ItemList> {
 
   Row buildFooter() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Center(
-        // This button can only be shown on the first selecting page
-        child: perPage < items.length && (!isReviewStage && !isInvoice)
-            ? buildLoadButton()
-            // Empty placeholder to prevent itemList change grid
-            : buildLoadButtonPlaceholder(),
-      ),
       Container(
         width: 20,
       ),
@@ -107,7 +130,7 @@ class _ItemListState extends State<ItemList> {
       // Show buttons at different stage
       isReviewStage
           ? Row(children: [buildGoBackButton(), buildConfirmButton()])
-          : isInvoice
+          : widget.isInvoice
               ? buildPrintButton()
               : buildReviewButton()
     ]);
@@ -119,28 +142,39 @@ class _ItemListState extends State<ItemList> {
             crossAxisCount: countWidth, childAspectRatio: 1.9),
         children:
             // if the user is not actively selecting items, we just display what they already selected
-            (isReviewStage || isInvoice
-                    ? getMinSelectedItems().keys.toList()
-                    : items)
-                .sublist(
-                    0,
-                    isReviewStage || isInvoice
-                        ? getMinSelectedItems().length
-                        : perPage)
-                .map<Widget>((item) {
-          return ListItem(
-              item: item,
-              // Passing some of the parent functions/fields so children can read state and notify parent for state update
-              updateTotal: updateTotal,
-              isReviewStage: isReviewStage,
-              isInvoice: isInvoice,
-              getItemCount: getItemCount,
-              updateItemCount: updateItemCount);
-        }).toList());
+            (isReviewStage || widget.isInvoice
+                        ? getMinSelectedItems().keys.toList()
+                        : items)
+                    .sublist(
+                        0,
+                        isReviewStage || widget.isInvoice
+                            ? getMinSelectedItems().length
+                            : perPage)
+                    .map<Widget>((item) {
+                  return ListItem(
+                      item: item,
+                      // Passing some of the parent functions/fields so children can read state and notify parent for state update
+                      updateTotal: updateTotal,
+                      isReviewStage: isReviewStage,
+                      isInvoice: widget.isInvoice,
+                      getItemCount: getItemCount,
+                      updateItemCount: updateItemCount);
+                }).toList() +
+                [
+                  Center(
+                    // This button can only be shown on the first selecting page
+                    child: perPage < items.length &&
+                            (!isReviewStage && !widget.isInvoice)
+                        ? buildLoadButton()
+                        // Empty placeholder to prevent itemList change grid
+                        : buildLoadButtonPlaceholder(),
+                  ),
+                ]);
   }
 
   Text buildHeader() {
-    return Text(isInvoice ? getInvoiceHeaderText() : 'Buy what you want!',
+    return Text(
+        widget.isInvoice ? getInvoiceHeaderText() : 'Buy what you want!',
         style: GoogleFonts.poppins(
           textStyle: const TextStyle(
               color: CustomColors.textColorPrimary,
@@ -151,7 +185,14 @@ class _ItemListState extends State<ItemList> {
   }
 
   String getInvoiceHeaderText() =>
-      "User: " + user.name + "   " + "Time: " + invoiceTime.toString();
+      "User: " +
+      widget.user.name +
+      "\n" +
+      "Time: " +
+      widget.invoiceTime.toString() +
+      "\n" +
+      "Order ID: " +
+      widget.orderId;
 
   Container buildPrintButton() {
     // Unfortunately Chrome cannot print the webpage as it is because there is no DOM
@@ -200,7 +241,7 @@ class _ItemListState extends State<ItemList> {
                     printableItemChildren +
                     [
                       pw.Container(height: 20),
-                      pw.Text("Total: " + total.toStringAsFixed(2))
+                      pw.Text("Total: " + widget.total.toStringAsFixed(2))
                     ]),
           ); // Center
         }));
@@ -217,9 +258,10 @@ class _ItemListState extends State<ItemList> {
             primary: Colors.blueGrey, shadowColor: Colors.white),
         onPressed: () {
           setState(() {
-            isInvoice = true;
+            widget.isInvoice = true;
             isReviewStage = false;
-            invoiceTime = DateTime.now();
+            widget.invoiceTime = DateTime.now();
+            widget.orderId = Faker().guid.guid();
           });
         },
         child: CenteredText.getCenteredText("Confirm"),
@@ -269,7 +311,7 @@ class _ItemListState extends State<ItemList> {
   }
 
   Center buildTotalText() {
-    return Center(child: Text("Total: " + total.toStringAsFixed(2)));
+    return Center(child: Text("Total: " + widget.total.toStringAsFixed(2)));
   }
 
   Container buildLoadButtonPlaceholder() {
@@ -320,6 +362,9 @@ class ListItem extends StatefulWidget {
 }
 
 class _ListItem extends State<ListItem> {
+  String imageUrl =
+      'https://picsum.photos/250?image=' + Random().nextInt(250).toString();
+
   @override
   Widget build(BuildContext context) {
     return buildCard(context);
@@ -338,13 +383,13 @@ class _ListItem extends State<ListItem> {
           Padding(
               padding: const EdgeInsets.only(left: 12, top: 16, right: 8),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Expanded(
                     flex: 4,
                     child: buildCardLeftSide(context),
                   ),
-                  Expanded(flex: 5, child: buildCardRightSide(count))
+                  Expanded(flex: 5, child: buildCardRightSide(count, context))
                 ],
               ))
         ],
@@ -352,23 +397,19 @@ class _ListItem extends State<ListItem> {
     );
   }
 
-  Column buildCardRightSide(int count) {
+  Column buildCardRightSide(int count, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildItemNameText(),
         buildCategoryText(),
-        detailText(),
+        buildDetailsButton(context),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             buildPriceText(),
             Row(
-              children: [
-                buildCountEditRow(count)
-
-                //buildCountEditRow(count),
-              ],
+              children: [buildCountEditRow(count)],
             ),
           ],
         )
@@ -380,13 +421,13 @@ class _ListItem extends State<ListItem> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        count != 0 && !widget.isReviewStage && !widget.isInvoice
-            ? buildMinusButton()
-            : Container(),
+        !widget.isReviewStage && !widget.isInvoice
+            ? buildMinusButton(true)
+            : buildMinusButton(false),
         buildCountTextLabel(),
         !widget.isReviewStage && !widget.isInvoice
-            ? buildPlusIconButton()
-            : Container()
+            ? buildPlusIconButton(true)
+            : buildPlusIconButton(false)
       ],
     );
   }
@@ -405,25 +446,20 @@ class _ListItem extends State<ListItem> {
   }
 
   Column buildCardLeftSide(BuildContext context) {
-    Random rnd;
-    int min = 0;
-    int max = 250;
-    rnd = new Random();
-    var r = min + rnd.nextInt(max - min);
-    String Url = 'https://picsum.photos/250?image=' + r.toString();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        ClipRRect(
-            borderRadius: BorderRadius.circular(25.0),
-            child:
-                Image.network(Url, width: 120, height: 120, fit: BoxFit.fill)),
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(25.0),
+              child: Image.network(imageUrl, fit: BoxFit.fill)),
+        ),
       ],
     );
   }
 
   Text buildItemNameText() {
-    crossAxisAlignment:
     CrossAxisAlignment.start;
     return Text(widget.item.name,
         textAlign: TextAlign.left,
@@ -435,7 +471,6 @@ class _ListItem extends State<ListItem> {
   }
 
   Text buildCategoryText() {
-    crossAxisAlignment:
     CrossAxisAlignment.start;
     return Text(widget.item.category,
         textAlign: TextAlign.left,
@@ -446,14 +481,21 @@ class _ListItem extends State<ListItem> {
             decoration: TextDecoration.none));
   }
 
-  IconButton buildPlusIconButton() {
-    return IconButton(
-        onPressed: () => setState(() {
-              widget.updateTotal(widget.item.price);
-              widget.updateItemCount(widget.item, 1);
-            }),
-        icon: const Icon(Icons.add_circle,
-            color: CustomColors.accentColors, size: 30.0));
+  Visibility buildPlusIconButton(bool visible) {
+    return Visibility(
+        visible: visible,
+        maintainSize: true,
+        maintainAnimation: true,
+        maintainState: true,
+        child: IconButton(
+            onPressed: () => setState(() {
+                  if (visible) {
+                    widget.updateTotal(widget.item.price);
+                    widget.updateItemCount(widget.item, 1);
+                  }
+                }),
+            icon: Icon(Icons.add_circle,
+                color: Colors.pink.shade900, size: 30.0)));
   }
 
   Widget buildCountTextLabel() {
@@ -468,17 +510,24 @@ class _ListItem extends State<ListItem> {
     );
   }
 
-  IconButton buildMinusButton() {
-    return IconButton(
-        onPressed: () => setState(() {
-              widget.updateTotal(0 - widget.item.price);
-              widget.updateItemCount(widget.item, -1);
-            }),
-        icon: const Icon(
-          Icons.remove_circle,
-          color: CustomColors.accentColors,
-          size: 30.0,
-        ));
+  Visibility buildMinusButton(bool visible) {
+    return Visibility(
+        visible: visible,
+        maintainSize: true,
+        maintainAnimation: true,
+        maintainState: true,
+        child: IconButton(
+            onPressed: () => setState(() {
+                  if (visible) {
+                    widget.updateTotal(0 - widget.item.price);
+                    widget.updateItemCount(widget.item, -1);
+                  }
+                }),
+            icon: Icon(
+              Icons.remove_circle,
+              color: Colors.pink.shade900,
+              size: 30.0,
+            )));
   }
 
   Widget detailText() {
@@ -514,11 +563,11 @@ class _ListItem extends State<ListItem> {
 
 Widget itemDetail(BuildContext context, Item item) {
   return AlertDialog(
-    backgroundColor: const Color(0xff525151),
+    backgroundColor: CustomColors.cardColor,
     contentTextStyle: GoogleFonts.poppins(
         textStyle:
-            const TextStyle(color: CustomColors.textColorPrimary, fontSize: 16),
-        fontWeight: FontWeight.w500,
+            const TextStyle(color: CustomColors.textColorPrimary, fontSize: 20),
+        fontWeight: FontWeight.w700,
         decoration: TextDecoration.none),
     titleTextStyle: GoogleFonts.poppins(
         textStyle:
@@ -530,11 +579,11 @@ Widget itemDetail(BuildContext context, Item item) {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        CenteredText.getCenteredText(item.name),
+        Text(item.name),
         const Text(" "),
         Text(item.description),
         const Text(" "),
-        CenteredText.getCenteredText(item.price.toStringAsFixed(2))
+        Text(item.price.toStringAsFixed(2))
       ],
     ),
     actions: <Widget>[
@@ -552,14 +601,11 @@ Widget itemDetail(BuildContext context, Item item) {
 
 Widget emptyCartErrorPopup(BuildContext context) {
   return AlertDialog(
-    backgroundColor: const Color(0xff525151),
-    contentTextStyle: GoogleFonts.poppins(
-        textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
-        fontWeight: FontWeight.w500,
-        decoration: TextDecoration.none),
+    backgroundColor: CustomColors.cardColor,
     titleTextStyle: GoogleFonts.poppins(
-        textStyle: const TextStyle(color: Color(0xffffffff), fontSize: 16),
-        fontWeight: FontWeight.w500,
+        textStyle:
+            const TextStyle(color: CustomColors.textColorPrimary, fontSize: 16),
+        fontWeight: FontWeight.w700,
         decoration: TextDecoration.none),
     title: const Text("Please select at least one item"),
     actions: <Widget>[
