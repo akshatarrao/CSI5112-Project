@@ -1,1 +1,3 @@
 .idea/
+frontend/ios/Flutter/Debug.xcconfig
+frontend/ios/Runner.xcodeproj/project.pbxproj
