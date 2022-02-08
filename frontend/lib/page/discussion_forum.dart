@@ -69,8 +69,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
                               size: 14,
                             ),
                             const Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 18, left: 0)),
+                                padding: EdgeInsets.only(top: 18, left: 0)),
                             Text(" " + questions[index].replies.toString(),
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
