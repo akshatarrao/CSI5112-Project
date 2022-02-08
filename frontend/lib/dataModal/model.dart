@@ -23,6 +23,10 @@ List<MenuItem> menuItems = [
     menuName: 'Discussion forum',
     menuIcon: Icons.message,
   ),
+  const MenuItem(
+    menuName: 'Seller Home',
+    menuIcon: Icons.inventory,
+  ),
 ];
 
 Map<int, Color> color = {
