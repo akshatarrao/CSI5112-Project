@@ -1,4 +1,3 @@
-import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:csi5112_frontend/dataModal/question.dart';
 import 'package:csi5112_frontend/page/answer_page.dart';
@@ -58,24 +57,24 @@ class _DiscussionForumState extends State<DiscussionForum> {
                       icon: Container(
                         height: 30,
                         width: 60,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Color(0xffD9F3E3),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(40))),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Icon(
+                            const Icon(
                               Icons.message,
                               size: 14,
                             ),
-                            Padding(
+                            const Padding(
                                 padding:
                                     const EdgeInsets.only(top: 18, left: 0)),
                             Text(" " + questions[index].replies.toString(),
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                         color: Color(0xff40C075), fontSize: 14),
                                     fontWeight: FontWeight.w500,
                                     decoration: TextDecoration.none)),
