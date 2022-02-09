@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage>
       case 'Discussion forum':
         return const DiscussionForum();
       case 'Seller Home':
-        return SellerHome();
+        return const SellerHome();
       default:
         return const AddItem();
     }
