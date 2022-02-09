@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage>
       case 'Seller Home':
         return const SellerHome();
       default:
-        return const AddItem();
+        return ItemList.getDefaultEmptyPage();
     }
   }
 }
