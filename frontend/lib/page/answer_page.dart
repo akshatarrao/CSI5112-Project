@@ -12,10 +12,10 @@ class AnswerPage extends StatefulWidget {
 
 class _AnswerPageState extends State<AnswerPage> {
   static List<Question> questions = [
-    Question(0, "Question 0", "Description 0", "UserA", "Feb2020"),
-    Question(1, "Question 1", "Description 1", "UserA", "Feb2020"),
-    Question(2, "Question 2", "Description 2", "UserB", "Feb2020"),
-    Question(3, "Question 3", "Description 3", "UserA", "Feb2020"),
+    Question(0, "Question 0", "Description 0", "A", "Feb2020", 0),
+    Question(1, "Question 1", "Description 1", "A", "Feb2020", 3),
+    Question(2, "Question 2", "Description 2", "UserB", "Feb2020", 3),
+    Question(3, "Question 3", "Description 3", "UserA", "Feb2020", 0),
   ];
 
   static List<Answer> answers = [
@@ -60,6 +60,7 @@ class _AnswerPageState extends State<AnswerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(),
         body: ListView.builder(
             itemCount: answers.length + 2,
             itemBuilder: (BuildContext context, int index) {
@@ -70,28 +71,11 @@ class _AnswerPageState extends State<AnswerPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       ListTile(
-                        title: TextButton(
-                          child: Text(questions[widget.questionID].title),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AnswerPage(
-                                      questions[widget.questionID].id)),
-                            );
-                          },
+                        title: const Text('Question'),
+                        subtitle: Text(
+                          questions[widget.questionID].title,
                         ),
-                        subtitle:
-                            Text(questions[widget.questionID].description),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Text(questions[widget.questionID].user),
-                          const SizedBox(width: 10),
-                          Text(questions[widget.questionID].date)
-                        ],
-                      )
                     ],
                   ),
                 );
@@ -103,6 +87,7 @@ class _AnswerPageState extends State<AnswerPage> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Add Reply...',
+                    suffixIcon: (Icon(Icons.send)),
                   ),
                 );
               } else if (widget.questionID == answers[index].questionID) {

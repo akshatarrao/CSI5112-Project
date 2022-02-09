@@ -1,5 +1,7 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:csi5112_frontend/dataModal/model.dart';
+import 'package:csi5112_frontend/page/add_item.dart';
+import 'package:csi5112_frontend/page/seller_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -107,14 +109,16 @@ class _MyHomePageState extends State<MyHomePage>
 
   Widget _getbody(BuildContext context, MenuItem menuItem) {
     switch (menuItem.menuName) {
-      case 'Item List':
+      case 'Items List':
         return ItemList.getDefaultEmptyPage();
       case 'Order History':
         return const OrderHistory();
       case 'Discussion forum':
         return const DiscussionForum();
+      case 'Seller Home':
+        return const SellerHome();
       default:
-        return ItemList.getDefaultEmptyPage();
+        return const AddItem();
     }
   }
 }

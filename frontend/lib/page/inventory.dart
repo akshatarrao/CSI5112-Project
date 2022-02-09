@@ -1,32 +1,32 @@
+import 'package:csi5112_frontend/dataModal/inventory_model.dart';
+import 'package:csi5112_frontend/page/edit_item.dart';
 import 'package:flutter/material.dart';
-import 'package:csi5112_frontend/dataModal/question.dart';
-import 'package:csi5112_frontend/page/answer_page.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:avatars/avatars.dart';
 
 //import 'package:flutter_initicon/flutter_initicon.dart';
 
-class DiscussionForum extends StatefulWidget {
-  const DiscussionForum({Key? key}) : super(key: key);
+class Inventory extends StatefulWidget {
+  const Inventory({Key? key}) : super(key: key);
 
   @override
-  State<DiscussionForum> createState() => _DiscussionForumState();
+  State<Inventory> createState() => _InventoryState();
 }
 
-class _DiscussionForumState extends State<DiscussionForum> {
-  static List<Question> questions = [
-    Question(0, "Question 0", "Description 0", "A", "Feb2020", 0),
-    Question(1, "Question 1", "Description 1", "A", "Feb2020", 3),
-    Question(2, "Question 2", "Description 2", "UserB", "Feb2020", 3),
-    Question(3, "Question 3", "Description 3", "UserA", "Feb2020", 0),
+class _InventoryState extends State<Inventory> {
+  static List<InventoryModel> inventory = [
+    InventoryModel("123", "Product 1", "Electronics", "A", 3),
+    InventoryModel("456", "Product 2", "Footwear", "A", 4),
+    InventoryModel("dsf32", "Product 3", "Clothes", "A", 12),
+    InventoryModel("342rfe", "Product 4", "Smartphones", "A", 33),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color(0xffE5E5E5),
         body: ListView.builder(
-            itemCount: questions.length + 1,
+            itemCount: inventory.length + 1,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return const TextField(
@@ -43,17 +43,13 @@ class _DiscussionForumState extends State<DiscussionForum> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              AnswerPage(questions[index].id)),
+                          builder: (context) => EditItem(inventory[index].id)),
                     );
                   },
                   child: Card(
                     child: GFListTile(
-                      titleText: questions[index].title,
-                      subTitleText: questions[index].description,
-                      avatar: Avatar(
-                          name: questions[index].user,
-                          shape: AvatarShape.circle(16)),
+                      titleText: inventory[index].product,
+                      subTitleText: inventory[index].category,
                       icon: Container(
                         height: 30,
                         width: 60,
@@ -65,12 +61,12 @@ class _DiscussionForumState extends State<DiscussionForum> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             const Icon(
-                              Icons.message,
+                              Icons.inventory,
                               size: 14,
                             ),
                             const Padding(
                                 padding: EdgeInsets.only(top: 18, left: 0)),
-                            Text(" " + questions[index].replies.toString(),
+                            Text(" " + inventory[index].stock.toString(),
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
