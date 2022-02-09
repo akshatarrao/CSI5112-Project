@@ -24,17 +24,31 @@ class _LoginScreentState extends State<LoginScreen> {
 
   bool bypassLogin = false;
 
-  Future<String?> _loginUser(LoginData data, bool isSwitched) {
+  Future<String?> _loginUser(LoginData data, bool isCustomer) {
     return Future.delayed(loginTime).then((_) {
       if (bypassLogin) {
         return null;
       }
-      if (!mockUsers.containsKey(data.name)) {
-        return 'User not exists';
+
+      // if it is a customer login, veryify against the MockUsers
+      if (isCustomer) {
+        if (!mockUsers.containsKey(data.name)) {
+          return 'Customer does not exist';
+        }
+        if (mockUsers[data.name] != data.password) {
+          return 'Password does not match';
+        }
       }
-      if (mockUsers[data.name] != data.password) {
-        return 'Password does not match';
+      // if it is a Merchant Login, verify against the MockMerchants
+      else {
+        if (!mockMerchants.containsKey(data.name)) {
+          return 'Merchant does not exist';
+        }
+        if (mockMerchants[data.name] != data.password) {
+          return 'Password does not match';
+        }
       }
+
       return null;
     });
   }
@@ -54,7 +68,7 @@ class _LoginScreentState extends State<LoginScreen> {
   static bool isDesktop(BuildContext context) =>
       MediaQuery.of(context).size.width >= 1200;
 
-  bool isSwitched = false;
+  bool isCustomer = true;
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
@@ -90,19 +104,19 @@ class _LoginScreentState extends State<LoginScreen> {
                     height: 45.0,
                     valueFontSize: 16.0,
                     toggleSize: 20.0,
-                    value: isSwitched,
+                    value: isCustomer,
                     borderRadius: 30.0,
                     padding: 15.0,
                     showOnOff: true,
-                    activeText: "Merchant",
-                    inactiveText: "Customer",
+                    activeText: "Customer",
+                    inactiveText: "Merchant",
                     inactiveColor: Colors.blue,
                     activeColor: Colors.red,
                     activeTextFontWeight: FontWeight.bold,
                     inactiveTextFontWeight: FontWeight.bold,
                     onToggle: (val) {
                       setState(() {
-                        isSwitched = val;
+                        isCustomer = val;
                       });
                     },
                   ),
@@ -174,8 +188,8 @@ class _LoginScreentState extends State<LoginScreen> {
                           boxHeight: 180.0,
                         ),
                       ),
-            )),
-      ],
+                    )),
+              ],
       theme: LoginTheme(
         primaryColor: Colors.teal,
         accentColor: Colors.yellow,
@@ -252,7 +266,7 @@ class _LoginScreentState extends State<LoginScreen> {
         debugPrint('Login info');
         debugPrint('Name: ${loginData.name}');
         debugPrint('Password: ${loginData.password}');
-        return _loginUser(loginData, isSwitched);
+        return _loginUser(loginData, isCustomer);
       },
       onSignup: (signupData) {
         debugPrint('Signup info');
@@ -272,10 +286,20 @@ class _LoginScreentState extends State<LoginScreen> {
         return _signupUser(signupData);
       },
       onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(FadePageRoute(
-          builder: (context) => MyHomePage(),
-          settings: const RouteSettings(name: '/home'),
-        ));
+        // if isCustomer == true, then redirect to home else redirect to seller page
+        if (isCustomer) {
+          debugPrint('Customer login');
+          Navigator.of(context).pushReplacement(FadePageRoute(
+            builder: (context) => MyHomePage(),
+            settings: const RouteSettings(name: '/home'),
+          ));
+        } else {
+          debugPrint('Merchant login');
+          Navigator.of(context).pushReplacement(FadePageRoute(
+            builder: (context) => MyHomePage(),
+            settings: const RouteSettings(name: '/home'),
+          ));
+        }
       },
       hideForgotPasswordButton: true,
       onRecoverPassword: (name) {
