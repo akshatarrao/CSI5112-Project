@@ -1,10 +1,8 @@
 // Copyright 2020, the Flutter project authors. Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
-import 'dart:ffi';
-import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:flutter/services.dart';
 
 //import 'package:image_picker/image_picker.dart';
@@ -38,7 +36,7 @@ class _AddItemState extends State<AddItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SizedBox(
+        title: const SizedBox(
           height: 30,
           child: Text("Add Item"),
         ),
@@ -149,13 +147,13 @@ class _AddItemState extends State<AddItem> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             FloatingActionButton(
-                              child: Icon(Icons.arrow_back),
+                              child: const Icon(Icons.arrow_back),
                               backgroundColor: Colors.green,
                               foregroundColor: Colors.white,
                               onPressed: () => {Navigator.pop(context)},
                             ),
                             FloatingActionButton(
-                              child: Icon(Icons.check),
+                              child: const Icon(Icons.check),
                               backgroundColor: Colors.green,
                               foregroundColor: Colors.white,
                               onPressed: () => {},

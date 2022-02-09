@@ -1,5 +1,4 @@
 import 'package:csi5112_frontend/page/add_item.dart';
-import 'package:csi5112_frontend/page/discussion_forum.dart';
 import 'package:csi5112_frontend/page/inventory.dart';
 import 'package:csi5112_frontend/page/order_history.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,7 @@ import 'package:flutter/material.dart';
 class SellerHome extends StatefulWidget {
   final String? header;
 
-  SellerHome({Key? key, this.header}) : super(key: key);
+  const SellerHome({Key? key, this.header}) : super(key: key);
 
   @override
   _SellerHome createState() => _SellerHome();
@@ -75,117 +74,115 @@ class _SellerHome extends State<SellerHome> {
                   top: MediaQuery.of(context).size.height * .27,
                   right: 20.0,
                   left: 20.0),
-              child: Container(
-                child: GridView(
-                  primary: false,
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 2.5),
-                  ),
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Inventory()));
-                      },
-                      child: Card(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(
-                                  2.0,
-                                  5.0,
-                                ),
-                                blurRadius: 10.0,
-                                spreadRadius: 1.0,
-                              ),
-                              BoxShadow(
-                                color: Colors.white,
-                                offset: Offset(0.0, 0.0),
-                                blurRadius: 0.0,
-                                spreadRadius: 0.0,
-                              ),
-                            ],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.only(
-                              top: 30, left: 25, right: 20),
-                          child: Column(
-                            children: const [
-                              Icon(Icons.inventory, size: 48.0),
-                              Text(
-                                "Inventory",
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.w500),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => OrderHistory()));
-                      },
-                      child: Card(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.grey,
-                                offset: Offset(
-                                  2.0,
-                                  2.0,
-                                ),
-                                blurRadius: 10.0,
-                                spreadRadius: 1.0,
-                              ), //BoxShadow
-                              BoxShadow(
-                                color: Colors.white,
-                                offset: Offset(0.0, 0.0),
-                                blurRadius: 0.0,
-                                spreadRadius: 0.0,
-                              ), //BoxShadow
-                            ],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.only(
-                              top: 30, left: 25, right: 20),
-                          child: Column(
-                            children: const [
-                              Icon(Icons.task, size: 48.0),
-                              Text(
-                                "Orders",
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.w500),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              child: GridView(
+                primary: false,
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: MediaQuery.of(context).size.width /
+                      (MediaQuery.of(context).size.height / 2.5),
                 ),
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const Inventory()));
+                    },
+                    child: Card(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(
+                                2.0,
+                                5.0,
+                              ),
+                              blurRadius: 10.0,
+                              spreadRadius: 1.0,
+                            ),
+                            BoxShadow(
+                              color: Colors.white,
+                              offset: Offset(0.0, 0.0),
+                              blurRadius: 0.0,
+                              spreadRadius: 0.0,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding:
+                            const EdgeInsets.only(top: 30, left: 25, right: 20),
+                        child: Column(
+                          children: const [
+                            Icon(Icons.inventory, size: 48.0),
+                            Text(
+                              "Inventory",
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const OrderHistory()));
+                    },
+                    child: Card(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(
+                                2.0,
+                                2.0,
+                              ),
+                              blurRadius: 10.0,
+                              spreadRadius: 1.0,
+                            ), //BoxShadow
+                            BoxShadow(
+                              color: Colors.white,
+                              offset: Offset(0.0, 0.0),
+                              blurRadius: 0.0,
+                              spreadRadius: 0.0,
+                            ), //BoxShadow
+                          ],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding:
+                            const EdgeInsets.only(top: 30, left: 25, right: 20),
+                        child: Column(
+                          children: const [
+                            Icon(Icons.task, size: 48.0),
+                            Text(
+                              "Orders",
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Container(
               margin: const EdgeInsets.only(
                   top: 620, bottom: 8, left: 0, right: 20),
               child: FloatingActionButton(
-                child: Icon(Icons.add),
+                child: const Icon(Icons.add),
                 backgroundColor: Colors.green,
                 foregroundColor: Colors.white,
                 onPressed: () => {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => AddItem()))
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const AddItem()))
                 },
               ),
-              alignment: Alignment(1.0, 1.0),
+              alignment: const Alignment(1.0, 1.0),
             )
           ],
         ),

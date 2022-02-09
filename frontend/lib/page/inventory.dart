@@ -1,11 +1,9 @@
 import 'package:csi5112_frontend/dataModal/inventoryModel.dart';
 import 'package:csi5112_frontend/page/edit_item.dart';
 import 'package:flutter/material.dart';
-import 'package:csi5112_frontend/dataModal/question.dart';
-import 'package:csi5112_frontend/page/answer_page.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:avatars/avatars.dart';
 
 //import 'package:flutter_initicon/flutter_initicon.dart';
 
