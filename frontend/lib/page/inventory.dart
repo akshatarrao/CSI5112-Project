@@ -1,4 +1,4 @@
-import 'package:csi5112_frontend/dataModal/inventory_model.dart';
+import 'package:csi5112_frontend/dataModel/inventory_model.dart';
 import 'package:csi5112_frontend/page/edit_item.dart';
 import 'package:flutter/material.dart';
 
