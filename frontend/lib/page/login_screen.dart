@@ -171,14 +171,14 @@ class _LoginScreentState extends State<LoginScreen> {
                 Container(
                     margin: const EdgeInsets.only(bottom: 500.0),
                     alignment: Alignment.topCenter,
-                    child: SizedBox(
+                    child: const SizedBox(
                       width: 280.0,
-                      child: Icon(iconLogo.group_2,
+                      child: Icon(IconLogo.group_2,
                           size: 100, color: Colors.white),
                     )),
               ],
       theme: LoginTheme(
-        primaryColor: Colors.teal,
+        primaryColor: const Color.fromARGB(255, 20, 24, 23),
         accentColor: Colors.yellow,
         errorColor: Colors.deepOrange,
         pageColorLight: Colors.pink.shade900,

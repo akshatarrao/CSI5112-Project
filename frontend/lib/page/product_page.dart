@@ -5,7 +5,6 @@ import 'package:csi5112_frontend/dataModel/product_page_model.dart';
 import 'package:csi5112_frontend/page/edit_item.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
@@ -18,7 +17,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final f = DateFormat('yMMMd');
+    // final f = DateFormat('yMMMd');
     String imageUrl =
         'https://picsum.photos/250?image=' + Random().nextInt(250).toString();
 
@@ -140,7 +139,7 @@ class _ProductPageState extends State<ProductPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Container(
+                                              SizedBox(
                                                   height: 40,
                                                   width: 100,
                                                   child: ElevatedButton(
@@ -194,7 +193,7 @@ class _ProductPageState extends State<ProductPage> {
           fontWeight: FontWeight.w500,
           decoration: TextDecoration.none),
       title: Text("Edit " + product.product),
-      content: EditItem(),
+      content: const EditItem(),
       actions: <Widget>[
         ElevatedButton(
           style: ElevatedButton.styleFrom(
