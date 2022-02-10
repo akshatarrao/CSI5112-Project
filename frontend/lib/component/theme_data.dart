@@ -19,6 +19,11 @@ class CustomText {
                                         color: CustomColors.textColorPrimary, fontSize: 20),
                                     fontWeight: FontWeight.w700,
                                     decoration: TextDecoration.none);
+  static TextStyle textSubTitle = GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                        color: CustomColors.textColorPrimary, fontSize: 16),
+                                    fontWeight: FontWeight.w600,
+                                    decoration: TextDecoration.none);
   static TextStyle textDescription = GoogleFonts.poppins(
                                         textStyle: const TextStyle(
                                             color: CustomColors.textColorSecondary, fontSize: 12),

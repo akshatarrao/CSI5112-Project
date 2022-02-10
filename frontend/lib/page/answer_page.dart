@@ -75,23 +75,25 @@ class _AnswerPageState extends State<AnswerPage> {
                   ),
                 );
               } else if (widget.questionID == answers[index].questionID) {
+                // Card class template: https://api.flutter.dev/flutter/material/Card-class.html
                 return Card(
-                  // Card class template: https://api.flutter.dev/flutter/material/Card-class.html
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       ListTile(
-                        title: const Text('Answer'),
-                        subtitle: Text(answers[index].answer),
+                        title: Text("Reply By: " + answers[index].user,
+                                      style: CustomText.textSubTitle),
+                        subtitle: Text(answers[index].answer,
+                                      style: CustomText.textDescription),
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,          
                         children: <Widget>[
-                          Text(answers[index].user),
+                          Text(answers[index].date.toString().substring(0,19)),
                           const SizedBox(width: 10),
-                          Text(answers[index].date)
                         ],
-                      )
+                      ),
+                      Row(children: const [SizedBox(height: 10)],)
                     ],
                   ),
                 );
