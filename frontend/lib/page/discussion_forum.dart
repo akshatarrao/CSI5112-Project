@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:avatars/avatars.dart';
 import 'package:csi5112_frontend/data.dart';
 import 'package:csi5112_frontend/page/answer_page.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:avatars/avatars.dart';
-import '../component/theme_data.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-//import 'package:flutter_initicon/flutter_initicon.dart';
+import '../component/theme_data.dart';
 
 class DiscussionForum extends StatefulWidget {
   const DiscussionForum({Key? key}) : super(key: key);

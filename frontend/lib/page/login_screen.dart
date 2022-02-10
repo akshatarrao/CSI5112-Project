@@ -1,6 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:csi5112_frontend/component/theme_data.dart';
-import 'package:csi5112_frontend/page/home.dart';
+import 'package:csi5112_frontend/page/customer_home.dart';
 import 'package:csi5112_frontend/util/constants.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
 import 'package:csi5112_frontend/util/users.dart';
@@ -11,7 +11,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'merchant_dashboard.dart';
+import 'merchant_home.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/auth';
@@ -26,6 +26,7 @@ class _LoginScreentState extends State<LoginScreen> {
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
   bool bypassLogin = false;
+  bool bypassCustomer = false;
 
   Future<String?> _loginUser(LoginData data, bool isCustomer) {
     return Future.delayed(loginTime).then((_) {
@@ -92,8 +93,10 @@ class _LoginScreentState extends State<LoginScreen> {
                 child: const Text('Bypass Login'),
                 onPressed: () {
                   Navigator.of(context).pushReplacement(FadePageRoute(
-                    builder: (context) => MyHomePage(),
-                    settings: const RouteSettings(name: '/home'),
+                    builder: (context) =>
+                        bypassCustomer ? MyHomePage() : MerchantPage(),
+                    settings: RouteSettings(
+                        name: bypassCustomer ? '/home' : '/merchant'),
                   ));
                 },
               )
@@ -284,7 +287,7 @@ class _LoginScreentState extends State<LoginScreen> {
           debugPrint('Merchant login');
           Navigator.of(context).pushReplacement(FadePageRoute(
             builder: (context) => MerchantPage(),
-            settings: const RouteSettings(name: '/merchant/dashboard'),
+            settings: const RouteSettings(name: '/merchant'),
           ));
         }
       },

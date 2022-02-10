@@ -27,7 +27,7 @@ List<MenuItem> cutomerMenuItems = [
 
 List<MenuItem> merchantMenuItems = [
   const MenuItem(
-    menuName: 'Home',
+    menuName: "Item Setup",
     menuIcon: Icons.inventory,
   ),
   const MenuItem(

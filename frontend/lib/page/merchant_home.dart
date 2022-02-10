@@ -1,6 +1,6 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:csi5112_frontend/dataModel/model.dart';
-import 'package:csi5112_frontend/page/seller_home.dart';
+import 'package:csi5112_frontend/page/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,7 +12,7 @@ import 'order_history.dart';
 // The state values are not intended to be final
 //ignore: must_be_immutable
 class MerchantPage extends StatefulWidget {
-  static const routeName = '/merchant/dashboard';
+  static const routeName = '/merchant';
   Widget? redirected;
 
   MerchantPage({Key? key, this.redirected}) : super(key: key);
@@ -112,10 +112,10 @@ class _MerchantPageState extends State<MerchantPage>
         return const OrderHistory();
       case 'Discussion forum':
         return const DiscussionForum();
-      case 'Home':
-        return const SellerHome();
+      case 'Modify Items':
+        return ProductPage();
       default:
-        return const SellerHome();
+        return ProductPage();
     }
   }
 }

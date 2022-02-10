@@ -1,7 +1,6 @@
 // ignore_for_file: sized_box_for_whitespace
 // It is easier for type check to pass if we just use containers
 
-import 'dart:math';
 
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
@@ -362,8 +361,6 @@ class ListItem extends StatefulWidget {
 }
 
 class _ListItem extends State<ListItem> {
-  String imageUrl =
-      'https://picsum.photos/250?image=' + Random().nextInt(250).toString();
 
   @override
   Widget build(BuildContext context) {
@@ -453,7 +450,7 @@ class _ListItem extends State<ListItem> {
           padding: const EdgeInsets.all(20),
           child: ClipRRect(
               borderRadius: BorderRadius.circular(25.0),
-              child: Image.network(imageUrl, fit: BoxFit.fill)),
+              child: Image.network(widget.item.imageUrl, fit: BoxFit.fill)),
         ),
       ],
     );
