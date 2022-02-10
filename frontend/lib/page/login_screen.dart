@@ -11,6 +11,8 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'merchant_dashboard.dart';
+
 class LoginScreen extends StatefulWidget {
   static const routeName = '/auth';
 
@@ -281,8 +283,8 @@ class _LoginScreentState extends State<LoginScreen> {
         } else {
           debugPrint('Merchant login');
           Navigator.of(context).pushReplacement(FadePageRoute(
-            builder: (context) => MyHomePage(),
-            settings: const RouteSettings(name: '/home'),
+            builder: (context) => MerchantPage(),
+            settings: const RouteSettings(name: '/merchant/dashboard'),
           ));
         }
       },
