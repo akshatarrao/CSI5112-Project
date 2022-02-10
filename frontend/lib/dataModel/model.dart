@@ -10,7 +10,7 @@ class MenuItem {
   });
 }
 
-List<MenuItem> menuItems = [
+List<MenuItem> cutomerMenuItems = [
   const MenuItem(
     menuName: 'Items List',
     menuIcon: Icons.shopping_bag,
@@ -23,9 +23,20 @@ List<MenuItem> menuItems = [
     menuName: 'Discussion forum',
     menuIcon: Icons.message,
   ),
+];
+
+List<MenuItem> merchantMenuItems = [
   const MenuItem(
-    menuName: 'Seller Home',
+    menuName: 'Home',
     menuIcon: Icons.inventory,
+  ),
+  const MenuItem(
+    menuName: 'Order History',
+    menuIcon: Icons.book,
+  ),
+  const MenuItem(
+    menuName: 'Discussion forum',
+    menuIcon: Icons.message,
   ),
 ];
 

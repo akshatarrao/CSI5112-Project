@@ -11,6 +11,8 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'merchant_dashboard.dart';
+
 class LoginScreen extends StatefulWidget {
   static const routeName = '/auth';
 
@@ -169,14 +171,14 @@ class _LoginScreentState extends State<LoginScreen> {
                 Container(
                     margin: const EdgeInsets.only(bottom: 500.0),
                     alignment: Alignment.topCenter,
-                    child: SizedBox(
+                    child: const SizedBox(
                       width: 280.0,
-                      child: Icon(iconLogo.group_2,
+                      child: Icon(IconLogo.group_2,
                           size: 100, color: Colors.white),
                     )),
               ],
       theme: LoginTheme(
-        primaryColor: Colors.teal,
+        primaryColor: const Color.fromARGB(255, 20, 24, 23),
         accentColor: Colors.yellow,
         errorColor: Colors.deepOrange,
         pageColorLight: Colors.pink.shade900,
@@ -281,8 +283,8 @@ class _LoginScreentState extends State<LoginScreen> {
         } else {
           debugPrint('Merchant login');
           Navigator.of(context).pushReplacement(FadePageRoute(
-            builder: (context) => MyHomePage(),
-            settings: const RouteSettings(name: '/home'),
+            builder: (context) => MerchantPage(),
+            settings: const RouteSettings(name: '/merchant/dashboard'),
           ));
         }
       },

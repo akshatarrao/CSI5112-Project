@@ -31,8 +31,8 @@ class CustomText {
                                     decoration: TextDecoration.none);
 }
 
-class iconLogo {
-  iconLogo._();
+class IconLogo {
+  IconLogo._();
 
   static const _kFontFam = 'MyFlutterApp';
   static const String? _kFontPkg = null;

@@ -1,28 +1,28 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:csi5112_frontend/dataModel/model.dart';
+import 'package:csi5112_frontend/page/seller_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../component/side_menu.dart';
 import '../component/swipe_animation.dart';
 import 'discussion_forum.dart';
-import 'item_list.dart';
 import 'order_history.dart';
 
 // The state values are not intended to be final
 //ignore: must_be_immutable
-class MyHomePage extends StatefulWidget {
-  static const routeName = '/home';
+class MerchantPage extends StatefulWidget {
+  static const routeName = '/merchant/dashboard';
   Widget? redirected;
 
-  MyHomePage({Key? key, this.redirected}) : super(key: key);
+  MerchantPage({Key? key, this.redirected}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MerchantPageState createState() => _MerchantPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin, AfterLayoutMixin<MyHomePage> {
+class _MerchantPageState extends State<MerchantPage>
+    with SingleTickerProviderStateMixin, AfterLayoutMixin<MerchantPage> {
   int currentPage = 0;
   late Animation<double> animation;
   late AnimationController controller;
@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage>
                   currentPage = pageIndex;
                 });
               },
-              menuItems: cutomerMenuItems,
+              menuItems: merchantMenuItems,
             ),
             SwipeAnimation(
               key: swipeAnimationKey,
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage>
                       }
                     },
                   ),
-                  title: Text(cutomerMenuItems[currentPage].menuName),
+                  title: Text(merchantMenuItems[currentPage].menuName),
                   systemOverlayStyle: SystemUiOverlayStyle.light,
                 ),
                 body: Container(
@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage>
                   width: double.infinity,
                   child: Center(
                       child: widget.redirected ??
-                          _getbody(context, cutomerMenuItems[currentPage])),
+                          _getbody(context, merchantMenuItems[currentPage])),
                 ),
               ),
             )
@@ -108,14 +108,14 @@ class _MyHomePageState extends State<MyHomePage>
 
   Widget _getbody(BuildContext context, MenuItem menuItem) {
     switch (menuItem.menuName) {
-      case 'Items List':
-        return ItemList.getDefaultEmptyPage();
       case 'Order History':
         return const OrderHistory();
       case 'Discussion forum':
         return const DiscussionForum();
+      case 'Home':
+        return const SellerHome();
       default:
-        return ItemList.getDefaultEmptyPage();
+        return const SellerHome();
     }
   }
 }

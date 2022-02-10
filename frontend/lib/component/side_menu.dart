@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 
 class SideMenu extends StatefulWidget {
   final Function(int) _onMenuItemSelection;
+  final List<MenuItem> _menuItems;
 
-  const SideMenu({Key? key, required Function(int) onMenuItemSelection})
+  const SideMenu(
+      {Key? key,
+      required Function(int) onMenuItemSelection,
+      required List<MenuItem> menuItems})
       : _onMenuItemSelection = onMenuItemSelection,
+        _menuItems = menuItems,
         super(key: key);
 
   @override
@@ -37,14 +42,14 @@ class _SideMenuState extends State<SideMenu> {
                         child: Row(
                           children: <Widget>[
                             Icon(
-                              menuItems[index].menuIcon,
+                              widget._menuItems[index].menuIcon,
                               color: index == _currentPage
                                   ? Colors.pink.shade900
                                   : Colors.black,
                             ),
                             const SizedBox(width: 16),
                             Text(
-                              menuItems[index].menuName,
+                              widget._menuItems[index].menuName,
                               style: TextStyle(
                                 color: index == _currentPage
                                     ? Colors.pink.shade900
@@ -65,7 +70,7 @@ class _SideMenuState extends State<SideMenu> {
                       ),
                     );
                   },
-                  itemCount: menuItems.length,
+                  itemCount: widget._menuItems.length,
                 ),
                 const SizedBox(height: 16),
               ],
