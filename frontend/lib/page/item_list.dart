@@ -5,6 +5,7 @@
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:faker/faker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
@@ -108,6 +109,9 @@ class _ItemListState extends State<ItemList> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Column(
               children: [
+                CupertinoSearchTextField(
+                  onChanged: (value) {},
+                ),
                 buildHeader(),
                 Expanded(flex: 7, child: buildItemListGridView(countWidth)),
                 Expanded(flex: 1, child: buildFooter())
@@ -201,7 +205,9 @@ class _ItemListState extends State<ItemList> {
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: Colors.blueGrey, shadowColor: Colors.white),
+            primary: Color(0xff161616),
+            shadowColor: Colors.white,
+            shape: StadiumBorder()),
         onPressed: () async {
           Map<Item, int> itemList = getMinSelectedItems();
           List<pw.Text> printableItemChildren = [];
@@ -254,7 +260,9 @@ class _ItemListState extends State<ItemList> {
       padding: const EdgeInsets.all(20),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: Colors.blueGrey, shadowColor: Colors.white),
+            primary: Color(0xff161616),
+            shadowColor: Colors.white,
+            shape: StadiumBorder()),
         onPressed: () {
           setState(() {
             widget.isInvoice = true;
@@ -275,7 +283,9 @@ class _ItemListState extends State<ItemList> {
         height: 90,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: Colors.blueGrey, shadowColor: Colors.white),
+                primary: Color(0xff161616),
+                shadowColor: Colors.white,
+                shape: StadiumBorder()),
             onPressed: () {
               setState(() {
                 isRevisit = true;
@@ -291,7 +301,9 @@ class _ItemListState extends State<ItemList> {
         width: 120,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.blueGrey, shadowColor: Colors.white),
+              primary: Color(0xff161616),
+              shadowColor: Colors.white,
+              shape: StadiumBorder()),
           onPressed: () {
             // Guard against zero item cart
             if (getMinSelectedItems().isNotEmpty) {
@@ -326,7 +338,9 @@ class _ItemListState extends State<ItemList> {
         width: 120,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.blueGrey, shadowColor: Colors.white),
+              primary: Colors.blueGrey,
+              shadowColor: Colors.white,
+              shape: StadiumBorder()),
           child: CenteredText.getCenteredText('Load more...'),
           onPressed: () {
             setState(() {
@@ -399,7 +413,7 @@ class _ListItem extends State<ListItem> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         buildItemNameText(),
-        buildCategoryText(),
+        //buildCategoryText(),
         buildDetailsButton(context),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -473,7 +487,7 @@ class _ListItem extends State<ListItem> {
         textAlign: TextAlign.left,
         style: GoogleFonts.poppins(
             textStyle: const TextStyle(
-                color: CustomColors.textColorSecondary, fontSize: 8),
+                color: CustomColors.textColorSecondary, fontSize: 12),
             fontWeight: FontWeight.w500,
             decoration: TextDecoration.none));
   }
@@ -541,12 +555,14 @@ class _ListItem extends State<ListItem> {
 
   Container buildDetailsButton(BuildContext context) {
     return Container(
-        height: 40,
-        width: 100,
+        height: 30,
+        width: 80,
         child: ElevatedButton(
           child: const Text('Details'),
           style: ElevatedButton.styleFrom(
-              primary: Colors.blueGrey, shadowColor: Colors.white),
+              primary: Color(0xff161616),
+              shadowColor: Colors.white,
+              shape: StadiumBorder()),
           onPressed: () {
             showDialog(
               context: context,
@@ -586,7 +602,7 @@ Widget itemDetail(BuildContext context, Item item) {
     actions: <Widget>[
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: Colors.blueGrey, shadowColor: Colors.white),
+            primary: Color(0xff161616), shadowColor: Colors.white),
         onPressed: () {
           Navigator.of(context).pop();
         },

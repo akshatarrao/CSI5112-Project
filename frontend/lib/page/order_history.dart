@@ -6,6 +6,7 @@ import 'package:csi5112_frontend/util/custom_route.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'customer_home.dart';
 import 'item_list.dart';
@@ -23,6 +24,7 @@ class _OrderHistoryState extends State<OrderHistory> {
     final screenWidth = MediaQuery.of(context).size.width;
     final f = DateFormat('yMMMd');
 
+// Logic to be used for responsive design
     int countWidth = screenWidth >= 1600
         ? 4
         : screenWidth >= 800
@@ -35,6 +37,9 @@ class _OrderHistoryState extends State<OrderHistory> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             children: <Widget>[
+              CupertinoSearchTextField(
+                onChanged: (value) {},
+              ),
               Expanded(
                 child: GridView(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
