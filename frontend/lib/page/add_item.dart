@@ -16,22 +16,13 @@ class AddItem extends StatefulWidget {
 
 class _AddItemState extends State<AddItem> {
   final _formKey = GlobalKey<FormState>();
-  String title = '';
-  String description = '';
-  DateTime date = DateTime.now();
-  double maxValue = 0;
-  bool? brushedTeeth = false;
-  bool enableFeature = false;
-  TextEditingController qualityController = TextEditingController();
-  String? _dropdownvalue;
 
-  var items = [
-    'Groceries',
-    'Clothes',
-    'Electronics',
-    'Footwear',
-    'Smartphones',
-  ];
+  String name = "";
+  double price = 0;
+  String category = "";
+  String description = "";
+  String imageUrl = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +54,7 @@ class _AddItemState extends State<AddItem> {
                           ),
                           onChanged: (value) {
                             setState(() {
-                              title = value;
+                              name = value;
                             });
                           },
                         ),
@@ -77,7 +68,7 @@ class _AddItemState extends State<AddItem> {
                           ],
                           onChanged: (value) {
                             setState(() {
-                              title = value;
+                              price = double.parse(value);
                             });
                           },
                         ),
@@ -92,56 +83,27 @@ class _AddItemState extends State<AddItem> {
                           },
                           maxLines: 5,
                         ),
-                        DropdownButton(
-                          value: _dropdownvalue,
-                          isExpanded: true,
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          hint: const Text("Category"),
-                          items: items.map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(items),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            hintText: 'Enter Category...',
+                            labelText: 'Category',
+                          ),
+                          onChanged: (value) {
                             setState(() {
-                              _dropdownvalue = newValue!;
+                              category = value;
                             });
                           },
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text('Discount',
-                                style: Theme.of(context).textTheme.bodyText1),
-                            Switch(
-                              value: enableFeature,
-                              onChanged: (enabled) {
-                                setState(() {
-                                  enableFeature = enabled;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        Visibility(
-                          visible: enableFeature,
-                          child: TextFormField(
-                            decoration: const InputDecoration(
-                              hintText: 'Enter Discounted Price...',
-                              labelText: 'Discounted Price',
-                            ),
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.allow(
-                                  RegExp(r'[0-9]')),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                title = value;
-                              });
-                            },
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            hintText: 'Enter image URL...',
+                            labelText: 'Image URL',
                           ),
+                          onChanged: (value) {
+                            setState(() {
+                              imageUrl = value;
+                            });
+                          },
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,14 +1,12 @@
-class InventoryModel {
+class ProductPageModel {
   String id;
   String product;
   String category;
-  String seller;
-  int stock;
-  InventoryModel(
+  int price;
+  ProductPageModel(
     this.id,
     this.product,
     this.category,
-    this.seller,
-    this.stock,
+    this.price,
   );
 }

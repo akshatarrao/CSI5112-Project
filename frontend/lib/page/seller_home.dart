@@ -1,5 +1,5 @@
 import 'package:csi5112_frontend/page/add_item.dart';
-import 'package:csi5112_frontend/page/inventory.dart';
+import 'package:csi5112_frontend/page/product_page.dart';
 import 'package:csi5112_frontend/page/order_history.dart';
 import 'package:flutter/material.dart';
 
@@ -86,7 +86,7 @@ class _SellerHome extends State<SellerHome> {
                   InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const Inventory()));
+                          builder: (context) => const ProductPage()));
                     },
                     child: Card(
                       child: Container(
