@@ -4,6 +4,7 @@ import 'package:csi5112_frontend/page/answer_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:avatars/avatars.dart';
+import '../component/theme_data.dart';
 
 //import 'package:flutter_initicon/flutter_initicon.dart';
 
@@ -19,7 +20,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xffE5E5E5),
+        backgroundColor: CustomColors.backgrounColor,
         body: ListView.builder(
             itemCount: questions.length + 1,
             itemBuilder: (BuildContext context, int index) {
@@ -44,8 +45,10 @@ class _DiscussionForumState extends State<DiscussionForum> {
                   },
                   child: Card(
                     child: GFListTile(
-                      titleText: questions[index].title,
-                      subTitleText: questions[index].description,
+                      title: Text(questions[index].title,
+                                      style: CustomText.textTitle),
+                      subTitle: Text(questions[index].description,
+                                        style: CustomText.textDescription),
                       avatar: Avatar(
                           name: questions[index].user,
                           shape: AvatarShape.circle(16)),
@@ -53,7 +56,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
                         height: 30,
                         width: 60,
                         decoration: const BoxDecoration(
-                            color: Color(0xffD9F3E3),
+                            color: CustomColors.accentColors,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(40))),
                         child: Row(
@@ -62,6 +65,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
                             const Icon(
                               Icons.message,
                               size: 14,
+                              color: Colors.white,
                             ),
                             const Padding(
                                 padding: EdgeInsets.only(top: 18, left: 0)),
@@ -69,7 +73,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
                                     textStyle: const TextStyle(
-                                        color: Color(0xff40C075), fontSize: 14),
+                                        color: Colors.white, fontSize: 14),
                                     fontWeight: FontWeight.w500,
                                     decoration: TextDecoration.none)),
                           ],

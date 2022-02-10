@@ -17,10 +17,10 @@ List<OrderHistoryInfo> orders = [
 
 
 List<Question> questions = [
-  Question(0, "Question 0", "Description 0", "A", "Feb2020", 0),
-  Question(1, "Question 1", "Description 1", "A", "Feb2020", 3),
-  Question(2, "Question 2", "Description 2", "UserB", "Feb2020", 3),
-  Question(3, "Question 3", "Description 3", "UserA", "Feb2020", 0),
+  Question(0, "Question 0 Title", "Description 0. Some more text. Some more text. Some more text. Some more text. Some more text. Some more text. Some more text. Some more text. Some more text. Some more text.", "A", "Feb2020", 1),
+  Question(1, "Question 1 Title", "Description 1", "K", "Feb2020", 3),
+  Question(2, "Question 2 Title", "Description 2", "UserB", "Feb2020", 3),
+  Question(3, "Question 3 Title", "Description 3", "UserA", "Feb2020", 0),
 ];
 
 List<Answer> answers = [
@@ -60,4 +60,10 @@ List<Answer> answers = [
       "UserZ",
       "Feb2022",
       2),
+    Answer(
+      6,
+      "Answer 6 explanation. Some More Text. Even more text so it goes across more than one line.",
+      "UserW",
+      "Feb2022",
+      0),
 ];
