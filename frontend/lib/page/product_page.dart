@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:csi5112_frontend/component/theme_data.dart';
-import 'package:csi5112_frontend/dataModal/product_page_model.dart';
+import 'package:csi5112_frontend/dataModel/product_page_model.dart';
 import 'package:csi5112_frontend/page/edit_item.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -180,7 +180,7 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Widget itemDetail(BuildContext context, ProductPageModel item) {
+  Widget itemDetail(BuildContext context, ProductPageModel product) {
     return AlertDialog(
       backgroundColor: CustomColors.cardColor,
       contentTextStyle: GoogleFonts.poppins(
@@ -193,8 +193,8 @@ class _ProductPageState extends State<ProductPage> {
               color: CustomColors.textColorPrimary, fontSize: 16),
           fontWeight: FontWeight.w500,
           decoration: TextDecoration.none),
-      title: Text("Edit " + item.product),
-      content: EditItem(item),
+      title: Text("Edit " + product.product),
+      content: EditItem(),
       actions: <Widget>[
         ElevatedButton(
           style: ElevatedButton.styleFrom(

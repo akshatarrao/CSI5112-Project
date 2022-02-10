@@ -2,15 +2,13 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:csi5112_frontend/dataModal/product_page_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 //import 'package:image_picker/image_picker.dart';
 
 class EditItem extends StatefulWidget {
-  final ProductPageModel product;
-  const EditItem(this.product, {Key? key}) : super(key: key);
+  const EditItem({Key? key}) : super(key: key);
 
   @override
   _EditItemState createState() => _EditItemState();
