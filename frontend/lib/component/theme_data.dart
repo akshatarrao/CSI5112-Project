@@ -10,3 +10,13 @@ class CustomColors {
   static const Color textColorSecondary = Color(0xff514E4E);
   static const Color accentColors = Color(0xff8F011B);
 }
+
+class iconLogo {
+  iconLogo._();
+
+  static const _kFontFam = 'MyFlutterApp';
+  static const String? _kFontPkg = null;
+
+  static const IconData group_2 =
+      IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+}

@@ -23,7 +23,11 @@ class _OrderHistoryState extends State<OrderHistory> {
     final screenWidth = MediaQuery.of(context).size.width;
     final f = DateFormat('yMMMd');
 
-    int countWidth = screenWidth >= 1200 ? 4 : 1;
+    int countWidth = screenWidth >= 1600
+        ? 4
+        : screenWidth >= 800
+            ? 2
+            : 1;
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xffE5E5E5),
@@ -76,172 +80,191 @@ class _OrderHistoryState extends State<OrderHistory> {
                                   const BorderRadius.all(Radius.circular(25)),
                             ),
                             child: Column(children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 24, left: 40),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Order Number:",
-                                                textAlign: TextAlign.left,
-                                                style: GoogleFonts.poppins(
-                                                    textStyle: const TextStyle(
-                                                        color: CustomColors
-                                                            .textColorPrimary,
-                                                        fontSize: 10),
-                                                    fontWeight: FontWeight.w500,
-                                                    decoration:
-                                                        TextDecoration.none)),
-                                            Text("#" + order.orderId.toString(),
-                                                textAlign: TextAlign.left,
-                                                style: GoogleFonts.poppins(
-                                                    textStyle: const TextStyle(
-                                                        color: CustomColors
-                                                            .textColorSecondary,
-                                                        fontSize: 22),
-                                                    fontWeight: FontWeight.w700,
-                                                    decoration:
-                                                        TextDecoration.none)),
-                                          ],
+                              Expanded(
+                                flex: 3,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 24, left: 40),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Order Number:",
+                                                  textAlign: TextAlign.left,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle: const TextStyle(
+                                                          color: CustomColors
+                                                              .textColorPrimary,
+                                                          fontSize: 12),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      decoration:
+                                                          TextDecoration.none)),
+                                              Text(
+                                                  "#" +
+                                                      order.orderId.toString(),
+                                                  textAlign: TextAlign.left,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle: const TextStyle(
+                                                          color: CustomColors
+                                                              .textColorSecondary,
+                                                          fontSize: 26),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      decoration:
+                                                          TextDecoration.none)),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 16),
-                                    height: 28,
-                                    width: 60,
-                                    decoration: BoxDecoration(
-                                        color: Colors.pink.shade900,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(40))),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(order.ispaid,
-                                            textAlign: TextAlign.center,
-                                            style: GoogleFonts.poppins(
-                                                textStyle: const TextStyle(
-                                                    color: Color(0xffffffff),
-                                                    fontSize: 8),
-                                                fontWeight: FontWeight.w500,
-                                                decoration:
-                                                    TextDecoration.none)),
                                       ],
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      margin: const EdgeInsets.only(right: 16),
+                                      height: 28,
+                                      width: 60,
+                                      decoration: BoxDecoration(
+                                          color: Colors.pink.shade900,
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(40))),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(order.ispaid,
+                                              textAlign: TextAlign.center,
+                                              style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
+                                                      color: Color(0xffffffff),
+                                                      fontSize: 8),
+                                                  fontWeight: FontWeight.w500,
+                                                  decoration:
+                                                      TextDecoration.none)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 32, left: 40),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("# of items",
-                                                textAlign: TextAlign.left,
-                                                style: GoogleFonts.poppins(
-                                                    textStyle: const TextStyle(
-                                                        color: CustomColors
-                                                            .textColorPrimary,
-                                                        fontSize: 10),
-                                                    fontWeight: FontWeight.w500,
-                                                    decoration:
-                                                        TextDecoration.none)),
-                                            Text(order.itemsCount.toString(),
-                                                textAlign: TextAlign.left,
-                                                style: GoogleFonts.poppins(
-                                                    textStyle: const TextStyle(
-                                                        color: CustomColors
-                                                            .textColorSecondary,
-                                                        fontSize: 16),
-                                                    fontWeight: FontWeight.w700,
-                                                    decoration:
-                                                        TextDecoration.none)),
-                                          ],
+                              Expanded(
+                                flex: 3,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 32, left: 40),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("# of items",
+                                                  textAlign: TextAlign.left,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle: const TextStyle(
+                                                          color: CustomColors
+                                                              .textColorPrimary,
+                                                          fontSize: 12),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      decoration:
+                                                          TextDecoration.none)),
+                                              Text(order.itemsCount.toString(),
+                                                  textAlign: TextAlign.left,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle: const TextStyle(
+                                                          color: CustomColors
+                                                              .textColorSecondary,
+                                                          fontSize: 18),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      decoration:
+                                                          TextDecoration.none)),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 32, left: 16),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Total Amount:",
-                                                textAlign: TextAlign.left,
-                                                style: GoogleFonts.poppins(
-                                                    textStyle: const TextStyle(
-                                                        color: CustomColors
-                                                            .textColorPrimary,
-                                                        fontSize: 10),
-                                                    fontWeight: FontWeight.w500,
-                                                    decoration:
-                                                        TextDecoration.none)),
-                                            Text("\$" + order.amount.toString(),
-                                                textAlign: TextAlign.left,
-                                                style: GoogleFonts.poppins(
-                                                    textStyle: const TextStyle(
-                                                        color: CustomColors
-                                                            .textColorSecondary,
-                                                        fontSize: 16),
-                                                    fontWeight: FontWeight.w700,
-                                                    decoration:
-                                                        TextDecoration.none)),
-                                          ],
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 32, left: 16),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Total Amount:",
+                                                  textAlign: TextAlign.left,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle: const TextStyle(
+                                                          color: CustomColors
+                                                              .textColorPrimary,
+                                                          fontSize: 12),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      decoration:
+                                                          TextDecoration.none)),
+                                              Text(
+                                                  "\$" +
+                                                      order.amount.toString(),
+                                                  textAlign: TextAlign.left,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle: const TextStyle(
+                                                          color: CustomColors
+                                                              .textColorSecondary,
+                                                          fontSize: 18),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      decoration:
+                                                          TextDecoration.none)),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 32, left: 16),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text("Order Date:",
-                                                textAlign: TextAlign.left,
-                                                style: GoogleFonts.poppins(
-                                                    textStyle: const TextStyle(
-                                                        color: CustomColors
-                                                            .textColorPrimary,
-                                                        fontSize: 10),
-                                                    fontWeight: FontWeight.w500,
-                                                    decoration:
-                                                        TextDecoration.none)),
-                                            Text(
-                                                f
-                                                    .format(order.orderDate)
-                                                    .toString(),
-                                                textAlign: TextAlign.left,
-                                                style: GoogleFonts.poppins(
-                                                    textStyle: const TextStyle(
-                                                        color: CustomColors
-                                                            .textColorSecondary,
-                                                        fontSize: 16),
-                                                    fontWeight: FontWeight.w700,
-                                                    decoration:
-                                                        TextDecoration.none)),
-                                          ],
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 32, left: 16),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Order Date:",
+                                                  textAlign: TextAlign.left,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle: const TextStyle(
+                                                          color: CustomColors
+                                                              .textColorPrimary,
+                                                          fontSize: 12),
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      decoration:
+                                                          TextDecoration.none)),
+                                              Text(
+                                                  f
+                                                      .format(order.orderDate)
+                                                      .toString(),
+                                                  textAlign: TextAlign.left,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                              color: CustomColors
+                                                                  .textColorSecondary,
+                                                              fontSize: 18),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      decoration:
+                                                          TextDecoration.none)),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ])));
                   }).toList(),

@@ -74,6 +74,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/logo.png
+  fonts:
+    - family:  MyFlutterApp
+      fonts:
+        - asset: assets/fonts/MyFlutterApp.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -106,3 +110,4 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 
+  

@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:csi5112_frontend/page/home.dart';
 import 'package:csi5112_frontend/util/constants.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
@@ -170,24 +171,8 @@ class _LoginScreentState extends State<LoginScreen> {
                     alignment: Alignment.topCenter,
                     child: SizedBox(
                       width: 280.0,
-                      child: DefaultTextStyle(
-                        style: GoogleFonts.oswald(
-                          textStyle: Theme.of(context).textTheme.headline4,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        child: TextLiquidFill(
-                          text: 'eGro',
-                          waveColor: Colors.orange.shade900,
-                          boxBackgroundColor: Colors.pink.shade900,
-                          textStyle: const TextStyle(
-                            fontSize: 80.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          boxHeight: 180.0,
-                        ),
-                      ),
+                      child: Icon(iconLogo.group_2,
+                          size: 100, color: Colors.white),
                     )),
               ],
       theme: LoginTheme(
