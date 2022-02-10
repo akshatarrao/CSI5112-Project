@@ -3,8 +3,8 @@
 
 import 'dart:math';
 
-import 'package:csi5112_frontend/dataModal/item.dart';
-import 'package:csi5112_frontend/dataModal/user.dart';
+import 'package:csi5112_frontend/dataModel/item.dart';
+import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

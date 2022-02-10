@@ -1,4 +1,4 @@
-import 'package:csi5112_frontend/dataModal/model.dart';
+import 'package:csi5112_frontend/dataModel/model.dart';
 import 'package:flutter/material.dart';
 
 class SideMenu extends StatefulWidget {
