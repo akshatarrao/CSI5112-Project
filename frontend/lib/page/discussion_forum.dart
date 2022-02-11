@@ -22,7 +22,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
     return Scaffold(
         backgroundColor: CustomColors.backgrounColor,
         body: ListView.builder(
-            itemCount: questions.length + 1,
+            itemCount: questions.length + 2,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return const TextField(
@@ -34,7 +34,10 @@ class _DiscussionForumState extends State<DiscussionForum> {
                 );
               }
               index -= 1;
-              return InkWell(
+              if (index == questions.length) {
+                return newQuestionButton(context);
+              } else {
+                return InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
@@ -83,6 +86,91 @@ class _DiscussionForumState extends State<DiscussionForum> {
                       ),
                     )),
                   ));
+              }
             }));
+}
+
+Padding newQuestionButton(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 5, left: 40),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+            height: 40,
+            width: 100,
+            child: ElevatedButton(
+              child: const Text('New'),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.blueGrey, shadowColor: Colors.white),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      newQuestionPopup(context),
+                );
+              },
+            )),
+      ],
+    ),
+  );
+}
+
+Widget newQuestionPopup(BuildContext context) {
+    return AlertDialog(
+      insetPadding: const EdgeInsets.all(10),
+      backgroundColor: CustomColors.cardColor,
+      contentTextStyle: GoogleFonts.poppins(
+          textStyle: const TextStyle(
+              color: CustomColors.textColorPrimary, fontSize: 20),
+          fontWeight: FontWeight.w700,
+          decoration: TextDecoration.none),
+      titleTextStyle: GoogleFonts.poppins(
+          textStyle: const TextStyle(
+              color: CustomColors.textColorPrimary, fontSize: 16),
+          fontWeight: FontWeight.w500,
+          decoration: TextDecoration.none),
+      title: const Text("New Question"),
+      content: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              initialValue: "",
+              decoration: const InputDecoration(
+                hintText: 'Enter Question Title',
+                labelText: 'Question Title',
+              ),
+            ),
+            TextFormField(
+                initialValue: "",
+                decoration: const InputDecoration(
+                  hintText: 'Enter a description...',
+                  labelText: 'Description',
+                )
+            )
+          ],
+      ),
+      actions: <Widget>[
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: Colors.blueGrey, shadowColor: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Submit'),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: Colors.blueGrey, shadowColor: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('Close'),
+        ),
+      ],
+    );
   }
+  
 }
