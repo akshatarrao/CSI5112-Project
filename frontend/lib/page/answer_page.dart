@@ -3,7 +3,6 @@ import 'package:csi5112_frontend/dataModel/answer.dart';
 import 'package:csi5112_frontend/dataModel/question.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../component/theme_data.dart';
 
@@ -28,6 +27,13 @@ class _AnswerPageState extends State<AnswerPage> {
         body: ListView.builder(
             itemCount: answers.length + 2,
             itemBuilder: (BuildContext context, int index) {
+
+              // In the first index (row) the question is written,
+              // In middle indexs (rows) if the answer at (index - 1) is for the question it is printed
+              // In the last index (row) a reply text field is printed
+              //
+              // Notice: trick of index = index-1 so that in fact there are two cases where index = 0
+
               if (index == 0) {
                 // Card class template: https://api.flutter.dev/flutter/material/Card-class.html
                 return Padding(
@@ -63,11 +69,7 @@ class _AnswerPageState extends State<AnswerPage> {
                                           .replies
                                           .toString(),
                                   textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
-                                          color: Colors.white, fontSize: 14),
-                                      fontWeight: FontWeight.w500,
-                                      decoration: TextDecoration.none)),
+                                  style: CustomText.customText),
                             ],
                           ),
                         ),
@@ -77,14 +79,16 @@ class _AnswerPageState extends State<AnswerPage> {
               }
               index -= 1;
               if (index == answers.length) {
-                return const TextField(
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Add Reply...',
-                    suffixIcon: (Icon(Icons.send)),
-                  ),
-                );
+                return const Padding(
+                        padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+                        child: TextField(
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Add Reply...',
+                            suffixIcon: (Icon(Icons.send)))
+                      )
+                  );
               } else if (widget.questionID == answers[index].questionID) {
                 // Card class template: https://api.flutter.dev/flutter/material/Card-class.html
                 return Padding(

@@ -1,9 +1,9 @@
 import 'package:avatars/avatars.dart';
 import 'package:csi5112_frontend/dataModel/question.dart';
 import 'package:csi5112_frontend/page/answer_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../component/theme_data.dart';
 
@@ -24,14 +24,18 @@ class _DiscussionForumState extends State<DiscussionForum> {
         body: ListView.builder(
             itemCount: questions.length + 2,
             itemBuilder: (BuildContext context, int index) {
+
+              // In the first index (row) a search field is printed,
+              // In middle indexs (rows) all of the questions are printed
+              // In the last index (row) an add question button is returned
+              // 
+              // Notice: trick of index = index-1 so that in fact there are two cases where index = 0 
+
               if (index == 0) {
-                return const TextField(
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Search here...',
-                  ),
-                );
+                return Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 6, 10, 2),
+                    child: CupertinoSearchTextField(onChanged: (value) {})
+                  );
               }
               index -= 1;
               if (index == questions.length) {
@@ -76,11 +80,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
                                 padding: EdgeInsets.only(top: 18, left: 0)),
                             Text(" " + questions[index].replies.toString(),
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                        color: Colors.white, fontSize: 14),
-                                    fontWeight: FontWeight.w500,
-                                    decoration: TextDecoration.none)),
+                                style: CustomText.customText),
                           ],
                         ),
                       ),
@@ -90,6 +90,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
             }));
 }
 
+// Button to make New Question Popup Form appear
 Padding newQuestionButton(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.only(top: 5, left: 40),
@@ -103,7 +104,9 @@ Padding newQuestionButton(BuildContext context) {
             child: ElevatedButton(
               child: const Text('New'),
               style: ElevatedButton.styleFrom(
-                  primary: Colors.blueGrey, shadowColor: Colors.white),
+                  primary: const Color(0xff161616), 
+                  shadowColor: Colors.white,
+                  shape: const StadiumBorder()),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -117,20 +120,14 @@ Padding newQuestionButton(BuildContext context) {
   );
 }
 
+// New Question Popup 
+// Used the code from Add Product so that it has same style
 Widget newQuestionPopup(BuildContext context) {
     return AlertDialog(
       insetPadding: const EdgeInsets.all(10),
       backgroundColor: CustomColors.cardColor,
-      contentTextStyle: GoogleFonts.poppins(
-          textStyle: const TextStyle(
-              color: CustomColors.textColorPrimary, fontSize: 20),
-          fontWeight: FontWeight.w700,
-          decoration: TextDecoration.none),
-      titleTextStyle: GoogleFonts.poppins(
-          textStyle: const TextStyle(
-              color: CustomColors.textColorPrimary, fontSize: 16),
-          fontWeight: FontWeight.w500,
-          decoration: TextDecoration.none),
+      contentTextStyle: CustomText.textTitle,
+      titleTextStyle: CustomText.textSubTitle,
       title: const Text("New Question"),
       content: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -155,7 +152,9 @@ Widget newQuestionPopup(BuildContext context) {
       actions: <Widget>[
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.blueGrey, shadowColor: Colors.white),
+              primary: const Color(0xff161616), 
+              shadowColor: Colors.white,
+              shape: const StadiumBorder()),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -163,7 +162,9 @@ Widget newQuestionPopup(BuildContext context) {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.blueGrey, shadowColor: Colors.white),
+              primary: Colors.blueGrey, 
+              shadowColor: Colors.white,
+              shape: const StadiumBorder()),
           onPressed: () {
             Navigator.of(context).pop();
           },
