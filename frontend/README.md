@@ -37,3 +37,7 @@ All development code are under `./lib`.
 `./lib/page` contains page implementation
 
 To bypass login screen for faster development, flip `bypassLogin` and/or `bypassCustomer` in `./lib/login_screen`
+
+# References
+1. https://github.com/NearHuscarl/flutter_login
+2. https://github.com/umangce/sliding-nav-bar
