@@ -110,6 +110,7 @@ class _ItemListState extends State<ItemList> {
             ? 2
             : 1;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
           backgroundColor: const Color(0xffE5E5E5),
           body: Container(
