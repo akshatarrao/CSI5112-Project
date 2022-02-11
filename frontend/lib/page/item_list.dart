@@ -217,8 +217,9 @@ class _ItemListState extends State<ItemList> {
     // Unfortunately Chrome cannot print the webpage as it is because there is no DOM
     // So we have to generate a printable and provide user a button to do it
     return Container(
-      width: 120,
-      height: 50,
+      padding: const EdgeInsets.all(20),
+      width: 160,
+      height: 90,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             primary: const Color(0xff161616),
@@ -245,8 +246,9 @@ class _ItemListState extends State<ItemList> {
   /// build reset/restart button
   Container buildResetButton() {
     return Container(
-      width: 120,
-      height: 50,
+      padding: const EdgeInsets.all(20),
+      width: 160,
+      height: 90,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             primary: const Color(0xff161616),
@@ -384,7 +386,7 @@ class _ItemListState extends State<ItemList> {
         width: 120,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.blueGrey,
+              primary: const Color(0xff161616),
               shadowColor: Colors.white,
               shape: const StadiumBorder()),
           child: CenteredText.getCenteredText('Load more...'),

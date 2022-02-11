@@ -137,7 +137,7 @@ class _ProductPageState extends State<ProductPage> {
             child: ElevatedButton(
               child: const Text('Add'),
               style: ElevatedButton.styleFrom(
-                  primary: Colors.blueGrey,
+                  primary: const Color(0xff161616),
                   shadowColor: Colors.white,
                   shape: const StadiumBorder()),
               onPressed: () {
