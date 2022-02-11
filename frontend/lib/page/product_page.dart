@@ -104,11 +104,13 @@ class _ProductPageState extends State<ProductPage> {
         children: [
           SizedBox(
               height: 40,
-              width: 100,
+              width: 80,
               child: ElevatedButton(
-                child: const Text('Edit'),
+                child: const Text('Details'),
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.blueGrey, shadowColor: Colors.white),
+                    primary: const Color(0xff161616),
+                    shadowColor: Colors.white,
+                    shape: const StadiumBorder()),
                 onPressed: () {
                   showDialog(
                     context: context,
@@ -130,20 +132,22 @@ class _ProductPageState extends State<ProductPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-              height: 40,
-              width: 100,
-              child: ElevatedButton(
-                child: const Text('Add'),
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.blueGrey, shadowColor: Colors.white),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        itemDetail(context, null),
-                  );
-                },
-              )),
+            height: 40,
+            width: 100,
+            child: ElevatedButton(
+              child: const Text('Add'),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.blueGrey,
+                  shadowColor: Colors.white,
+                  shape: const StadiumBorder()),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => itemDetail(context, null),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -156,14 +160,17 @@ class _ProductPageState extends State<ProductPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-              height: 40,
-              width: 100,
-              child: ElevatedButton(
-                child: const Text('Delete'),
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.red, shadowColor: Colors.white),
-                onPressed: () {},
-              )),
+            height: 40,
+            width: 80,
+            child: ElevatedButton(
+              child: const Text('Delete'),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                  shadowColor: Colors.white,
+                  shape: const StadiumBorder()),
+              onPressed: () {},
+            ),
+          ),
         ],
       ),
     );
@@ -226,12 +233,15 @@ class _ProductPageState extends State<ProductPage> {
           fontWeight: FontWeight.w500,
           decoration: TextDecoration.none),
       // Unnecessary logic to make lint pass
-      title: product != null ? Text("Edit " + (product.name)) : const Text("Add"),
+      title:
+          product != null ? Text("Edit " + (product.name)) : const Text("Add"),
       content: buildEditPopup(product),
       actions: <Widget>[
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.blueGrey, shadowColor: Colors.white),
+              primary: const Color(0xff161616),
+              shadowColor: Colors.white,
+              shape: const StadiumBorder()),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -239,7 +249,9 @@ class _ProductPageState extends State<ProductPage> {
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Colors.blueGrey, shadowColor: Colors.white),
+              primary: Colors.red,
+              shadowColor: Colors.white,
+              shape: const StadiumBorder()),
           onPressed: () {
             Navigator.of(context).pop();
           },
