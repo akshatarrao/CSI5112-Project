@@ -1,3 +1,4 @@
+import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:csi5112_frontend/page/customer_home.dart';
 import 'package:csi5112_frontend/page/item_list.dart';
 import 'package:csi5112_frontend/page/login_screen.dart';
@@ -56,7 +57,8 @@ class MyApp extends StatelessWidget {
           subtitle2: const TextStyle(fontFamily: 'NotoSans'),
           overline: const TextStyle(fontFamily: 'NotoSans'),
         ),
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple)
+        colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: CustomColors.accentColorMaterial)
             .copyWith(secondary: Colors.orange),
       ),
 

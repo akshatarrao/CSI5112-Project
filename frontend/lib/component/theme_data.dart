@@ -9,31 +9,48 @@ class CustomColors {
   static const Color cardColor = Color(0xffffffff);
   static const Color textColorPrimary = Color(0xff000000);
   static const Color textColorSecondary = Color(0xff514E4E);
-  static const Color accentColors = Color(0xff8F011B);
+  static const Color accentColors = Color(0xff880E4F);
   static const Color backgrounColor = Color(0xffE5E5E5);
+
+  static const MaterialColor accentColorMaterial = const MaterialColor(
+    _accentColorMaterial,
+    const <int, Color>{
+      50: const Color(0xff880E4F),
+      100: const Color(0xff880E4F),
+      200: const Color(0xff880E4F),
+      300: const Color(0xff880E4F),
+      400: const Color(0xff880E4F),
+      500: const Color(_accentColorMaterial),
+      600: const Color(0xff880E4F),
+      700: const Color(0xff880E4F),
+      800: const Color(0xff880E4F),
+      900: const Color(0xff880E4F),
+    },
+  );
+
+  static const int _accentColorMaterial = 0xff880E4F;
 }
 
 class CustomText {
   static TextStyle textTitle = GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                        color: CustomColors.textColorPrimary, fontSize: 20),
-                                    fontWeight: FontWeight.w700,
-                                    decoration: TextDecoration.none);
+      textStyle:
+          const TextStyle(color: CustomColors.textColorPrimary, fontSize: 20),
+      fontWeight: FontWeight.w700,
+      decoration: TextDecoration.none);
   static TextStyle textSubTitle = GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                        color: CustomColors.textColorPrimary, fontSize: 16),
-                                    fontWeight: FontWeight.w600,
-                                    decoration: TextDecoration.none);
+      textStyle:
+          const TextStyle(color: CustomColors.textColorPrimary, fontSize: 16),
+      fontWeight: FontWeight.w600,
+      decoration: TextDecoration.none);
   static TextStyle textDescription = GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                            color: CustomColors.textColorSecondary, fontSize: 12),
-                                        fontWeight: FontWeight.w500,
-                                        decoration: TextDecoration.none);
+      textStyle:
+          const TextStyle(color: CustomColors.textColorSecondary, fontSize: 12),
+      fontWeight: FontWeight.w500,
+      decoration: TextDecoration.none);
   static TextStyle customText = GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                        color: Colors.white, fontSize: 14),
-                                    fontWeight: FontWeight.w500,
-                                    decoration: TextDecoration.none);
+      textStyle: const TextStyle(color: Colors.white, fontSize: 14),
+      fontWeight: FontWeight.w500,
+      decoration: TextDecoration.none);
 }
 
 class IconLogo {
