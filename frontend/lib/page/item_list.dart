@@ -43,6 +43,7 @@ class ItemList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _ItemListState();
 
+  /// Easy way to get clean state page with default inputs
   static ItemList getDefaultEmptyPage() {
     return ItemList(
       // {} is changing
@@ -65,6 +66,7 @@ class _ItemListState extends State<ItemList> {
   bool isReviewStage = false;
   bool isRevisit = false;
 
+  /// Update state to track item and its count
   updateItemCount(Item item, int delta) {
     setState(() {
       if (widget.selectedItems.containsKey(item)) {
@@ -76,18 +78,21 @@ class _ItemListState extends State<ItemList> {
     });
   }
 
+  /// getter for the item count
   getItemCount(Item item) {
     return widget.selectedItems.containsKey(item)
         ? widget.selectedItems[item]
         : 0;
   }
 
+  /// update total price
   updateTotal(double delta) {
     setState(() {
       widget.total = widget.total + delta;
     });
   }
 
+  /// reduce state size
   Map<Item, int> getMinSelectedItems() {
     // If a user switch the count from X to 0, we do not want to display them at checkout and invoice
     widget.selectedItems.removeWhere((key, value) => value == 0);
@@ -125,6 +130,7 @@ class _ItemListState extends State<ItemList> {
     );
   }
 
+  /// build footer buttons
   Row buildFooter() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
@@ -145,6 +151,7 @@ class _ItemListState extends State<ItemList> {
     ]);
   }
 
+  /// build the main list
   GridView buildItemListGridView(int countWidth) {
     return GridView(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -181,6 +188,7 @@ class _ItemListState extends State<ItemList> {
                 ]);
   }
 
+  /// Build header text
   Text buildHeader() {
     return Text(
         widget.isInvoice ? getInvoiceHeaderText() : 'Buy what you want!',
@@ -193,6 +201,7 @@ class _ItemListState extends State<ItemList> {
         ));
   }
 
+  /// easy way to get a set of header text with formatting
   String getInvoiceHeaderText() =>
       "User: " +
       widget.user.name +
@@ -203,6 +212,7 @@ class _ItemListState extends State<ItemList> {
       "Order ID: " +
       widget.orderId;
 
+  /// Build print button
   Container buildPrintButton() {
     // Unfortunately Chrome cannot print the webpage as it is because there is no DOM
     // So we have to generate a printable and provide user a button to do it
@@ -232,6 +242,7 @@ class _ItemListState extends State<ItemList> {
     );
   }
 
+  /// build reset/restart button
   Container buildResetButton() {
     return Container(
       width: 120,
@@ -254,6 +265,7 @@ class _ItemListState extends State<ItemList> {
     );
   }
 
+  /// Generate a printable invoice
   pw.Document generatePrintableDoc(List<pw.Text> printableItemChildren) {
     final doc = pw.Document();
 
@@ -281,6 +293,7 @@ class _ItemListState extends State<ItemList> {
     return doc;
   }
 
+  /// confirm button
   Container buildConfirmButton() {
     return Container(
       width: 160,
@@ -304,6 +317,7 @@ class _ItemListState extends State<ItemList> {
     );
   }
 
+  // build go back button
   Container buildGoBackButton() {
     return Container(
         padding: const EdgeInsets.all(20),
@@ -323,6 +337,7 @@ class _ItemListState extends State<ItemList> {
             child: CenteredText.getCenteredText("Go Back")));
   }
 
+  // build review button
   Container buildReviewButton() {
     return Container(
         height: 50,
@@ -349,10 +364,12 @@ class _ItemListState extends State<ItemList> {
         ));
   }
 
+  /// build total text
   Center buildTotalText() {
     return Center(child: Text("Total: " + widget.total.toStringAsFixed(2)));
   }
 
+  /// build placehoder, not sure if it is still useful, future refactor TODO
   Container buildLoadButtonPlaceholder() {
     return Container(
       height: 50,
@@ -360,6 +377,7 @@ class _ItemListState extends State<ItemList> {
     );
   }
 
+  // build load button
   Container buildLoadButton() {
     return Container(
         height: 50,
@@ -378,7 +396,7 @@ class _ItemListState extends State<ItemList> {
         ));
   }
 }
-
+// Build card item
 class ListItem extends StatefulWidget {
   const ListItem(
       {Key? key,
@@ -409,6 +427,7 @@ class _ListItem extends State<ListItem> {
     return buildCard(context);
   }
 
+  // build the card
   Widget buildCard(BuildContext context) {
     int count = widget.getItemCount(widget.item);
     return Container(
@@ -436,6 +455,7 @@ class _ListItem extends State<ListItem> {
     );
   }
 
+  // build price and counting stuff
   Column buildCardRightSide(int count, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
