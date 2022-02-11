@@ -19,6 +19,7 @@
 </a> </div>
 
 <h2 align="center">Members : Akshata Ramesh Rao, Aaditya Suri , Songyu Wang, Prashant, Andrew
+  
 
 See [Frontend README](https://github.com/AadityaOfficial/CSI5112-Project/tree/main/frontend) for details
 
