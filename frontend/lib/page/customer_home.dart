@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage>
       case 'Items List':
         return ItemList.getDefaultEmptyPage();
       case 'Order History':
-        return const OrderHistory();
+        return const OrderHistoryPage();
       case 'Discussion forum':
         return const DiscussionForum();
       default:

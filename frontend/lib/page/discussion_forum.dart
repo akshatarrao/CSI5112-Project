@@ -1,5 +1,5 @@
 import 'package:avatars/avatars.dart';
-import 'package:csi5112_frontend/data.dart';
+import 'package:csi5112_frontend/dataModel/question.dart';
 import 'package:csi5112_frontend/page/answer_page.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -15,6 +15,7 @@ class DiscussionForum extends StatefulWidget {
 }
 
 class _DiscussionForumState extends State<DiscussionForum> {
+  List<Question> questions = Question.getFakeQuestionData();
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +46,14 @@ class _DiscussionForumState extends State<DiscussionForum> {
                               AnswerPage(questions[index].id)),
                     );
                   },
-                  child: Card(
-                    child: GFListTile(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                    child: Card(
+                        child: GFListTile(
                       title: Text(questions[index].title,
-                                      style: CustomText.textTitle),
+                          style: CustomText.textTitle),
                       subTitle: Text(questions[index].description,
-                                        style: CustomText.textDescription),
+                          style: CustomText.textDescription),
                       avatar: Avatar(
                           name: questions[index].user,
                           shape: AvatarShape.circle(16)),
@@ -81,7 +84,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
                           ],
                         ),
                       ),
-                    ),
+                    )),
                   ));
               }
             }));
