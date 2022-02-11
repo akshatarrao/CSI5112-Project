@@ -30,46 +30,49 @@ class _AnswerPageState extends State<AnswerPage> {
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 // Card class template: https://api.flutter.dev/flutter/material/Card-class.html
-                return Card(
-                  child: GFListTile(
-                    title: Text(questions[widget.questionID].title,
-                        style: CustomText.textTitle),
-                    subTitle: Text(questions[widget.questionID].description,
-                        style: CustomText.textDescription),
-                    avatar: Avatar(
-                        name: questions[widget.questionID].user,
-                        shape: AvatarShape.circle(16)),
-                    icon: Container(
-                      height: 30,
-                      width: 60,
-                      decoration: const BoxDecoration(
-                          color: CustomColors.accentColors,
-                          borderRadius: BorderRadius.all(Radius.circular(40))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Icon(
-                            Icons.message,
-                            size: 14,
-                            color: Colors.white,
+                return Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
+                    child: Card(
+                      child: GFListTile(
+                        title: Text(questions[widget.questionID].title,
+                            style: CustomText.textTitle),
+                        subTitle: Text(questions[widget.questionID].description,
+                            style: CustomText.textDescription),
+                        avatar: Avatar(
+                            name: questions[widget.questionID].user,
+                            shape: AvatarShape.circle(16)),
+                        icon: Container(
+                          height: 30,
+                          width: 60,
+                          decoration: const BoxDecoration(
+                              color: CustomColors.accentColors,
+                              borderRadius: BorderRadius.all(Radius.circular(40))),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Icon(
+                                Icons.message,
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                              const Padding(
+                                  padding: EdgeInsets.only(top: 18, left: 0)),
+                              Text(
+                                  " " +
+                                      questions[widget.questionID]
+                                          .replies
+                                          .toString(),
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                      fontWeight: FontWeight.w500,
+                                      decoration: TextDecoration.none)),
+                            ],
                           ),
-                          const Padding(
-                              padding: EdgeInsets.only(top: 18, left: 0)),
-                          Text(
-                              " " +
-                                  questions[widget.questionID]
-                                      .replies
-                                      .toString(),
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                      color: Colors.white, fontSize: 14),
-                                  fontWeight: FontWeight.w500,
-                                  decoration: TextDecoration.none)),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    )
                 );
               }
               index -= 1;
@@ -84,26 +87,29 @@ class _AnswerPageState extends State<AnswerPage> {
                 );
               } else if (widget.questionID == answers[index].questionID) {
                 // Card class template: https://api.flutter.dev/flutter/material/Card-class.html
-                return Card(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      ListTile(
-                        title: Text("Reply By: " + answers[index].user,
-                            style: CustomText.textSubTitle),
-                        subtitle: Text(answers[index].answer,
-                            style: CustomText.textDescription),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                return Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
+                    child: Card(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text(answers[index].date.toString().substring(0, 19)),
-                          const SizedBox(width: 10),
+                          ListTile(
+                            title: Text("Reply By: " + answers[index].user,
+                                style: CustomText.textSubTitle),
+                            subtitle: Text(answers[index].answer,
+                                style: CustomText.textDescription),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              Text(answers[index].date.toString().substring(0, 19)),
+                              const SizedBox(width: 10),
+                            ],
+                          ),
+                          Row(children: const [SizedBox(height: 10)],)
                         ],
                       ),
-                      Row(children: const [SizedBox(height: 10)],)
-                    ],
-                  ),
+                    )
                 );
               } else {
                 return Container();

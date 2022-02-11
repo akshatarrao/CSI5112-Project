@@ -47,7 +47,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 2, 20, 2),
+                    padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
                     child: Card(
                         child: GFListTile(
                       title: Text(questions[index].title,
