@@ -12,6 +12,8 @@ import 'package:intl/intl.dart';
 import 'customer_home.dart';
 import 'item_list.dart';
 
+// The state values are not intended to be final
+//ignore: must_be_immutable
 class OrderHistoryPage extends StatefulWidget {
   bool isCustomer;
 
