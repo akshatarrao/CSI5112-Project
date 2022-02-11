@@ -25,8 +25,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreentState extends State<LoginScreen> {
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
-  bool bypassLogin = false;
-  bool bypassCustomer = false;
+  bool bypassLogin = true;
+  bool bypassCustomer = true;
 
   Future<String?> _loginUser(LoginData data, bool isCustomer) {
     return Future.delayed(loginTime).then((_) {

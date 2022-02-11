@@ -2,6 +2,7 @@ import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/order_history.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
+import 'package:csi5112_frontend/page/merchant_home.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,9 @@ import 'customer_home.dart';
 import 'item_list.dart';
 
 class OrderHistoryPage extends StatefulWidget {
-  const OrderHistoryPage({Key? key}) : super(key: key);
+  bool isCustomer;
+
+  OrderHistoryPage({Key? key, required this.isCustomer}) : super(key: key);
 
   @override
   _OrderHistoryPageState createState() => _OrderHistoryPageState();
@@ -46,24 +49,39 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                 child: GridView(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: countWidth, childAspectRatio: 1.9),
-                  //gridDelegate:
-                  //  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
                   children: orders.map((order) {
                     return InkWell(
                         onTap: () {
                           Navigator.of(context).pushReplacement(FadePageRoute(
-                            builder: (context) => MyHomePage(
-                              redirected: ItemList(
-                                invoiceTime: order.orderDate,
-                                isInvoice: true,
-                                selectedItems: {
-                                  Item.getDefaultFakeData()[1]: 2
-                                },
-                                total: Item.getDefaultFakeData()[1].price * 2,
-                                user: User.getRandomUser(),
-                                orderId: order.orderId.toString(),
-                              ),
-                            ),
+                            builder: (context) => widget.isCustomer
+                                ? MyHomePage(
+                                    redirected: ItemList(
+                                      invoiceTime: order.orderDate,
+                                      isInvoice: true,
+                                      selectedItems: {
+                                        Item.getDefaultFakeData()[1]: 2
+                                      },
+                                      total:
+                                          Item.getDefaultFakeData()[1].price *
+                                              2,
+                                      user: User.getRandomUser(),
+                                      orderId: order.orderId.toString(),
+                                    ),
+                                  )
+                                : MerchantPage(
+                                    redirected: ItemList(
+                                      invoiceTime: order.orderDate,
+                                      isInvoice: true,
+                                      selectedItems: {
+                                        Item.getDefaultFakeData()[1]: 2
+                                      },
+                                      total:
+                                          Item.getDefaultFakeData()[1].price *
+                                              2,
+                                      user: User.getRandomUser(),
+                                      orderId: order.orderId.toString(),
+                                    ),
+                                  ),
                             settings:
                                 const RouteSettings(name: ItemList.routeName),
                           ));

@@ -110,11 +110,13 @@ class _ItemListState extends State<ItemList> {
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Column(
-              children: [
+                children: [
                 buildHeader(),
-                CupertinoSearchTextField(
-                  onChanged: (value) {},
-                ),
+                !(isReviewStage || widget.isInvoice)
+                    ? CupertinoSearchTextField(
+                        onChanged: (value) {},
+                      )
+                    : Container(),
                 Expanded(flex: 7, child: buildItemListGridView(countWidth)),
                 Expanded(flex: 1, child: buildFooter())
               ],
@@ -556,8 +558,10 @@ class _ListItem extends State<ListItem> {
         child: IconButton(
             onPressed: () => setState(() {
                   if (visible) {
-                    widget.updateTotal(0 - widget.item.price);
-                    widget.updateItemCount(widget.item, -1);
+                    if (widget.getItemCount(widget.item) > 0) {
+                      widget.updateTotal(0 - widget.item.price);
+                      widget.updateItemCount(widget.item, -1);
+                    }
                   }
                 }),
             icon: Icon(
