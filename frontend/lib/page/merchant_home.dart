@@ -109,7 +109,7 @@ class _MerchantPageState extends State<MerchantPage>
   Widget _getbody(BuildContext context, MenuItem menuItem) {
     switch (menuItem.menuName) {
       case 'Order History':
-        return const OrderHistory();
+        return const OrderHistoryPage();
       case 'Discussion forum':
         return const DiscussionForum();
       case 'Modify Items':

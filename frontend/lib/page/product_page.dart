@@ -1,10 +1,11 @@
-
 import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// The state values are not intended to be final
+//ignore: must_be_immutable
 class ProductPage extends StatefulWidget {
   static const routeName = '/product-setup';
 
@@ -225,9 +226,7 @@ class _ProductPageState extends State<ProductPage> {
           fontWeight: FontWeight.w500,
           decoration: TextDecoration.none),
       // Unnecessary logic to make lint pass
-      title: product != null
-          ? Text("Edit " + (product?.name ?? ""))
-          : const Text("Add"),
+      title: product != null ? Text("Edit " + (product.name)) : const Text("Add"),
       content: buildEditPopup(product),
       actions: <Widget>[
         ElevatedButton(

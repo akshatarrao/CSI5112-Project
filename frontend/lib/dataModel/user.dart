@@ -9,4 +9,14 @@ class User {
     Faker faker = Faker();
     return User(name: faker.internet.userName());
   }
+
+  static getDefaultUser(bool isMerchant) {
+    return isMerchant
+        ? {
+            'merchant@gmail.com': 'merchant',
+          }
+        : {
+            'admin@gmail.com': 'admin',
+          };
+  }
 }

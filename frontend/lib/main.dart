@@ -1,7 +1,7 @@
 import 'package:csi5112_frontend/page/customer_home.dart';
 import 'package:csi5112_frontend/page/item_list.dart';
 import 'package:csi5112_frontend/page/login_screen.dart';
-import 'package:csi5112_frontend/page/transition_route_observer.dart';
+import 'package:csi5112_frontend/util/transition_route_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

@@ -1,16 +1,39 @@
 # csi5112_project
 
-A new Flutter project.
-
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Please ensure your flutter version is `^2.10.0`
 
-A few resources to get you started if this is your first Flutter project:
+### Install
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Ensure all dependencies are installed
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+flutter pub get
+```
+
+### Run
+
+To run the application
+
+```
+flutter run
+```
+
+The default buyer user credential:
+`admin@gmail.com:admin`
+
+The default merchant user credential:
+`merchant@gmail.com:merchant`,
+
+### Development
+
+All development code are under `./lib`.
+
+`./lib/cpmponent` contains reusable cross-page component files
+
+`./lib/dataModal` contains data structure files
+
+`./lib/page` contains page implementation
+
+To bypass login screen for faster development, flip `bypassLogin` and/or `bypassCustomer` in `./lib/login_screen`

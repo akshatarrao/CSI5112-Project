@@ -4,6 +4,7 @@
 
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
+import 'package:csi5112_frontend/util/custom_route.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'package:printing/printing.dart';
 
 import '../component/centered_text.dart';
 import '../component/theme_data.dart';
+import 'customer_home.dart';
 
 // The state values are not intended to be final
 //ignore: must_be_immutable
@@ -109,10 +111,10 @@ class _ItemListState extends State<ItemList> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Column(
               children: [
+                buildHeader(),
                 CupertinoSearchTextField(
                   onChanged: (value) {},
                 ),
-                buildHeader(),
                 Expanded(flex: 7, child: buildItemListGridView(countWidth)),
                 Expanded(flex: 1, child: buildFooter())
               ],
@@ -134,7 +136,9 @@ class _ItemListState extends State<ItemList> {
       isReviewStage
           ? Row(children: [buildGoBackButton(), buildConfirmButton()])
           : widget.isInvoice
-              ? buildPrintButton()
+              ? Row(
+                  children: [buildPrintButton(), buildResetButton()],
+                )
               : buildReviewButton()
     ]);
   }
@@ -205,9 +209,9 @@ class _ItemListState extends State<ItemList> {
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: Color(0xff161616),
+            primary: const Color(0xff161616),
             shadowColor: Colors.white,
-            shape: StadiumBorder()),
+            shape: const StadiumBorder()),
         onPressed: () async {
           Map<Item, int> itemList = getMinSelectedItems();
           List<pw.Text> printableItemChildren = [];
@@ -222,6 +226,28 @@ class _ItemListState extends State<ItemList> {
               onLayout: (PdfPageFormat format) async => doc.save()); //
         },
         child: const Text("Print Invoice"),
+      ),
+    );
+  }
+
+  Container buildResetButton() {
+    return Container(
+      width: 120,
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            primary: const Color(0xff161616),
+            shadowColor: Colors.white,
+            shape: const StadiumBorder()),
+        onPressed: () {
+          Navigator.of(context).pushReplacement(FadePageRoute(
+            builder: (context) => MyHomePage(
+              redirected: ItemList.getDefaultEmptyPage(),
+            ),
+            settings: const RouteSettings(name: ItemList.routeName),
+          ));
+        },
+        child: const Text("Restart"),
       ),
     );
   }
@@ -260,9 +286,9 @@ class _ItemListState extends State<ItemList> {
       padding: const EdgeInsets.all(20),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: Color(0xff161616),
+            primary: const Color(0xff161616),
             shadowColor: Colors.white,
-            shape: StadiumBorder()),
+            shape: const StadiumBorder()),
         onPressed: () {
           setState(() {
             widget.isInvoice = true;
@@ -283,9 +309,9 @@ class _ItemListState extends State<ItemList> {
         height: 90,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: Color(0xff161616),
+                primary: const Color(0xff161616),
                 shadowColor: Colors.white,
-                shape: StadiumBorder()),
+                shape: const StadiumBorder()),
             onPressed: () {
               setState(() {
                 isRevisit = true;
@@ -301,9 +327,9 @@ class _ItemListState extends State<ItemList> {
         width: 120,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-              primary: Color(0xff161616),
+              primary: const Color(0xff161616),
               shadowColor: Colors.white,
-              shape: StadiumBorder()),
+              shape: const StadiumBorder()),
           onPressed: () {
             // Guard against zero item cart
             if (getMinSelectedItems().isNotEmpty) {
@@ -340,7 +366,7 @@ class _ItemListState extends State<ItemList> {
           style: ElevatedButton.styleFrom(
               primary: Colors.blueGrey,
               shadowColor: Colors.white,
-              shape: StadiumBorder()),
+              shape: const StadiumBorder()),
           child: CenteredText.getCenteredText('Load more...'),
           onPressed: () {
             setState(() {
@@ -560,9 +586,9 @@ class _ListItem extends State<ListItem> {
         child: ElevatedButton(
           child: const Text('Details'),
           style: ElevatedButton.styleFrom(
-              primary: Color(0xff161616),
+              primary: const Color(0xff161616),
               shadowColor: Colors.white,
-              shape: StadiumBorder()),
+              shape: const StadiumBorder()),
           onPressed: () {
             showDialog(
               context: context,
@@ -602,7 +628,7 @@ Widget itemDetail(BuildContext context, Item item) {
     actions: <Widget>[
       ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: Color(0xff161616), shadowColor: Colors.white),
+            primary: const Color(0xff161616), shadowColor: Colors.white),
         onPressed: () {
           Navigator.of(context).pop();
         },

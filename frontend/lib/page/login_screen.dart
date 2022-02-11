@@ -1,9 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:csi5112_frontend/component/theme_data.dart';
+import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/page/customer_home.dart';
 import 'package:csi5112_frontend/util/constants.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
-import 'package:csi5112_frontend/util/users.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_login/flutter_login.dart';
@@ -36,19 +36,19 @@ class _LoginScreentState extends State<LoginScreen> {
 
       // if it is a customer login, veryify against the MockUsers
       if (isCustomer) {
-        if (!mockUsers.containsKey(data.name)) {
+        if (!User.getDefaultUser(false).containsKey(data.name)) {
           return 'Customer does not exist';
         }
-        if (mockUsers[data.name] != data.password) {
+        if (User.getDefaultUser(false)[data.name] != data.password) {
           return 'Password does not match';
         }
       }
       // if it is a Merchant Login, verify against the MockMerchants
       else {
-        if (!mockMerchants.containsKey(data.name)) {
+        if (!User.getDefaultUser(true).containsKey(data.name)) {
           return 'Merchant does not exist';
         }
-        if (mockMerchants[data.name] != data.password) {
+        if (User.getDefaultUser(true)[data.name] != data.password) {
           return 'Password does not match';
         }
       }

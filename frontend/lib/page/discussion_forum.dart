@@ -1,5 +1,5 @@
 import 'package:avatars/avatars.dart';
-import 'package:csi5112_frontend/data.dart';
+import 'package:csi5112_frontend/dataModel/question.dart';
 import 'package:csi5112_frontend/page/answer_page.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -15,6 +15,7 @@ class DiscussionForum extends StatefulWidget {
 }
 
 class _DiscussionForumState extends State<DiscussionForum> {
+  List<Question> questions = Question.getFakeQuestionData();
 
   @override
   Widget build(BuildContext context) {

@@ -1,24 +1,26 @@
 import 'package:csi5112_frontend/component/theme_data.dart';
-import 'package:csi5112_frontend/data.dart';
 import 'package:csi5112_frontend/dataModel/item.dart';
+import 'package:csi5112_frontend/dataModel/order_history.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'customer_home.dart';
 import 'item_list.dart';
 
-class OrderHistory extends StatefulWidget {
-  const OrderHistory({Key? key}) : super(key: key);
+class OrderHistoryPage extends StatefulWidget {
+  const OrderHistoryPage({Key? key}) : super(key: key);
 
   @override
-  _OrderHistoryState createState() => _OrderHistoryState();
+  _OrderHistoryPageState createState() => _OrderHistoryPageState();
 }
 
-class _OrderHistoryState extends State<OrderHistory> {
+class _OrderHistoryPageState extends State<OrderHistoryPage> {
+  List<OrderHistory> orders = OrderHistory.getFakeOrderHistoryData();
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -141,7 +143,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: <Widget>[
-                                          Text(order.ispaid,
+                                          Text(order.isPaid,
                                               textAlign: TextAlign.center,
                                               style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
