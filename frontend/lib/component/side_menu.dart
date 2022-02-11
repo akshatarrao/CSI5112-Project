@@ -1,6 +1,7 @@
 import 'package:csi5112_frontend/dataModel/model.dart';
 import 'package:flutter/material.dart';
 
+/// Side menu widget
 class SideMenu extends StatefulWidget {
   final Function(int) _onMenuItemSelection;
   final List<MenuItem> _menuItems;
@@ -17,6 +18,7 @@ class SideMenu extends StatefulWidget {
   _SideMenuState createState() => _SideMenuState();
 }
 
+/// Side menu state
 class _SideMenuState extends State<SideMenu> {
   int _currentPage = 0;
 

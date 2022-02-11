@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// Menu Item
+// It consists of menu item name and icon
 class MenuItem {
   final String menuName;
   final IconData menuIcon;
@@ -10,6 +12,7 @@ class MenuItem {
   });
 }
 
+// Customer dashboard menu items
 List<MenuItem> cutomerMenuItems = [
   const MenuItem(
     menuName: 'Items List',
@@ -25,6 +28,7 @@ List<MenuItem> cutomerMenuItems = [
   ),
 ];
 
+// Merchant dashboard menu items
 List<MenuItem> merchantMenuItems = [
   const MenuItem(
     menuName: "Item Setup",

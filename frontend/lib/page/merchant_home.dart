@@ -9,8 +9,8 @@ import '../component/swipe_animation.dart';
 import 'discussion_forum.dart';
 import 'order_history.dart';
 
-// The state values are not intended to be final
-//ignore: must_be_immutable
+/// This is the main page of the app when a merchant is logged in.
+// ignore: must_be_immutable
 class MerchantPage extends StatefulWidget {
   static const routeName = '/merchant';
   Widget? redirected;
@@ -21,6 +21,7 @@ class MerchantPage extends StatefulWidget {
   _MerchantPageState createState() => _MerchantPageState();
 }
 
+/// This is the state of the merchant page.
 class _MerchantPageState extends State<MerchantPage>
     with SingleTickerProviderStateMixin, AfterLayoutMixin<MerchantPage> {
   int currentPage = 0;
@@ -106,6 +107,7 @@ class _MerchantPageState extends State<MerchantPage>
     );
   }
 
+  /// intialize the page based on the menu item selected
   Widget _getbody(BuildContext context, MenuItem menuItem) {
     switch (menuItem.menuName) {
       case 'Order History':

@@ -1,6 +1,7 @@
 import 'package:csi5112_frontend/page/customer_home.dart';
 import 'package:csi5112_frontend/page/item_list.dart';
 import 'package:csi5112_frontend/page/login_screen.dart';
+import 'package:csi5112_frontend/page/merchant_home.dart';
 import 'package:csi5112_frontend/util/transition_route_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CSI 5112',
+
+      // Default visual properties, like colors fonts and shapes, for this app's material widgets.
       theme: ThemeData(
         textSelectionTheme:
             const TextSelectionThemeData(cursorColor: Colors.orange),
@@ -56,12 +59,17 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple)
             .copyWith(secondary: Colors.orange),
       ),
+
+      //  The list of observers for the [Navigator] created for this app.
       navigatorObservers: [TransitionRouteObserver()],
+      //  The name of the first route to show, if a [Navigator] is built.
       initialRoute: LoginScreen.routeName,
+      // The application's top-level routing table.
       routes: {
         LoginScreen.routeName: (context) => const LoginScreen(),
         ItemList.routeName: (context) => ItemList.getDefaultEmptyPage(),
         MyHomePage.routeName: (context) => MyHomePage(),
+        MerchantPage.routeName: (context) => MerchantPage(),
       },
     );
   }
