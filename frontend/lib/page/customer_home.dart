@@ -9,7 +9,7 @@ import 'discussion_forum.dart';
 import 'item_list.dart';
 import 'order_history.dart';
 
-// The state values are not intended to be final
+/// This is the main page of the app when a customer is logged in.
 //ignore: must_be_immutable
 class MyHomePage extends StatefulWidget {
   static const routeName = '/home';
@@ -21,6 +21,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+// MyHomePage is a stateful widget
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin, AfterLayoutMixin<MyHomePage> {
   int currentPage = 0;
@@ -106,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
+  // intialize the page based on the menu item selected
   Widget _getbody(BuildContext context, MenuItem menuItem) {
     switch (menuItem.menuName) {
       case 'Items List':

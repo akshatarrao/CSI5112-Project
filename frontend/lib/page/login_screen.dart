@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'merchant_home.dart';
 
+// Login page
 class LoginScreen extends StatefulWidget {
   static const routeName = '/auth';
 
@@ -22,12 +23,14 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreentState();
 }
 
+// Login page state
 class _LoginScreentState extends State<LoginScreen> {
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
   bool bypassLogin = false;
   bool bypassCustomer = true;
 
+  // login user with email and password
   Future<String?> _loginUser(LoginData data, bool isCustomer) {
     return Future.delayed(loginTime).then((_) {
       if (bypassLogin) {
@@ -57,6 +60,8 @@ class _LoginScreentState extends State<LoginScreen> {
     });
   }
 
+  // verify the signup data and create a user
+  // Note: this is not a real signup, it is just for demo
   Future<String?> _signupUser(SignupData data) {
     return Future.delayed(loginTime).then((_) {
       return null;
@@ -69,6 +74,7 @@ class _LoginScreentState extends State<LoginScreen> {
     });
   }
 
+  // checks whether the app is opened in Desktop mode
   static bool isDesktop(BuildContext context) =>
       MediaQuery.of(context).size.width >= 1200;
 
@@ -180,6 +186,7 @@ class _LoginScreentState extends State<LoginScreen> {
                           size: 100, color: Colors.white),
                     )),
               ],
+      // login page theme
       theme: LoginTheme(
         primaryColor: const Color.fromARGB(255, 20, 24, 23),
         accentColor: Colors.yellow,
@@ -232,12 +239,11 @@ class _LoginScreentState extends State<LoginScreen> {
           ),
         ),
       ),
-
-      // ),
       userValidator: (value) {
         if (bypassLogin) {
           return null;
         }
+        // validate email format
         if (!value!.contains('@') || !value.endsWith('.com')) {
           return "Email must contain '@' and end with '.com'";
         }
@@ -253,21 +259,13 @@ class _LoginScreentState extends State<LoginScreen> {
         return null;
       },
       onLogin: (loginData) {
-        debugPrint('Login info');
-        debugPrint('Name: ${loginData.name}');
-        debugPrint('Password: ${loginData.password}');
         return _loginUser(loginData, isCustomer);
       },
       onSignup: (signupData) {
-        debugPrint('Signup info');
-        debugPrint('Name: ${signupData.name}');
-        debugPrint('Password: ${signupData.password}');
-
         signupData.additionalSignupData?.forEach((key, value) {
           debugPrint('$key: $value');
         });
         if (signupData.termsOfService.isNotEmpty) {
-          debugPrint('Terms of service: ');
           for (var element in signupData.termsOfService) {
             debugPrint(
                 ' - ${element.term.id}: ${element.accepted == true ? 'accepted' : 'rejected'}');
@@ -276,14 +274,15 @@ class _LoginScreentState extends State<LoginScreen> {
         return _signupUser(signupData);
       },
       onSubmitAnimationCompleted: () {
-        // if isCustomer == true, then redirect to home else redirect to seller page
+        // if it is a customer, then redirect to home
         if (isCustomer) {
-          debugPrint('Customer login');
           Navigator.of(context).pushReplacement(FadePageRoute(
             builder: (context) => MyHomePage(),
             settings: const RouteSettings(name: '/home'),
           ));
-        } else {
+        }
+        //redirect to seller page
+        else {
           debugPrint('Merchant login');
           Navigator.of(context).pushReplacement(FadePageRoute(
             builder: (context) => MerchantPage(),

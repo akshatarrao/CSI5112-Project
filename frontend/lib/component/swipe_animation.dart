@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-
 const sideMenuWidth = 240.0;
 const minScale = 0.5;
 const maxScale = 1.0;
 
+/// A widget that displays its children in a side menu.
 class SwipeAnimation extends StatefulWidget {
   final Widget child;
   final Function(bool) navigationDrawerOpened;
@@ -17,6 +17,7 @@ class SwipeAnimation extends StatefulWidget {
   SwipeAnimationState createState() => SwipeAnimationState();
 }
 
+/// The state for a [SwipeAnimation] widget.
 class SwipeAnimationState extends State<SwipeAnimation>
     with SingleTickerProviderStateMixin {
   double initialX = 0;
@@ -54,6 +55,7 @@ class SwipeAnimationState extends State<SwipeAnimation>
       scale = scaleFactor < minScale ? minScale : scaleFactor;
     }
 
+    // To hide the menu, when user swipes back/left
     return GestureDetector(
       onHorizontalDragStart: (details) {
         initialX = details.globalPosition.dx;
@@ -111,14 +113,17 @@ class SwipeAnimationState extends State<SwipeAnimation>
     });
   }
 
+  // hide the navigation drawer
   void hideNavigationDrawer([double dx = sideMenuWidth]) {
     controller.reverse(from: dx);
   }
 
+  // show the navigation drawer
   void showNavigationDrawer() {
     controller.forward(from: 0);
   }
 
+  // translate the X position of the child
   void _translateX(double dx) {
     setState(() {
       lastX = dx;
@@ -131,6 +136,7 @@ class SwipeAnimationState extends State<SwipeAnimation>
     }
   }
 
+  /// Returns a container with a shadow.
   Container _getContainerWithShadow(double scale, Widget child) {
     return Container(
       decoration: BoxDecoration(
