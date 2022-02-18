@@ -8,6 +8,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<UserView>();
 
+builder.Services.AddScoped<ItemView>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

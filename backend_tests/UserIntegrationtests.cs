@@ -59,5 +59,38 @@ public class UserIntegrationTests : IClassFixture<WebApplicationFactory<Program>
         response.Content.ReadAsStringAsync().Result.Should().Contain( JsonSerializer.Serialize(newUser));
 
         }
+
+
+                [Fact]
+    public async void Put()
+    {
+        User updateUser = new User("a","a",UserType.buyer,5);
+        var body = new StringContent(JsonSerializer.Serialize(updateUser), UnicodeEncoding.UTF8, "application/json");
+        var response = await client.PutAsync("/api/user/1",body);
+         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+
+
+        }
+
+  [Fact]
+        public async void PutFail()
+    {
+        var body = new StringContent(JsonSerializer.Serialize(User.GetFakeData()[0]), UnicodeEncoding.UTF8, "application/json");
+        var response = await client.PutAsync("/api/user/3",body);
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
     
+  [Fact]
+       public async void DeleteFail()
+    {
+        var response = await client.DeleteAsync("/api/user/3");
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+          [Fact]
+       public async void Delete()
+    {
+        var response = await client.DeleteAsync("/api/user/1");
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
 }
