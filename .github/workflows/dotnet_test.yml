@@ -20,9 +20,12 @@ jobs:
       run: dotnet build --no-restore
       working-directory: ./backend_tests
     - name: Test
-      run: dotnet test --no-build --verbosity normal --collect:"Code Coverage"
+      run: |
+        dotnet test --no-build --verbosity normal --collect:"Code Coverage"
+        mv -v ./backend_tests/TestResults/*/*.* ./backend_tests/TestResults/
+        for i in ./backend_tests/TestResults/*.coverage ; do mv "$i" "./backend_tests/TestResults/1.coverage" ; done
       working-directory: ./backend_tests
     - name: Upload coverage to codecov
       uses: codecov/codecov-action@v2
       with:
-        directory: ./backend_tests/TestResults/
+        files: ./backend_tests/TestResults/1.coverage
