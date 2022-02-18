@@ -20,7 +20,6 @@ public class UserIntegrationTests : IClassFixture<WebApplicationFactory<Program>
         client = application.CreateClient();
         
     }
-
     
 
     [Fact]
