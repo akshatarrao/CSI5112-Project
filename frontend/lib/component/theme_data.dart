@@ -12,19 +12,19 @@ class CustomColors {
   static const Color accentColors = Color(0xff880E4F);
   static const Color backgrounColor = Color(0xffE5E5E5);
 
-  static const MaterialColor accentColorMaterial = const MaterialColor(
+  static const MaterialColor accentColorMaterial = MaterialColor(
     _accentColorMaterial,
-    const <int, Color>{
-      50: const Color(0xff880E4F),
-      100: const Color(0xff880E4F),
-      200: const Color(0xff880E4F),
-      300: const Color(0xff880E4F),
-      400: const Color(0xff880E4F),
-      500: const Color(_accentColorMaterial),
-      600: const Color(0xff880E4F),
-      700: const Color(0xff880E4F),
-      800: const Color(0xff880E4F),
-      900: const Color(0xff880E4F),
+    <int, Color>{
+      50: Color(0xff880E4F),
+      100: Color(0xff880E4F),
+      200: Color(0xff880E4F),
+      300: Color(0xff880E4F),
+      400: Color(0xff880E4F),
+      500: Color(_accentColorMaterial),
+      600: Color(0xff880E4F),
+      700: Color(0xff880E4F),
+      800: Color(0xff880E4F),
+      900: Color(0xff880E4F),
     },
   );
 
