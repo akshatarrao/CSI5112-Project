@@ -22,8 +22,8 @@ jobs:
     - name: Test
       run: |
         dotnet test --no-build --verbosity normal --collect:"Code Coverage"
-        mv -v ./backend_tests/TestResults/*/*.* ./backend_tests/TestResults/
-        for i in ./backend_tests/TestResults/*.coverage ; do mv "$i" "./backend_tests/TestResults/1.coverage" ; done
+        mv -v ./TestResults/*/*.* ./TestResults/
+        for i in ./TestResults/*.coverage ; do mv "$i" "./TestResults/1.coverage" ; done
       working-directory: ./backend_tests
     - name: Upload coverage to codecov
       uses: codecov/codecov-action@v2
