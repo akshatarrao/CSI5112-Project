@@ -10,6 +10,7 @@ builder.Services.AddScoped<UserView>();
 builder.Services.AddScoped<ItemView>();
 builder.Services.AddScoped<QuestionView>();
 builder.Services.AddScoped<AnswerView>();
+builder.Services.AddScoped<OrderHistoryView>();
 
 var app = builder.Build();
 
