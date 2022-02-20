@@ -7,8 +7,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<UserView>();
-
 builder.Services.AddScoped<ItemView>();
+builder.Services.AddScoped<QuestionView>();
+builder.Services.AddScoped<AnswerView>();
 
 var app = builder.Build();
 

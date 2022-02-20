@@ -1,8 +1,8 @@
 using backend.Models;
 using backend.Views;
+using backend.Utils;
 using Microsoft.AspNetCore.Mvc;
 
-namespace backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -22,7 +22,7 @@ public class ItemController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Item>> GetById(Int64 id) {
         var item = await _itemView.GetByIdAsync(id);
-        return item.id == Models.Item.NoItem.id ? NotFound() : item;
+        return item.id == Item.NoItem.id ? NotFound() : item;
     }
     
 

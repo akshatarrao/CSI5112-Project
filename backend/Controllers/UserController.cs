@@ -1,8 +1,10 @@
-using backend.Models;
+
 using backend.Views;
 using Microsoft.AspNetCore.Mvc;
+using backend.Models;
 
-namespace backend.Controllers;
+using backend.Utils;
+
 
 [ApiController]
 [Route("api/[controller]")]
@@ -22,7 +24,7 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<User>> GetById(Int64 id) {
         var user = await _userView.GetByIdAsync(id);
-        return user.id == Models.User.NoUser.id ? NotFound() : user;
+        return user.id == backend.Models.User.NoUser.id ? NotFound() : user;
     }
     
 
