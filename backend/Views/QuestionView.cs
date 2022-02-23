@@ -13,12 +13,17 @@ public class QuestionView
         questions.Add(question);
     }
 
-    public async Task<List<Question>> GetAsync(int page,int per_page)
+    public async Task<List<Question>> GetAsync(int page,int per_page, string? search)
     {
-        if (per_page*(page+1)>= questions.Count){
-            return new List<Question>(questions.Skip(per_page*page));
+        var filteredQuestions = new List<Question>(questions);
+        if(search!=null){
+             filteredQuestions = new List<Question>(questions.Where(x => x.description.Contains(search)|| x.title.Contains(search)));
         }
-        return questions.GetRange(per_page*page,per_page);
+        
+        if (per_page*(page+1)>= filteredQuestions.Count){
+            return new List<Question>(filteredQuestions.Skip(per_page*page));
+        }
+        return filteredQuestions.GetRange(per_page*page,per_page);
     }
 
     public async Task<Question> GetByIdAsync(long id)

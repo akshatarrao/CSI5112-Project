@@ -51,6 +51,17 @@ public class QuestionIntegrationtests : IClassFixture<WebApplicationFactory<Prog
     }
 
 
+       [Fact]
+    public async void GetWithSearch()
+    {
+        var response = await client.GetAsync("/api/question/__search__/ImAQuestion?page=0&per_page=5");
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        
+        response.Content.ReadAsStringAsync().Result.Should().Be( JsonSerializer.Serialize(Question.GetFakeData().GetRange(4,1)));
+    }
+
+
+
 
     
     [Fact]
