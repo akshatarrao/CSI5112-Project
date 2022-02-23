@@ -7,6 +7,24 @@ class Answer {
 
   Answer(this.id, this.answer, this.user, this.date, this.questionID);
 
+  factory Answer.fromJson(Map<String, dynamic> json) {
+    return Answer(
+      json['id'],
+      json['answer'],
+      json['user']['username'],
+      DateTime.parse(json['time'].toString()),
+      json['questionId']
+    );
+  }
+
+  static List<Answer> fromListJson(List<dynamic> json) {
+    List<Answer> result = <Answer>[];
+    for(Map<String, dynamic> d in json) {
+      result.add(Answer.fromJson(d));
+    }
+    return result;
+  }
+
   static getFakeAnswerData() {
     return [
       Answer(

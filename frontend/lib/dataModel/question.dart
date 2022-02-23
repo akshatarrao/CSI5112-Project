@@ -14,8 +14,8 @@ class Question {
       json['id'],
       json['title'],
       json['description'],
-      json['user'],
-      json['date'],
+      json['user']['username'],
+      DateTime.parse(json['time'].toString()),
       json['replies']
     );
   }
