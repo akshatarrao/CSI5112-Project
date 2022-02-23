@@ -9,6 +9,25 @@ class Question {
   Question(this.id, this.title, this.description, this.user, this.date,
       this.replies);
 
+  factory Question.fromJson(Map<String, dynamic> json) {
+    return Question(
+      json['id'],
+      json['title'],
+      json['description'],
+      json['user'],
+      json['date'],
+      json['replies']
+    );
+  }
+
+  static List<Question> fromListJson(List<dynamic> json) {
+    List<Question> result = <Question>[];
+    for(Map<String, dynamic> d in json) {
+      result.add(Question.fromJson(d));
+    }
+    return result;
+  }
+
   static getFakeQuestionData() {
     return [
       Question(
