@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/order_history.dart';
@@ -8,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-
+import 'package:http/http.dart' as http;
 import 'customer_home.dart';
 import 'item_list.dart';
 
@@ -24,7 +26,24 @@ class OrderHistoryPage extends StatefulWidget {
 }
 
 class _OrderHistoryPageState extends State<OrderHistoryPage> {
-  List<OrderHistory> orders = OrderHistory.getFakeOrderHistoryData();
+  List<OrderHistory> orders = List<OrderHistory>.empty(growable: true);
+
+  fetchOrders() async {
+    var url = Uri.parse('https://localhost:7156/api/OrderHistory');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var ordersJson = json.decode(response.body);
+      for (var order in ordersJson) {
+        orders.add(OrderHistory.fromJson(order));
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    fetchOrders();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
