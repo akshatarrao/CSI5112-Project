@@ -16,11 +16,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<UserView>();
-builder.Services.AddScoped<ItemView>();
-builder.Services.AddScoped<QuestionView>();
-builder.Services.AddScoped<AnswerView>();
-builder.Services.AddScoped<OrderHistoryView>();
+builder.Services.AddSingleton<UserView>();
+builder.Services.AddSingleton<ItemView>();
+builder.Services.AddSingleton<QuestionView>();
+builder.Services.AddSingleton<AnswerView>();
+builder.Services.AddSingleton<OrderHistoryView>();
 
 
 

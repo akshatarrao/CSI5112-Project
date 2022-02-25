@@ -9,6 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Modify code for testing
+      run: sed -i 's/AddSingleton/AddScoped/g' ./backend/Program.cs
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
