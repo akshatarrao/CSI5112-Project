@@ -1,28 +1,25 @@
 class OrderHistory {
-  DateTime orderDate;
-  int orderId;
-  String isPaid;
-  int amount;
-  int itemsCount;
+  late DateTime orderDate;
+  late int orderId;
+  late String isPaid;
+  late double amount;
+  late int itemsCount;
 
   // Historical items list stored as a snapshot
-  String itemsSnapshot;
+  late String itemsSnapshot;
 
   OrderHistory(this.orderDate, this.isPaid, this.orderId, this.amount,
       this.itemsCount, this.itemsSnapshot);
 
-  static getFakeOrderHistoryData() {
-    return [
-      OrderHistory(DateTime.now().add(const Duration(hours: 1)), "Paid",
-          123456789, 240, 123, ''),
-      OrderHistory(DateTime.now().add(const Duration(hours: 1)), "Paid",
-          123451232, 240, 5, ''),
-      OrderHistory(DateTime.now().add(const Duration(hours: 1)), "Paid",
-          123452131, 250, 20, ''),
-      OrderHistory(DateTime.now().add(const Duration(hours: 1)), "Paid",
-          987654321, 360, 12, ''),
-      OrderHistory(DateTime.now().add(const Duration(hours: 1)), "Paid",
-          142357809, 700, 34, '')
-    ];
+  OrderHistory.fromJson(Map<String, dynamic> json) {
+    orderDate = DateTime.parse(json['time']);
+    orderId = json['id'];
+    isPaid = json['isPaid'] == true ? "Paid" : "Unpaid";
+    amount = json['amount'];
+    itemsCount = json['items'].split(',').length;
+    itemsSnapshot = json['items'];
+    OrderHistory(orderDate, isPaid, orderId, amount, itemsCount, itemsSnapshot);
   }
+
+  
 }
