@@ -9,6 +9,8 @@ import 'package:http/http.dart';
 
 import '../component/theme_data.dart';
 
+int numQuestions = 0;
+
 class DiscussionForum extends StatefulWidget {
   const DiscussionForum({Key? key}) : super(key: key);
 
@@ -31,6 +33,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
               return const CircularProgressIndicator();
             }
             List<Question> questions = (snapshot.data as List<Question>);
+            numQuestions = questions.length;
             return ListView.builder(
               itemCount: questions.length + 2,
               itemBuilder: (BuildContext context, int index) {
@@ -136,6 +139,9 @@ Padding newQuestionButton(BuildContext context) {
 // New Question Popup 
 // Used the code from Add Product so that it has same style
 Widget newQuestionPopup(BuildContext context) {
+    final _qTitle = TextEditingController();
+    final _qDescription = TextEditingController();
+
     return AlertDialog(
       insetPadding: const EdgeInsets.all(10),
       backgroundColor: CustomColors.cardColor,
@@ -147,14 +153,16 @@ Widget newQuestionPopup(BuildContext context) {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
-              initialValue: "",
+              controller: _qTitle,
+              //initialValue: "",
               decoration: const InputDecoration(
                 hintText: 'Enter Question Title',
                 labelText: 'Question Title',
               ),
             ),
             TextFormField(
-                initialValue: "",
+                controller: _qDescription,
+                //initialValue: "",
                 decoration: const InputDecoration(
                   hintText: 'Enter a description...',
                   labelText: 'Description',
@@ -169,7 +177,12 @@ Widget newQuestionPopup(BuildContext context) {
               shadowColor: Colors.white,
               shape: const StadiumBorder()),
           onPressed: () {
+            postQuestion(_qTitle.text, _qDescription.text);
             Navigator.of(context).pop();
+            Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const DiscussionForum())
+            );              
           },
           child: const Text('Submit'),
         ),
@@ -187,6 +200,44 @@ Widget newQuestionPopup(BuildContext context) {
     );
   }
   
+  void postQuestion(String qTitle, String qDescription) {
+
+    // This code was initially generated from postman code snippet and then modified to be more general 
+    // Also, used this method to get the submitted text:
+    // https://stackoverflow.com/questions/51390824/capture-data-from-textformfield-on-flutter-for-http-post-request
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+
+    var request = Request('POST', Uri.parse('https://localhost:7156/api/question'));
+    request.body = json.encode({
+        "title": qTitle,
+        "description": qDescription,
+        "user": {
+          "username": "admin@gmail.com",
+          "password": "admin",
+          "userType": "buyer",
+          "id": 0
+        },
+        "time": "2058-05-01T08:34:42-04:00",
+        "replies": 0,
+        "id": numQuestions
+    });
+
+    request.headers.addAll(headers);
+
+    request.send();
+
+    //StreamedResponse response = await request.send();
+    //
+    //if (response.statusCode == 200) {
+    //  print(await response.stream.bytesToString());
+    //}
+    //else {
+    //  print(response.reasonPhrase);
+    //}
+  }
+
   Future<List<Question>> getQuestions() async {
     final response = await get(Uri.parse('https://127.0.0.1:7156/api/question'));
     
