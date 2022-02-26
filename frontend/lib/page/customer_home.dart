@@ -47,6 +47,11 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
+    // Added so when refressing Discussion Forum Page it gets the correct title
+    widget.redirected is DiscussionForum ? currentPage = 2 : null; 
+    // This one doesn't help as as when clicking on an order from the order history page the returned page is not a OrderHistoryPage Class
+    widget.redirected is OrderHistoryPage ? currentPage = 1 : null;  
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -59,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage>
                 });
               },
               menuItems: cutomerMenuItems,
+              currentPage: currentPage
             ),
             SwipeAnimation(
               key: swipeAnimationKey,
@@ -117,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage>
           isCustomer: true,
         );
       case 'Discussion forum':
-        return const DiscussionForum();
+        return DiscussionForum(isCustomer: true);
       default:
         return ItemList.getDefaultEmptyPage();
     }

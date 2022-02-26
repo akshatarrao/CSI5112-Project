@@ -47,6 +47,11 @@ class _MerchantPageState extends State<MerchantPage>
 
   @override
   Widget build(BuildContext context) {
+    // Added so when refressing Discussion Forum Page it gets the correct title
+    widget.redirected is DiscussionForum ? currentPage = 2 : null; 
+    // This one doesn't help as as when clicking on an order from the order history page the returned page is not a OrderHistoryPage Class
+    widget.redirected is OrderHistoryPage ? currentPage = 1 : null;  
+    
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -59,6 +64,7 @@ class _MerchantPageState extends State<MerchantPage>
                 });
               },
               menuItems: merchantMenuItems,
+              currentPage: currentPage
             ),
             SwipeAnimation(
               key: swipeAnimationKey,
@@ -113,7 +119,7 @@ class _MerchantPageState extends State<MerchantPage>
       case 'Order History':
         return OrderHistoryPage(isCustomer: false);
       case 'Discussion forum':
-        return const DiscussionForum();
+        return DiscussionForum(isCustomer: false);
       case 'Modify Items':
         return ProductPage();
       default:

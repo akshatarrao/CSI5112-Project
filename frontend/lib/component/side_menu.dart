@@ -2,14 +2,17 @@ import 'package:csi5112_frontend/dataModel/model.dart';
 import 'package:flutter/material.dart';
 
 /// Side menu widget
+// ignore: must_be_immutable
 class SideMenu extends StatefulWidget {
   final Function(int) _onMenuItemSelection;
   final List<MenuItem> _menuItems;
+  int currentPage; // Added so when refressing Page it gets the correct navigation (in particular the Discussion Forum)
 
-  const SideMenu(
+  SideMenu(
       {Key? key,
       required Function(int) onMenuItemSelection,
-      required List<MenuItem> menuItems})
+      required List<MenuItem> menuItems,
+      this.currentPage = 0})
       : _onMenuItemSelection = onMenuItemSelection,
         _menuItems = menuItems,
         super(key: key);
@@ -24,6 +27,9 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   Widget build(BuildContext context) {
+    // Added so when refressing Page it gets the correct navigation (in particular the Discussion Forum)
+    _currentPage = widget.currentPage;
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return SingleChildScrollView(

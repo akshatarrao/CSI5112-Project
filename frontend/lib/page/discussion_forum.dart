@@ -1,6 +1,8 @@
 import 'package:avatars/avatars.dart';
 import 'package:csi5112_frontend/dataModel/question.dart';
 import 'package:csi5112_frontend/page/answer_page.dart';
+import 'package:csi5112_frontend/page/customer_home.dart';
+import 'package:csi5112_frontend/page/merchant_home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -11,8 +13,10 @@ import '../component/theme_data.dart';
 
 int numQuestions = 0;
 
+// ignore: must_be_immutable
 class DiscussionForum extends StatefulWidget {
-  const DiscussionForum({Key? key}) : super(key: key);
+  bool isCustomer;
+  DiscussionForum({Key? key, required this.isCustomer}) : super(key: key);
 
   @override
   State<DiscussionForum> createState() => _DiscussionForumState();
@@ -127,7 +131,7 @@ Padding newQuestionButton(BuildContext context) {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) =>
-                      newQuestionPopup(context),
+                      newQuestionPopup(context, widget.isCustomer),
                 );
               },
             )),
@@ -138,7 +142,7 @@ Padding newQuestionButton(BuildContext context) {
 
 // New Question Popup 
 // Used the code from Add Product so that it has same style
-Widget newQuestionPopup(BuildContext context) {
+Widget newQuestionPopup(BuildContext context, isCustomer) {
     final _qTitle = TextEditingController();
     final _qDescription = TextEditingController();
 
@@ -181,7 +185,10 @@ Widget newQuestionPopup(BuildContext context) {
             Navigator.of(context).pop();
             Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const DiscussionForum())
+                        MaterialPageRoute(builder: (context) => isCustomer
+                          ? MyHomePage(redirected: DiscussionForum(isCustomer: isCustomer))
+                          : MerchantPage(redirected: DiscussionForum(isCustomer: isCustomer))
+                        )
             );              
           },
           child: const Text('Submit'),
@@ -219,7 +226,7 @@ Widget newQuestionPopup(BuildContext context) {
           "userType": "buyer",
           "id": 0
         },
-        "time": "2058-05-01T08:34:42-04:00",
+        "time": DateTime.now().toIso8601String(),
         "replies": 0,
         "id": numQuestions
     });
