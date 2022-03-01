@@ -16,7 +16,9 @@ int numQuestions = 0;
 // ignore: must_be_immutable
 class DiscussionForum extends StatefulWidget {
   bool isCustomer;
-  DiscussionForum({Key? key, required this.isCustomer}) : super(key: key);
+  String searchPhrase;
+
+  DiscussionForum({Key? key, required this.isCustomer, this.searchPhrase = ""}) : super(key: key);
 
   @override
   State<DiscussionForum> createState() => _DiscussionForumState();
@@ -49,10 +51,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
                 // Notice: trick of index = index-1 so that in fact there are two cases where index = 0 
 
                 if (index == 0) {
-                  return Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 6, 10, 2),
-                      child: CupertinoSearchTextField(onChanged: (value) {})
-                    );
+                  return searchRow();
                 }
                 index -= 1;
                 if (index == questions.length) {
@@ -108,6 +107,36 @@ class _DiscussionForumState extends State<DiscussionForum> {
             },
             future: futureQuestions,
           ));
+}
+
+// Making the Search row - submit by pressing <enter>
+Widget searchRow() {
+  // Help from: https://api.flutter.dev/flutter/cupertino/CupertinoSearchTextField-class.html
+  // If you want to overwrite the default text 
+
+  TextEditingController _searchController;
+  if (widget.searchPhrase == "") {
+    _searchController  = TextEditingController();  
+  } else {
+    _searchController  = TextEditingController(text: widget.searchPhrase);
+  }
+
+  return Padding(
+          padding: const EdgeInsets.fromLTRB(10, 6, 10, 2),
+          child: CupertinoSearchTextField(
+            controller: _searchController,
+            onSubmitted: (String searchValue) {
+              bool isCustomer = widget.isCustomer;
+              //Navigator.of(context).pop();
+              Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => isCustomer
+                            ? MyHomePage(redirected: DiscussionForum(isCustomer: isCustomer, searchPhrase: searchValue))
+                            : MerchantPage(redirected: DiscussionForum(isCustomer: isCustomer, searchPhrase: searchValue))
+                          )
+              );
+          })
+        );
 }
 
 // Button to make New Question Popup Form appear
@@ -245,8 +274,14 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
     //}
   }
 
-  Future<List<Question>> getQuestions() async {
-    final response = await get(Uri.parse('https://127.0.0.1:7156/api/question'));
+  Future<List<Question>> getQuestions(String searchPhrase) async {
+    final Response response;
+    if(searchPhrase == "") {
+      response = await get(Uri.parse('https://127.0.0.1:7156/api/question'));
+    } else {
+      response = await get(Uri.parse('https://127.0.0.1:7156/api/question/__search__/' + searchPhrase));
+    }
+    
     
     if(response.statusCode == 200) {
       return Question.fromListJson(jsonDecode(response.body));
@@ -259,7 +294,7 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
   @override
   void initState() {
     super.initState();
-    futureQuestions = getQuestions();
+    futureQuestions = getQuestions(widget.searchPhrase);
   }
 
 }
