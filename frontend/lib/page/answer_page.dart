@@ -9,6 +9,8 @@ import 'package:http/http.dart';
 
 import '../component/theme_data.dart';
 
+int numAnswers = 0;
+
 class AnswerPage extends StatefulWidget {
   final int questionID;
 
@@ -38,6 +40,7 @@ class _AnswerPageState extends State<AnswerPage> {
             List<List<Object>> temp = (snapshot.data as List<List<Object>>);
             List<Question> questions = (temp[0] as List<Question>);
             List<Answer> answers = (temp[1] as List<Answer>);
+            numAnswers = answers.length;
             return ListView.builder(
               itemCount: answers.length + 2,
               itemBuilder: (BuildContext context, int index) {
@@ -93,16 +96,9 @@ class _AnswerPageState extends State<AnswerPage> {
                 }
                 index -= 1;
                 if (index == answers.length) {
-                  return const Padding(
-                          padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
-                          child: TextField(
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Add Reply...',
-                              suffixIcon: (Icon(Icons.send)))
-                        )
-                    );
+
+                  return newAnswerRow(context);
+
                 } else if (widget.questionID == answers[index].questionID) {
                   // Card class template: https://api.flutter.dev/flutter/material/Card-class.html
                   return Padding(
@@ -139,6 +135,82 @@ class _AnswerPageState extends State<AnswerPage> {
               futureAnswers
             ])
           ));
+  }
+
+Widget newAnswerRow(BuildContext context) {
+  final _aDescription = TextEditingController();
+  
+  return Padding(padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
+                 child: Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children:<Widget>[
+                      Flexible(child: TextFormField(
+                          controller: _aDescription,
+                          //obscureText: false,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Add Reply...')
+                      )),
+                      Padding(padding: const EdgeInsets.fromLTRB(5, 2, 5, 2),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: const Color(0xff161616), 
+                                    shadowColor: Colors.white,
+                                    shape: const StadiumBorder()),
+                                onPressed: () {
+                                  postAnswer(_aDescription.text);
+                                  Navigator.of(context).pop();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                        AnswerPage(widget.questionID)),
+                                  );              
+                                },
+                                child: const Text('Submit'),
+                        ))
+                      ]
+                 )
+                 
+               );
+}
+
+
+void postAnswer(String aDescription) {
+
+    // This code was initially generated from postman code snippet and then modified to be more general 
+    // Also, used this method to get the submitted text:
+    // https://stackoverflow.com/questions/51390824/capture-data-from-textformfield-on-flutter-for-http-post-request
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+
+    var request = Request('POST', Uri.parse('https://localhost:7156/api/answer'));
+    request.body = json.encode({
+      "answer": aDescription,
+      "user": {
+        "username": "merchant@gmail.com",
+        "password": "merchant",
+        "userType": "merchant",
+        "id": 1
+      },
+      "time": DateTime.now().toIso8601String(),
+      "questionId": widget.questionID,
+      "id": numAnswers
+    });
+    request.headers.addAll(headers);
+
+    request.send();
+
+    //StreamedResponse response = await request.send();
+
+    //if (response.statusCode == 200) {
+    //  print(await response.stream.bytesToString());
+    //}
+    //else {
+    //  print(response.reasonPhrase);
+    //}
+
   }
 
   Future<List<Question>> getQuestions() async {
