@@ -23,8 +23,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore ./backend
+      run: dotnet restore ./backend/backend.csproj
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build ./backend/backend.csproj --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test ./backend/backend.csproj --no-build --verbosity normal
