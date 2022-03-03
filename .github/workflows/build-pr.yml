@@ -1,8 +1,11 @@
 name: Build Service - PR
 
+
 on:
   pull_request:
     branches: [ development ]
+    paths: 
+     - 'backend/**'
     
   # on demand builds  
   workflow_dispatch:
