@@ -3,11 +3,11 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY CSI5112-Project/backend/*.csproj ./CSI5112-Project/backend/
+COPY backend/*.csproj ./backend
 RUN dotnet restore
 
 # Copy everything else and build
-COPY CSI5112-Project/backend/. ./CSI5112-Project/backend/
+COPY backend/. ./backend
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
