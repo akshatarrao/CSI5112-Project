@@ -21,8 +21,8 @@ jobs:
     - name: Docker build and push
       uses: docker/build-push-action@v2
       with:
-        context: .
-        file: ./Dockerfile
+        context: ${{ env.GITHUB_REPOSITORY }}
+        file: ${{ env.GITHUB_REPOSITORY }}/Dockerfile
         tags: akshatarrao/csi5112-project:latest
         push: true
     
