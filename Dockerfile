@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
-WORKDIR /app
+WORKDIR /app/CSI5112-Project
 
 # Copy csproj and restore as distinct layers
 COPY backend/*.csproj ./backend
