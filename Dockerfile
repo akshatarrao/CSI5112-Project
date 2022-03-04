@@ -15,3 +15,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app/backend
 COPY --from=build-env /app/backend/out .
 ENTRYPOINT ["dotnet", "backend.dll"]
+
