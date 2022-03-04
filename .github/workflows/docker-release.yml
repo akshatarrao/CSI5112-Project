@@ -21,8 +21,8 @@ jobs:
     - name: Docker build and push
       uses: docker/build-push-action@v2
       with:
-        context: ${{ runner.workspace }}/backend
-        file: ${{ runner.workspace }}/backend/Dockerfile
+        context: ${{ env.GITHUB_WORKSPACE }}/backend
+        file: ${{ env.GITHUB_WORKSPACE }}/backend/Dockerfile
         tags: akshatarrao/csi5112-project:latest
         push: true
     
