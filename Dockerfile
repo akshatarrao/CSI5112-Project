@@ -3,7 +3,10 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
 WORKDIR /app/backend
 
 # Copy csproj and restore as distinct layers
+RUN ls
 COPY *.csproj ./
+RUN pwd
+RUN ls
 RUN dotnet restore
 
 # Copy everything else and build
