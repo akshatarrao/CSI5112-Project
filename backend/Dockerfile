@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
-WORKDIR /app
+WORKDIR /source
 
 # Copy csproj and restore as distinct layers
-COPY *.csproj ./
+COPY CSI5112-Project/backend/*.csproj ./CSI5112-Project/backend/
 RUN dotnet restore
 
 # Copy everything else and build
-COPY ./ ./
+COPY CSI5112-Project/backend/. ./CSI5112-Project/backend/
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
