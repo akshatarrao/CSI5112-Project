@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:faker/faker.dart';
 
 class Item {
-  final String name;
-  final double price;
-  final String category;
-  final String description;
-  final String imageUrl;
+  late String name;
+  late double price;
+  late String category;
+  late String description;
+  late String imageUrl;
 
   Item(
       {required this.category,
@@ -23,7 +23,7 @@ class Item {
   static getDefaultFakeData() {
     var faker = Faker();
     return List<Item>.generate(
-        10,
+            10,
             (i) => Item(
                 imageUrl: 'https://picsum.photos/250?image=' +
                     Random().nextInt(250).toString(),
@@ -33,7 +33,7 @@ class Item {
                 description: faker.lorem.sentence())) +
         List<Item>.generate(
             10,
-                (i) => Item(
+            (i) => Item(
                 imageUrl: 'https://picsum.photos/250?image=' +
                     Random().nextInt(250).toString(),
                 name: faker.vehicle.model(),
@@ -49,5 +49,19 @@ class Item {
                 price: _generateRandomDecimal(20),
                 category: "Sport equipment",
                 description: faker.lorem.sentence()));
+  }
+
+  Item.fromJson(Map<String, dynamic> json) {
+    category = json['category'];
+    price = json['price'];
+    description = json['description'];
+    name = json['name'];
+    imageUrl = json['imageUrl'];
+    Item(
+        category: category,
+        name: name,
+        description: description,
+        price: price,
+        imageUrl: imageUrl);
   }
 }

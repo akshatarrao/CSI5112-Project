@@ -1,6 +1,7 @@
 // ignore_for_file: sized_box_for_whitespace
 // It is easier for type check to pass if we just use containers
 
+import 'dart:convert';
 
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
@@ -16,6 +17,7 @@ import 'package:printing/printing.dart';
 import '../component/centered_text.dart';
 import '../component/theme_data.dart';
 import 'customer_home.dart';
+import 'package:http/http.dart' as http;
 
 // The state values are not intended to be final
 //ignore: must_be_immutable
@@ -59,8 +61,25 @@ class ItemList extends StatefulWidget {
 }
 
 class _ItemListState extends State<ItemList> {
-  final items = Item.getDefaultFakeData();
-  // states
+  //final items = Item.getDefaultFakeData();
+  final List<Item> items = List<Item>.empty(growable: true);
+
+  fetchItems() async {
+    var url = Uri.parse('https://localhost:7156/api/Item?page=0&per_page=10');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var itemsJson = json.decode(response.body);
+      for (var item in itemsJson) {
+        items.add(Item.fromJson(item));
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    fetchItems();
+    super.initState();
+  }
 
   int perPage = 10;
   bool isReviewStage = false;
@@ -116,7 +135,7 @@ class _ItemListState extends State<ItemList> {
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Column(
-                children: [
+              children: [
                 buildHeader(),
                 !(isReviewStage || widget.isInvoice)
                     ? CupertinoSearchTextField(
@@ -399,6 +418,7 @@ class _ItemListState extends State<ItemList> {
         ));
   }
 }
+
 // Build card item
 class ListItem extends StatefulWidget {
   const ListItem(
@@ -424,7 +444,6 @@ class ListItem extends StatefulWidget {
 }
 
 class _ListItem extends State<ListItem> {
-
   @override
   Widget build(BuildContext context) {
     return buildCard(context);

@@ -81,11 +81,10 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                       invoiceTime: order.orderDate,
                                       isInvoice: true,
                                       selectedItems: {
+                                        Item.getDefaultFakeData()[1]: 2,
                                         Item.getDefaultFakeData()[1]: 2
                                       },
-                                      total:
-                                          Item.getDefaultFakeData()[1].price *
-                                              2,
+                                      total: order.amount,
                                       user: User.getRandomUser(),
                                       orderId: order.orderId.toString(),
                                     ),
