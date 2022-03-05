@@ -17,11 +17,11 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     steps:
+    - working-directory: ./frontend
     - uses: actions/checkout@v2
     - uses: subosito/flutter-action@v2
       with:
         channel: 'stable' # or: 'beta' or 'master'
-        working-directory: ./frontend
     - run: flutter --version
     - run: flutter pub get
     #- run: flutter test
