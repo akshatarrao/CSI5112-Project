@@ -62,10 +62,11 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   //final items = Item.getDefaultFakeData();
-  final List<Item> items = List<Item>.empty(growable: true);
+  late Future<List<Item>> items;
 
-  fetchItems() async {
+  Future<List<Item>> fetchItems() async {
     var url = Uri.parse('https://localhost:7156/api/Item?page=0&per_page=10');
+    List<Item> items = [];
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var itemsJson = json.decode(response.body);
@@ -73,12 +74,13 @@ class _ItemListState extends State<ItemList> {
         items.add(Item.fromJson(item));
       }
     }
+    return items;
   }
 
   @override
   void initState() {
-    fetchItems();
     super.initState();
+    items = fetchItems();
   }
 
   int perPage = 10;
@@ -128,6 +130,15 @@ class _ItemListState extends State<ItemList> {
         : screenWidth >= 800
             ? 2
             : 1;
+    return FutureBuilder(future: items,builder: (context, snapshot) {
+      if (snapshot.hasData == false) {
+        return const CircularProgressIndicator();
+      }
+      return mainAppWidget(countWidth);
+    });
+  }
+
+  MaterialApp mainAppWidget(int countWidth) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -180,7 +191,7 @@ class _ItemListState extends State<ItemList> {
             // if the user is not actively selecting items, we just display what they already selected
             (isReviewStage || widget.isInvoice
                         ? getMinSelectedItems().keys.toList()
-                        : items)
+                        : items as List<Item>)
                     .sublist(
                         0,
                         isReviewStage || widget.isInvoice
@@ -199,7 +210,7 @@ class _ItemListState extends State<ItemList> {
                 [
                   Center(
                     // This button can only be shown on the first selecting page
-                    child: perPage < items.length &&
+                    child: perPage < (items as List<Item>).length &&
                             (!isReviewStage && !widget.isInvoice)
                         ? buildLoadButton()
                         // Empty placeholder to prevent itemList change grid
