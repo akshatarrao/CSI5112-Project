@@ -21,6 +21,7 @@ jobs:
     - uses: subosito/flutter-action@v2
       with:
         channel: 'stable' # or: 'beta' or 'master'
+        working-directory: ./frontend
     - run: flutter --version
     - run: flutter pub get
     #- run: flutter test
