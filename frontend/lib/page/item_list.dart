@@ -2,6 +2,7 @@
 // It is easier for type check to pass if we just use containers
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
@@ -62,25 +63,29 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   //final items = Item.getDefaultFakeData();
-  late Future<List<Item>> items;
+    List<Item> items=<Item>[Item(category: "category", name: "nullFlagHackItem", description: "description", price: 0, imageUrl: "imageUrl")];
 
-  Future<List<Item>> fetchItems() async {
+  void fetchItems() async {
+    List<Item> fetchedItems = [];
     var url = Uri.parse('https://localhost:7156/api/Item?page=0&per_page=10');
-    List<Item> items = [];
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var itemsJson = json.decode(response.body);
       for (var item in itemsJson) {
-        items.add(Item.fromJson(item));
+        fetchedItems.add(Item.fromJson(item));
       }
+      setState(() {
+        items = fetchedItems;
+      });
     }
-    return items;
   }
 
   @override
   void initState() {
+    fetchItems();
     super.initState();
-    items = fetchItems();
+
+
   }
 
   int perPage = 10;
@@ -122,6 +127,12 @@ class _ItemListState extends State<ItemList> {
 
   @override
   Widget build(BuildContext context) {
+    // Since fetch is done async and Future is just not woking. I hacked
+    // the items to have a default value and use that as a flag to check
+    // if the value is retrived to avoid out of range loading error
+    if(items.first.name=="nullFlagHackItem"){
+      return const Text("Loading");
+    }
     widget.selectedItems = widget.selectedItems;
     widget.user = widget.user;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -130,15 +141,6 @@ class _ItemListState extends State<ItemList> {
         : screenWidth >= 800
             ? 2
             : 1;
-    return FutureBuilder(future: items,builder: (context, snapshot) {
-      if (snapshot.hasData == false) {
-        return const CircularProgressIndicator();
-      }
-      return mainAppWidget(countWidth);
-    });
-  }
-
-  MaterialApp mainAppWidget(int countWidth) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -191,7 +193,7 @@ class _ItemListState extends State<ItemList> {
             // if the user is not actively selecting items, we just display what they already selected
             (isReviewStage || widget.isInvoice
                         ? getMinSelectedItems().keys.toList()
-                        : items as List<Item>)
+                        : items)
                     .sublist(
                         0,
                         isReviewStage || widget.isInvoice
@@ -210,7 +212,7 @@ class _ItemListState extends State<ItemList> {
                 [
                   Center(
                     // This button can only be shown on the first selecting page
-                    child: perPage < (items as List<Item>).length &&
+                    child: perPage < items.length &&
                             (!isReviewStage && !widget.isInvoice)
                         ? buildLoadButton()
                         // Empty placeholder to prevent itemList change grid
