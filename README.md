@@ -28,5 +28,7 @@
   
   
 See [Frontend README](https://github.com/AadityaOfficial/CSI5112-Project/blob/development/frontend/README.md) for details
+  
+See [Backend README](https://github.com/akshatarrao/CSI5112-Project/blob/development/backend/README.md) for details
 
-Backend, Database and CI READMEs are currently under construction 
+Database and CI READMEs are currently under construction 
