@@ -58,27 +58,27 @@ public class OrderHistoryIntegrationtests : IClassFixture<WebApplicationFactory<
 
 
 
-    
-    [Fact]
-    public async void GetOrderHistoryByID()
-    {
-         var response = await client.GetAsync("/api/orderHistory/1");
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        
-        response.Content.ReadAsStringAsync().Result.Should().Contain("40").And.NotContain("55.2").And.NotContain("20.5");
-    }
-
-
-
-    
-
-
-        [Fact]
-    public async void GetFail()
-    {
-        var response = await client.GetAsync("/api/orderHistory/999");
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        }
+//
+//    [Fact]
+//    public async void GetOrderHistoryByID()
+//    {
+//         var response = await client.GetAsync("/api/orderHistory/1");
+//        response.StatusCode.Should().Be(HttpStatusCode.OK);
+//
+//        response.Content.ReadAsStringAsync().Result.Should().Contain("40").And.NotContain("55.2").And.NotContain("20.5");
+//    }
+//
+//
+//
+//
+//
+//
+//        [Fact]
+//    public async void GetFail()
+//    {
+//        var response = await client.GetAsync("/api/orderHistory/999");
+//        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+//        }
 
             [Fact]
     public async void Post()
