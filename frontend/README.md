@@ -1,4 +1,4 @@
-# csi5112_project
+# csi5112_project frontend
 
 ## Getting Started
 
