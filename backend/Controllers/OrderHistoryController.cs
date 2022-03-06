@@ -14,13 +14,19 @@ public class OrderHistoryController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<OrderHistory>>> Get([FromQuery] int page = 0, int per_page=50) {
-        return await _orderHistoryView.GetAsync(page,per_page);
+    public async Task<ActionResult<List<OrderHistory>>> Get([FromQuery] int page = 0, int per_page=50, long userId=-1) {
+        if(userId == -1){
+            return BadRequest();
+        }
+        return await _orderHistoryView.GetAsync(page,per_page,userId);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<OrderHistory>> GetById( Int64 id) {
-        var orderHistory = await _orderHistoryView.GetByIdAsync(id);
+    public async Task<ActionResult<OrderHistory>> GetById( Int64 id, [FromQuery] long userId=-1) {
+        if (userId==-1){
+            return BadRequest();
+        }
+        var orderHistory = await _orderHistoryView.GetByIdAsync(id, userId);
         return orderHistory.id == OrderHistory.NoOrderHistory.id ? NotFound() : orderHistory;
     }
 

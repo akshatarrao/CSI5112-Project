@@ -13,20 +13,32 @@ public class OrderHistoryView
         orderHistorys.Add(orderHistory);
     }
 
-    public async Task<List<OrderHistory>> GetAsync(int page,int per_page)
+    public async Task<List<OrderHistory>> GetAsync(int page,int per_page,long userId)
     {
+        List<OrderHistory> filteredOrderHistory;
+
+        User user = await new UserView().GetByIdAsync(userId);
+         if (user.userType == UserType.buyer){
+            filteredOrderHistory = new List<OrderHistory>(orderHistorys.Where(x => x.user.id==userId));
+        }else{
+            filteredOrderHistory = orderHistorys;
+        }
 
         if (per_page*(page+1)>= orderHistorys.Count){
-            return new List<OrderHistory>(orderHistorys.Skip(per_page*page));
+             return new List<OrderHistory>(filteredOrderHistory.Skip(per_page*page));
         }
-        return orderHistorys.GetRange(per_page*page,per_page);
+        return  filteredOrderHistory.GetRange(per_page*page,per_page);
+
+
     }
 
-    public async Task<OrderHistory> GetByIdAsync(long id)
+    public async Task<OrderHistory> GetByIdAsync(long id, long userId)
     {
             
         var filteredOrderHistorys = orderHistorys.Where(x => x.id == id);
-        return filteredOrderHistorys.Count() > 0 ? filteredOrderHistorys.First() : OrderHistory.NoOrderHistory;
+
+
+        return filteredOrderHistorys.Count() > 0 && (filteredOrderHistorys.First().user.id==userId || (await new UserView().GetByIdAsync(userId)).userType == UserType.merchant)? filteredOrderHistorys.First() : OrderHistory.NoOrderHistory;
     }
 
 

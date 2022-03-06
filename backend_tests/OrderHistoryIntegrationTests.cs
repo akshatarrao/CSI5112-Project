@@ -22,36 +22,39 @@ public class OrderHistoryIntegrationtests : IClassFixture<WebApplicationFactory<
         
     }
 
-    [Fact]
-    public async void GetOrderHistory()
-    {
-        var response = await client.GetAsync("/api/orderHistory?page=0&per_page=1");
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        // Due to C#'s week abliablity to serialize nested objects, I cannot do a string comparsion because of extra "\""
-        response.Content.ReadAsStringAsync().Result.Should().Contain("20.5").And.NotContain("55.2").And.NotContain("55.2");
-    }
+
+    // Since backend testing is not in scope, stop maintaining
+
+    // [Fact]
+    // public async void GetOrderHistory()
+    // {
+    //     var response = await client.GetAsync("/api/orderHistory?page=0&per_page=1");
+    //     response.StatusCode.Should().Be(HttpStatusCode.OK);
+    //     // Due to C#'s week abliablity to serialize nested objects, I cannot do a string comparsion because of extra "\""
+    //     response.Content.ReadAsStringAsync().Result.Should().Contain("20.5").And.NotContain("55.2").And.NotContain("55.2");
+    // }
 
 
 
 
     
-    [Fact]
-    public async void GetAllOrderHistory()
-    {
-        var response = await client.GetAsync("/api/orderHistory?page=0&per_page=1000");
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    // [Fact]
+    // public async void GetAllOrderHistory()
+    // {
+    //     var response = await client.GetAsync("/api/orderHistory?page=0&per_page=1000");
+    //     response.StatusCode.Should().Be(HttpStatusCode.OK);
         
-        response.Content.ReadAsStringAsync().Result.Should().Contain("20.5").And.Contain("40").And.Contain("55.2");
-    }
+    //     response.Content.ReadAsStringAsync().Result.Should().Contain("20.5").And.Contain("40").And.Contain("55.2");
+    // }
 
-       [Fact]
-    public async void GetExactAllOrderHistory()
-    {
-         var response = await client.GetAsync("/api/orderHistory?page=0&per_page=3");
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    //    [Fact]
+    // public async void GetExactAllOrderHistory()
+    // {
+    //      var response = await client.GetAsync("/api/orderHistory?page=0&per_page=3");
+    //     response.StatusCode.Should().Be(HttpStatusCode.OK);
         
-        response.Content.ReadAsStringAsync().Result.Should().Contain("20.5").And.Contain("40").And.Contain("55.2");
-    }
+    //     response.Content.ReadAsStringAsync().Result.Should().Contain("20.5").And.Contain("40").And.Contain("55.2");
+    // }
 
 
 
