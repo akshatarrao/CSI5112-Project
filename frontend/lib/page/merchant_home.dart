@@ -1,5 +1,6 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:csi5112_frontend/dataModel/model.dart';
+import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/page/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,8 +15,9 @@ import 'order_history.dart';
 class MerchantPage extends StatefulWidget {
   static const routeName = '/merchant';
   Widget? redirected;
+  User currentUser;
 
-  MerchantPage({Key? key, this.redirected}) : super(key: key);
+  MerchantPage({Key? key, this.redirected, required this.currentUser}) : super(key: key);
 
   @override
   _MerchantPageState createState() => _MerchantPageState();
@@ -117,9 +119,9 @@ class _MerchantPageState extends State<MerchantPage>
   Widget _getbody(BuildContext context, MenuItem menuItem) {
     switch (menuItem.menuName) {
       case 'Order History':
-        return OrderHistoryPage(isCustomer: false);
+        return OrderHistoryPage(isCustomer: false, currentUser: widget.currentUser);
       case 'Discussion forum':
-        return DiscussionForum(isCustomer: false);
+        return DiscussionForum(isCustomer: false,currentUser: widget.currentUser);
       case 'Modify Items':
         return ProductPage();
       default:

@@ -3,21 +3,27 @@ import 'package:faker/faker.dart';
 // Mock users
 class User {
   final String name;
+  final String password;
+  final String userType;
+  final int id;
 
-  User({required this.name});
+  User({required this.name,required this.password,required this.userType,required this.id});
 
-  static getRandomUser() {
-    Faker faker = Faker();
-    return User(name: faker.internet.userName());
+  static List<User> fromListJson(List<dynamic> json) {
+    List<User> result = <User>[];
+    for(Map<String, dynamic> d in json) {
+      result.add(User.fromJson(d));
+    }
+    return result;
   }
 
-  static getDefaultUser(bool isMerchant) {
-    return isMerchant
-        ? {
-            'merchant@gmail.com': 'merchant',
-          }
-        : {
-            'admin@gmail.com': 'admin',
-          };
+    factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      name:json['username'],
+      password: json['password'],
+      userType: json['userType'],
+      id:json['id']
+    );
   }
+
 }

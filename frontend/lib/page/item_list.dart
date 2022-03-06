@@ -47,14 +47,14 @@ class ItemList extends StatefulWidget {
   State<StatefulWidget> createState() => _ItemListState();
 
   /// Easy way to get clean state page with default inputs
-  static ItemList getDefaultEmptyPage() {
+  static ItemList getDefaultEmptyPage(User user) {
     return ItemList(
       // {} is changing
       //ignore: prefer_const_literals_to_create_immutables
       selectedItems: {},
       total: 0,
       isInvoice: false,
-      user: User.getRandomUser(),
+      user: user,
       invoiceTime: DateTime.fromMillisecondsSinceEpoch(0),
       orderId: "",
     );
@@ -290,7 +290,8 @@ class _ItemListState extends State<ItemList> {
         onPressed: () {
           Navigator.of(context).pushReplacement(FadePageRoute(
             builder: (context) => MyHomePage(
-              redirected: ItemList.getDefaultEmptyPage(),
+              redirected: ItemList.getDefaultEmptyPage(widget.user),
+              currentUser: widget.user,
             ),
             settings: const RouteSettings(name: ItemList.routeName),
           ));

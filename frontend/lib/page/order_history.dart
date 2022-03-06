@@ -18,8 +18,9 @@ import 'item_list.dart';
 //ignore: must_be_immutable
 class OrderHistoryPage extends StatefulWidget {
   bool isCustomer;
+  User currentUser;
 
-  OrderHistoryPage({Key? key, required this.isCustomer}) : super(key: key);
+  OrderHistoryPage({Key? key, required this.isCustomer, required this.currentUser}) : super(key: key);
 
   @override
   _OrderHistoryPageState createState() => _OrderHistoryPageState();
@@ -29,7 +30,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   List<OrderHistory> orders = List<OrderHistory>.empty(growable: true);
 
   fetchOrders() async {
-    var url = Uri.parse('https://localhost:7156/api/OrderHistory');
+    int userId = widget.currentUser.id;
+    var url = Uri.parse('https://localhost:7156/api/OrderHistory?userId='+ "$userId");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var ordersJson = json.decode(response.body);
@@ -77,6 +79,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                           Navigator.of(context).pushReplacement(FadePageRoute(
                             builder: (context) => widget.isCustomer
                                 ? MyHomePage(
+                              currentUser: widget.currentUser,
                                     redirected: ItemList(
                                       invoiceTime: order.orderDate,
                                       isInvoice: true,
@@ -85,11 +88,12 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                         Item.getDefaultFakeData()[1]: 2
                                       },
                                       total: order.amount,
-                                      user: User.getRandomUser(),
+                                      user:  widget.currentUser,
                                       orderId: order.orderId.toString(),
                                     ),
                                   )
                                 : MerchantPage(
+                                    currentUser: widget.currentUser,
                                     redirected: ItemList(
                                       invoiceTime: order.orderDate,
                                       isInvoice: true,
@@ -99,7 +103,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                       total:
                                           Item.getDefaultFakeData()[1].price *
                                               2,
-                                      user: User.getRandomUser(),
+                                      user:  widget.currentUser,
                                       orderId: order.orderId.toString(),
                                     ),
                                   ),

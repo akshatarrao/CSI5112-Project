@@ -1,5 +1,6 @@
 import 'package:avatars/avatars.dart';
 import 'package:csi5112_frontend/dataModel/question.dart';
+import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/page/answer_page.dart';
 import 'package:csi5112_frontend/page/customer_home.dart';
 import 'package:csi5112_frontend/page/merchant_home.dart';
@@ -17,8 +18,9 @@ int numQuestions = 0;
 class DiscussionForum extends StatefulWidget {
   bool isCustomer;
   String searchPhrase;
+  User currentUser;
 
-  DiscussionForum({Key? key, required this.isCustomer, this.searchPhrase = ""}) : super(key: key);
+  DiscussionForum({Key? key, required this.isCustomer, this.searchPhrase = "", required this.currentUser}) : super(key: key);
 
   @override
   State<DiscussionForum> createState() => _DiscussionForumState();
@@ -63,7 +65,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AnswerPage(questions[index].id)),
+                                AnswerPage(questions[index].id,widget.currentUser)),
                       );
                     },
                     child: Padding(
@@ -131,8 +133,8 @@ Widget searchRow() {
               Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => isCustomer
-                            ? MyHomePage(redirected: DiscussionForum(isCustomer: isCustomer, searchPhrase: searchValue))
-                            : MerchantPage(redirected: DiscussionForum(isCustomer: isCustomer, searchPhrase: searchValue))
+                            ? MyHomePage(currentUser:widget.currentUser,redirected: DiscussionForum(isCustomer: isCustomer, searchPhrase: searchValue, currentUser:widget.currentUser))
+                            : MerchantPage(currentUser:widget.currentUser,redirected: DiscussionForum(isCustomer: isCustomer, searchPhrase: searchValue,currentUser:widget.currentUser))
                           )
               );
           })
@@ -215,8 +217,8 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
             Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => isCustomer
-                          ? MyHomePage(redirected: DiscussionForum(isCustomer: isCustomer))
-                          : MerchantPage(redirected: DiscussionForum(isCustomer: isCustomer))
+                          ? MyHomePage(redirected: DiscussionForum(isCustomer: isCustomer,currentUser:widget.currentUser),currentUser:widget.currentUser)
+                          : MerchantPage(redirected: DiscussionForum(isCustomer: isCustomer,currentUser:widget.currentUser),currentUser:widget.currentUser)
                         )
             );              
           },
@@ -246,14 +248,15 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
     };
 
     var request = Request('POST', Uri.parse('https://localhost:7156/api/question'));
+    User user = widget.currentUser;
     request.body = json.encode({
         "title": qTitle,
         "description": qDescription,
         "user": {
-          "username": "admin@gmail.com",
-          "password": "admin",
-          "userType": "buyer",
-          "id": 0
+          "username": user.name,
+          "password": user.password,
+          "userType": user.userType,
+          "id": user.id
         },
         "time": DateTime.now().toIso8601String(),
         "replies": 0,

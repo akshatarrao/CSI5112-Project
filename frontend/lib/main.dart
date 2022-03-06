@@ -7,6 +7,8 @@ import 'package:csi5112_frontend/util/transition_route_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'dataModel/user.dart';
+
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
@@ -69,9 +71,9 @@ class MyApp extends StatelessWidget {
       // The application's top-level routing table.
       routes: {
         LoginScreen.routeName: (context) => const LoginScreen(),
-        ItemList.routeName: (context) => ItemList.getDefaultEmptyPage(),
-        MyHomePage.routeName: (context) => MyHomePage(),
-        MerchantPage.routeName: (context) => MerchantPage(),
+        ItemList.routeName: (context) => ItemList.getDefaultEmptyPage(User(name: "fake", password: "fake", userType: "hh",id:-1)),
+        MyHomePage.routeName: (context) => MyHomePage(currentUser: User(name: "fake", password: "fake", userType: "hh",id:-1)),
+        MerchantPage.routeName: (context) => MerchantPage(currentUser: User(name: "fake", password: "fake", userType: "hh",id:-1)),
       },
     );
   }

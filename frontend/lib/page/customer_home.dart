@@ -1,5 +1,6 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:csi5112_frontend/dataModel/model.dart';
+import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,8 +15,9 @@ import 'order_history.dart';
 class MyHomePage extends StatefulWidget {
   static const routeName = '/home';
   Widget? redirected;
+  User currentUser;
 
-  MyHomePage({Key? key, this.redirected}) : super(key: key);
+  MyHomePage({Key? key, this.redirected, required this.currentUser}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -117,15 +119,16 @@ class _MyHomePageState extends State<MyHomePage>
   Widget _getbody(BuildContext context, MenuItem menuItem) {
     switch (menuItem.menuName) {
       case 'Items List':
-        return ItemList.getDefaultEmptyPage();
+        return ItemList.getDefaultEmptyPage(widget.currentUser);
       case 'Order History':
         return OrderHistoryPage(
           isCustomer: true,
+          currentUser: widget.currentUser,
         );
       case 'Discussion forum':
-        return DiscussionForum(isCustomer: true);
+        return DiscussionForum(isCustomer: true,currentUser: widget.currentUser);
       default:
-        return ItemList.getDefaultEmptyPage();
+        return ItemList.getDefaultEmptyPage(widget.currentUser);
     }
   }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:avatars/avatars.dart';
 import 'package:csi5112_frontend/dataModel/answer.dart';
 import 'package:csi5112_frontend/dataModel/question.dart';
+import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart';
@@ -13,8 +14,9 @@ int numAnswers = 0;
 
 class AnswerPage extends StatefulWidget {
   final int questionID;
+  final User currentUser;
 
-  const AnswerPage(this.questionID, {Key? key}) : super(key: key);
+  const AnswerPage(this.questionID, this.currentUser,{Key? key}) : super(key: key);
 
   @override
   State<AnswerPage> createState() => _AnswerPageState();
@@ -23,6 +25,7 @@ class AnswerPage extends StatefulWidget {
 class _AnswerPageState extends State<AnswerPage> {
   late Future<List<Question>> futureQuestions;
   late Future<List<Answer>> futureAnswers;
+
 
   //List<Question> questions = Question.getFakeQuestionData();
   //List<Answer> answers = Answer.getFakeAnswerData();
@@ -164,7 +167,7 @@ Widget newAnswerRow(BuildContext context) {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
-                                        AnswerPage(widget.questionID)),
+                                        AnswerPage(widget.questionID, widget.currentUser)),
                                   );              
                                 },
                                 child: const Text('Submit'),
@@ -186,14 +189,15 @@ void postAnswer(String aDescription) {
     };
 
     var request = Request('POST', Uri.parse('https://localhost:7156/api/answer'));
+    User user = widget.currentUser;
     request.body = json.encode({
       "answer": aDescription,
       "user": {
-        "username": "merchant@gmail.com",
-        "password": "merchant",
-        "userType": "merchant",
-        "id": 1
-      },
+          "username": user.name,
+          "password": user.password,
+          "userType": user.userType,
+          "id": user.id
+        },
       "time": DateTime.now().toIso8601String(),
       "questionId": widget.questionID,
       "id": numAnswers
