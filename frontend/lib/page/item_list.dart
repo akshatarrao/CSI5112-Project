@@ -2,7 +2,6 @@
 // It is easier for type check to pass if we just use containers
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
@@ -131,7 +130,7 @@ class _ItemListState extends State<ItemList> {
     // the items to have a default value and use that as a flag to check
     // if the value is retrived to avoid out of range loading error
     if(items.first.name=="nullFlagHackItem"){
-      return const Text("Loading");
+      return const CircularProgressIndicator();
     }
     widget.selectedItems = widget.selectedItems;
     widget.user = widget.user;

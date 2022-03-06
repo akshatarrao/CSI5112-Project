@@ -31,7 +31,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
 
   fetchOrders() async {
     int userId = widget.currentUser.id;
-    var url = Uri.parse('https://localhost:7156/api/OrderHistory?userId='+ "$userId");
+    var url = Uri.parse('https://localhost:7156/api/OrderHistory?userId='"$userId");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var ordersJson = json.decode(response.body);

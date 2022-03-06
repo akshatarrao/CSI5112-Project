@@ -1,6 +1,3 @@
-import 'package:faker/faker.dart';
-
-// Mock users
 class User {
   final String name;
   final String password;
