@@ -19,6 +19,7 @@ public class Item
         this.id = id;
         this.price = price;
     }
+    //     Its just a fancy version of null which is easier for type checking
     public static readonly  Item NoItem = new Item(-1,"", "", "","",0.0);
     public static List<Item> GetFakeData()
     {

@@ -1,5 +1,6 @@
 namespace backend.Models;
 
+// Enum support in C# is horrible. Fake Enum this way
 public static class UserType
 {
     public static readonly string buyer ="buyer";
@@ -17,11 +18,12 @@ public class User
     
     public User(string username, string password, string userType, Int64 id) {
         this.username = username;
+//        horrible security practice, but since user auth is out of scope, plain text password will do.
         this.password = password;
         this.userType = userType;
         this.id = id;
     }
-
+//     Its just a fancy version of null which is easier for type checking
     public static readonly  User NoUser = new User("", "", UserType.buyer, -1);
     public static List<User> GetFakeData()
     {

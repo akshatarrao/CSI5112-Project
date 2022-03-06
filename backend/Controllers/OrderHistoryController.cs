@@ -16,6 +16,8 @@ public class OrderHistoryController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<OrderHistory>>> Get([FromQuery] int page = 0, int per_page=50, long userId=-1) {
         if(userId == -1){
+//         Ensure userId is used for privacy control.
+//  Obviously this is easy to hack, but since login and sessions controls are not in the scope of the project. This is good enough
             return BadRequest();
         }
         return await _orderHistoryView.GetAsync(page,per_page,userId);

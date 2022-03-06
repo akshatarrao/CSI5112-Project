@@ -23,7 +23,7 @@ public class OrderHistory
         this.items =items;
         this.user=user;
     }
-
+//     Its just a fancy version of null which is easier for type checking
     public static readonly  OrderHistory NoOrderHistory = new OrderHistory(false, 0, DateTime.MinValue,"",-1, User.NoUser);
     public static List<OrderHistory> GetFakeData()
     {

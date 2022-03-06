@@ -19,7 +19,7 @@ public class Answer
         this.time = time;
         this.questionId =questionId;
     }
-
+//     Its just a fancy version of null which is easier for type checking
     public static readonly  Answer NoAnswer = new Answer("", User.NoUser, DateTime.MinValue, -1,-1);
     public static List<Answer> GetFakeData()
     {

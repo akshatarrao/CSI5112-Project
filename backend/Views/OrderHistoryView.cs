@@ -16,7 +16,7 @@ public class OrderHistoryView
     public async Task<List<OrderHistory>> GetAsync(int page,int per_page,long userId)
     {
         List<OrderHistory> filteredOrderHistory;
-
+//         complex logic due to user filter
         User user = await new UserView().GetByIdAsync(userId);
          if (user.userType == UserType.buyer){
             filteredOrderHistory = new List<OrderHistory>(orderHistorys.Where(x => x.user.id==userId));

@@ -21,6 +21,7 @@ public class QuestionController : ControllerBase
 
         [HttpGet("__search__/{search_key}")]
     public async Task<List<Question>> Get(string search_key, [FromQuery] int page = 0,int per_page=50) {
+//    Use __X__ format to indicate action
         return await _questionView.GetAsync(page,per_page,search_key);
     }
 

@@ -15,6 +15,7 @@ public class QuestionView
 
     public async Task<List<Question>> GetAsync(int page,int per_page, string? search)
     {
+//     non-search call is just a empty string search
         var filteredQuestions = new List<Question>(questions);
         if(search!=null){
              filteredQuestions = new List<Question>(questions.Where(x => x.description.Contains(search)|| x.title.Contains(search)));

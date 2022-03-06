@@ -15,17 +15,20 @@ public class AnswerController : ControllerBase
 
     [HttpGet]
     public async Task<List<Answer>> Get( [FromQuery] int page = 0,int per_page=50) {
+//     Default to 50 items per page, but can be overrided up to frontend devs
         return await _answerView.GetAsync(page,per_page);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Answer>> GetById(Int64 id) {
         var answer = await _answerView.GetByIdAsync(id);
+//      Use specially defined no answer to determine return
         return answer.id == Answer.NoAnswer.id ? NotFound() : answer;
     }
 
         [HttpGet("__question__")]
     public async Task<ActionResult<List<Answer>>> GetByQuestionId([FromQuery] int question_id) {
+//    use __X__ format to link different objects
         return await _answerView.GetByQuestionIdAsync(question_id);
         
     }

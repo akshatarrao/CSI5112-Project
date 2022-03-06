@@ -16,6 +16,7 @@ public class AnswerView
     public async Task<List<Answer>> GetAsync(int page,int per_page)
     {
         if (per_page*(page+1)>= answers.Count){
+//        Handle out of range list error
             return new List<Answer>(answers.Skip(per_page*page));
         }
         return answers.GetRange(per_page*page,per_page);
