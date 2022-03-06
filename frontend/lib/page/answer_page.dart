@@ -214,7 +214,7 @@ void postAnswer(String aDescription) {
   }
 
   Future<List<Question>> getQuestions() async {
-    final response = await get(Uri.parse('https://127.0.0.1:7156/api/question'));
+    final response = await get(Uri.parse('https://localhost:7156/api/question'));
     
     if(response.statusCode == 200) {
       return Question.fromListJson(jsonDecode(response.body));
@@ -225,7 +225,7 @@ void postAnswer(String aDescription) {
   }
 
   Future<List<Answer>> getAnswers() async {
-    final response = await get(Uri.parse('https://127.0.0.1:7156/api/answer'));
+    final response = await get(Uri.parse('https://localhost:7156/api/answer'));
     
     if(response.statusCode == 200) {
       return Answer.fromListJson(jsonDecode(response.body));

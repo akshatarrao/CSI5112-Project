@@ -277,9 +277,9 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
   Future<List<Question>> getQuestions(String searchPhrase) async {
     final Response response;
     if(searchPhrase == "") {
-      response = await get(Uri.parse('https://127.0.0.1:7156/api/question'));
+      response = await get(Uri.parse('https://localhost:7156/api/question'));
     } else {
-      response = await get(Uri.parse('https://127.0.0.1:7156/api/question/__search__/' + searchPhrase));
+      response = await get(Uri.parse('https://localhost:7156/api/question/__search__/' + searchPhrase));
     }
     
     
