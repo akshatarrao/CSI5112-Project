@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
       // The application's top-level routing table.
       routes: {
         LoginScreen.routeName: (context) => const LoginScreen(),
-        ItemList.routeName: (context) => ItemList.getDefaultEmptyPage(User(name: "fake", password: "fake", userType: "hh",id:-1)),
+        ItemList.routeName: (context) => ItemList.getDefaultEmptyPage(User(name: "fake", password: "fake", userType: "hh",id:-1), false),
         MyHomePage.routeName: (context) => MyHomePage(currentUser: User(name: "fake", password: "fake", userType: "hh",id:-1)),
         MerchantPage.routeName: (context) => MerchantPage(currentUser: User(name: "fake", password: "fake", userType: "hh",id:-1)),
       },
