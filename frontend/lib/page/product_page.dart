@@ -55,7 +55,7 @@ class _ProductPageState extends State<ProductPage> {
   void deleteItem(id) async {
     List<Item> fetchedItems = [];
 
-    var url = Uri.parse('https://localhost:7156/api/Item/', id);
+    var url = Uri.parse('https://localhost:7156/api/Item=' "$id");
     var response = await http.delete(url);
     if (response.statusCode == 200) {
       // var itemsJson = json.decode(response.body);
