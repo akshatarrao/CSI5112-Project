@@ -20,7 +20,9 @@ class OrderHistoryPage extends StatefulWidget {
   bool isCustomer;
   User currentUser;
 
-  OrderHistoryPage({Key? key, required this.isCustomer, required this.currentUser}) : super(key: key);
+  OrderHistoryPage(
+      {Key? key, required this.isCustomer, required this.currentUser})
+      : super(key: key);
 
   @override
   _OrderHistoryPageState createState() => _OrderHistoryPageState();
@@ -31,7 +33,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
 
   fetchOrders() async {
     int userId = widget.currentUser.id;
-    var url = Uri.parse('https://localhost:7156/api/OrderHistory?userId='"$userId");
+    var url =
+        Uri.parse('https://localhost:7156/api/OrderHistory?userId=' "$userId");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var ordersJson = json.decode(response.body);
@@ -59,7 +62,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
             ? 2
             : 1;
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: const Color(0xffE5E5E5),
         body: Container(
@@ -79,7 +81,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                           Navigator.of(context).pushReplacement(FadePageRoute(
                             builder: (context) => widget.isCustomer
                                 ? MyHomePage(
-                              currentUser: widget.currentUser,
+                                    currentUser: widget.currentUser,
                                     redirected: ItemList(
                                       invoiceTime: order.orderDate,
                                       isInvoice: true,
@@ -88,7 +90,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                         Item.getDefaultFakeData()[1]: 2
                                       },
                                       total: order.amount,
-                                      user:  widget.currentUser,
+                                      user: widget.currentUser,
                                       orderId: order.orderId.toString(),
                                     ),
                                   )
@@ -103,7 +105,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                       total:
                                           Item.getDefaultFakeData()[1].price *
                                               2,
-                                      user:  widget.currentUser,
+                                      user: widget.currentUser,
                                       orderId: order.orderId.toString(),
                                     ),
                                   ),

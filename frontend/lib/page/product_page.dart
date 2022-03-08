@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 // The state values are not intended to be final
 //ignore: must_be_immutable
@@ -10,17 +13,70 @@ class ProductPage extends StatefulWidget {
   static const routeName = '/product-setup';
 
   ProductPage({Key? key}) : super(key: key);
-  List<Item> items = Item.getDefaultFakeData();
+  List<Item> itemss = <Item>[
+    Item(
+        category: "category",
+        name: "nullFlagHackItem",
+        description: "description",
+        price: 0,
+        imageUrl: "imageUrl")
+  ];
 
   @override
   _ProductPageState createState() => _ProductPageState();
 }
 
 class _ProductPageState extends State<ProductPage> {
+  List<Item> items = <Item>[
+    Item(
+        category: "category",
+        name: "nullFlagHackItem",
+        description: "description",
+        price: 0,
+        imageUrl: "imageUrl")
+  ];
+
+  void fetchItems() async {
+    List<Item> fetchedItems = [];
+
+    var url = Uri.parse('https://localhost:7156/api/Item?page=0&per_page=10');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var itemsJson = json.decode(response.body);
+      for (var item in itemsJson) {
+        fetchedItems.add(Item.fromJson(item));
+      }
+      setState(() {
+        items = fetchedItems;
+      });
+    }
+  }
+
+  void deleteItem(id) async {
+    List<Item> fetchedItems = [];
+
+    var url = Uri.parse('https://localhost:7156/api/Item/', id);
+    var response = await http.delete(url);
+    if (response.statusCode == 200) {
+      // var itemsJson = json.decode(response.body);
+      // for (var item in itemsJson) {
+      //   fetchedItems.add(Item.fromJson(item));
+      // }
+      fetchItems();
+    }
+  }
+
+  @override
+  void initState() {
+    fetchItems();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    List<Item> products = widget.items;
+    List<Item> products = items;
+
     int countWidth = screenWidth >= 1600
         ? 4
         : screenWidth >= 800
@@ -49,7 +105,7 @@ class _ProductPageState extends State<ProductPage> {
     return GridView(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: countWidth, childAspectRatio: 1.9),
-      children: products.map<Widget>((product) {
+      children: items.map<Widget>((product) {
             return buildCard(product, context);
           }).toList() +
           [buildAddButton(context)],
@@ -164,13 +220,13 @@ class _ProductPageState extends State<ProductPage> {
             height: 40,
             width: 80,
             child: ElevatedButton(
-              child: const Text('Delete'),
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.red,
-                  shadowColor: Colors.white,
-                  shape: const StadiumBorder()),
-              onPressed: () {},
-            ),
+                child: const Text('Delete'),
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.red,
+                    shadowColor: Colors.white,
+                    shape: const StadiumBorder()),
+                onPressed: () => {} //deleteItem()
+                ),
           ),
         ],
       ),

@@ -17,7 +17,8 @@ class MyHomePage extends StatefulWidget {
   Widget? redirected;
   User currentUser;
 
-  MyHomePage({Key? key, this.redirected, required this.currentUser}) : super(key: key);
+  MyHomePage({Key? key, this.redirected, required this.currentUser})
+      : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -28,6 +29,7 @@ class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin, AfterLayoutMixin<MyHomePage> {
   int currentPage = 0;
   late Animation<double> animation;
+
   late AnimationController controller;
   bool isNavigationDrawerOpened = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
@@ -50,24 +52,24 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     // Added so when refressing Discussion Forum Page it gets the correct title
-    widget.redirected is DiscussionForum ? currentPage = 2 : null; 
+    widget.redirected is DiscussionForum ? currentPage = 2 : null;
     // This one doesn't help as as when clicking on an order from the order history page the returned page is not a OrderHistoryPage Class
-    widget.redirected is OrderHistoryPage ? currentPage = 1 : null;  
-
-    return SafeArea(
+    widget.redirected is OrderHistoryPage ? currentPage = 1 : null;
+    return MaterialApp(
+        //use MaterialApp() widget like this
+        home: SafeArea(
       child: Scaffold(
         body: Stack(
           children: <Widget>[
             SideMenu(
-              onMenuItemSelection: (pageIndex) {
-                swipeAnimationKey.currentState?.hideNavigationDrawer();
-                setState(() {
-                  currentPage = pageIndex;
-                });
-              },
-              menuItems: cutomerMenuItems,
-              currentPage: currentPage
-            ),
+                onMenuItemSelection: (pageIndex) {
+                  swipeAnimationKey.currentState?.hideNavigationDrawer();
+                  setState(() {
+                    currentPage = pageIndex;
+                  });
+                },
+                menuItems: cutomerMenuItems,
+                currentPage: currentPage),
             SwipeAnimation(
               key: swipeAnimationKey,
               navigationDrawerOpened: (isOpened) {
@@ -112,7 +114,9 @@ class _MyHomePageState extends State<MyHomePage>
           ],
         ),
       ),
-    );
+    ) //create new widget class for this 'home' to
+        // escape 'No MediaQuery widget found' error
+        );
   }
 
   // intialize the page based on the menu item selected
@@ -126,7 +130,8 @@ class _MyHomePageState extends State<MyHomePage>
           currentUser: widget.currentUser,
         );
       case 'Discussion forum':
-        return DiscussionForum(isCustomer: true,currentUser: widget.currentUser);
+        return DiscussionForum(
+            isCustomer: true, currentUser: widget.currentUser);
       default:
         return ItemList.getDefaultEmptyPage(widget.currentUser);
     }
