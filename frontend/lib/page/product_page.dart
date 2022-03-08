@@ -19,7 +19,8 @@ class ProductPage extends StatefulWidget {
         name: "nullFlagHackItem",
         description: "description",
         price: 0,
-        imageUrl: "imageUrl")
+        imageUrl: "imageUrl",
+        id: 0)
   ];
 
   @override
@@ -33,6 +34,7 @@ class _ProductPageState extends State<ProductPage> {
         name: "nullFlagHackItem",
         description: "description",
         price: 0,
+        id: 0,
         imageUrl: "imageUrl")
   ];
 
@@ -53,16 +55,14 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   void deleteItem(id) async {
-    List<Item> fetchedItems = [];
-
-    var url = Uri.parse('https://localhost:7156/api/Item=' "$id");
+    var url = Uri.parse('https://localhost:7156/api/Item/' "$id");
     var response = await http.delete(url);
     if (response.statusCode == 200) {
       // var itemsJson = json.decode(response.body);
       // for (var item in itemsJson) {
       //   fetchedItems.add(Item.fromJson(item));
       // }
-      fetchItems();
+      setState(() {});
     }
   }
 
@@ -146,7 +146,7 @@ class _ProductPageState extends State<ProductPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 buildEditButton(context, product),
-                buildDeleteButton(context)
+                buildDeleteButton(context, product)
               ],
             ),
           ),
@@ -210,7 +210,7 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  Padding buildDeleteButton(BuildContext context) {
+  Padding buildDeleteButton(BuildContext context, Item product) {
     return Padding(
       padding: const EdgeInsets.only(top: 5, left: 40),
       child: Column(
@@ -225,7 +225,7 @@ class _ProductPageState extends State<ProductPage> {
                     primary: Colors.red,
                     shadowColor: Colors.white,
                     shape: const StadiumBorder()),
-                onPressed: () => {} //deleteItem()
+                onPressed: () => {deleteItem(product.id)} //deleteItem()
                 ),
           ),
         ],

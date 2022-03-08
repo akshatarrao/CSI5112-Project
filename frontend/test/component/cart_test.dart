@@ -16,15 +16,9 @@ void main() {
         name: "nullFlagHackItem",
         description: "description",
         price: 0,
-        imageUrl: "imageUrl");
-    List<Item> items = <Item>[
-      Item(
-          category: "category",
-          name: "nullFlagHackItem",
-          description: "description",
-          price: 0,
-          imageUrl: "imageUrl")
-    ];
+        imageUrl: "imageUrl",
+        id: 0);
+    List<Item> items = <Item>[item];
     Map<Item, int> selectedItem = {item: 2};
 
     User user = User(

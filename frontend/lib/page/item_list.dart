@@ -62,7 +62,15 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   //final items = Item.getDefaultFakeData();
-    List<Item> items=<Item>[Item(category: "category", name: "nullFlagHackItem", description: "description", price: 0, imageUrl: "imageUrl")];
+  List<Item> items = <Item>[
+    Item(
+        category: "category",
+        name: "nullFlagHackItem",
+        description: "description",
+        price: 0,
+        imageUrl: "imageUrl",
+        id: 0)
+  ];
 
   void fetchItems() async {
     List<Item> fetchedItems = [];
@@ -83,8 +91,6 @@ class _ItemListState extends State<ItemList> {
   void initState() {
     fetchItems();
     super.initState();
-
-
   }
 
   int perPage = 10;
@@ -129,7 +135,7 @@ class _ItemListState extends State<ItemList> {
     // Since fetch is done async and Future is just not woking. I hacked
     // the items to have a default value and use that as a flag to check
     // if the value is retrived to avoid out of range loading error
-    if(items.first.name=="nullFlagHackItem"){
+    if (items.first.name == "nullFlagHackItem") {
       return const CircularProgressIndicator();
     }
     widget.selectedItems = widget.selectedItems;

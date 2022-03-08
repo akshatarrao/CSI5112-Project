@@ -12,18 +12,22 @@ void main() {
     double total = 500;
 
     Item item = Item(
+      category: "category",
+      name: "nullFlagHackItem",
+      description: "description",
+      price: 0,
+      imageUrl: "imageUrl",
+      id: 0,
+    );
+    List<Item> items = <Item>[
+      Item(
         category: "category",
         name: "nullFlagHackItem",
         description: "description",
         price: 0,
-        imageUrl: "imageUrl");
-    List<Item> items = <Item>[
-      Item(
-          category: "category",
-          name: "nullFlagHackItem",
-          description: "description",
-          price: 0,
-          imageUrl: "imageUrl")
+        imageUrl: "imageUrl",
+        id: 0,
+      )
     ];
     Map<Item, int> selectedItem = {item: 2};
 
