@@ -234,6 +234,7 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
             Navigator.of(context).pop();
           },
           child: const Text('Close'),
+          key: const Key('CloseForm'),
         ),
       ],
     );

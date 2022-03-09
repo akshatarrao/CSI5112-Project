@@ -21,5 +21,15 @@ void main() {
 
     expect(find.text('Question 0 Title'), findsWidgets);
 
+
+    // Testing that the add question form appears and dissapears as expected
+    expect(find.text('New Question'), findsNothing);
+    await tester.tap(find.byType(ElevatedButton)); // clicking on the new button
+    await tester.pumpAndSettle();
+    expect(find.text('New Question'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('CloseForm'))); // close the form without submitting
+    await tester.pumpAndSettle();
+    expect(find.text('New Question'), findsNothing);
+
   });
 }
