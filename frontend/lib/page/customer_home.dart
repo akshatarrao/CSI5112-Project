@@ -16,8 +16,9 @@ class MyHomePage extends StatefulWidget {
   static const routeName = '/home';
   Widget? redirected;
   User currentUser;
+  bool? unitTest;
 
-  MyHomePage({Key? key, this.redirected, required this.currentUser}) : super(key: key);
+  MyHomePage({Key? key, this.redirected, required this.currentUser, this.unitTest}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -119,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage>
   Widget _getbody(BuildContext context, MenuItem menuItem) {
     switch (menuItem.menuName) {
       case 'Items List':
-        return ItemList.getDefaultEmptyPage(widget.currentUser);
+        return ItemList.getDefaultEmptyPage(widget.currentUser, widget.unitTest);
       case 'Order History':
         return OrderHistoryPage(
           isCustomer: true,
@@ -128,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage>
       case 'Discussion forum':
         return DiscussionForum(isCustomer: true,currentUser: widget.currentUser);
       default:
-        return ItemList.getDefaultEmptyPage(widget.currentUser);
+        return ItemList.getDefaultEmptyPage(widget.currentUser, widget.unitTest);
     }
   }
 }
