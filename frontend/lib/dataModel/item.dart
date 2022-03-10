@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:faker/faker.dart';
 
 class Item {
@@ -25,8 +23,7 @@ class Item {
     return List<Item>.generate(
             10,
             (i) => Item(
-                imageUrl: 'https://picsum.photos/250?image=' +
-                    Random().nextInt(250).toString(),
+                imageUrl: 'https://i.picsum.photos/id/157/250/250.jpg?hmac=HXuLMXMrCQQDtUchnRYfnQELipdHzy9Dnoq3cNvs7l8',
                 name: faker.food.dish(),
                 price: _generateRandomDecimal(10),
                 category: "Food",
@@ -34,8 +31,7 @@ class Item {
         List<Item>.generate(
             10,
             (i) => Item(
-                imageUrl: 'https://picsum.photos/250?image=' +
-                    Random().nextInt(250).toString(),
+                imageUrl: 'https://i.picsum.photos/id/157/250/250.jpg?hmac=HXuLMXMrCQQDtUchnRYfnQELipdHzy9Dnoq3cNvs7l8',
                 name: faker.vehicle.model(),
                 price: _generateRandomDecimal(100),
                 category: "Vehicle",
@@ -43,8 +39,7 @@ class Item {
         List<Item>.generate(
             10,
             (i) => Item(
-                imageUrl: 'https://picsum.photos/250?image=' +
-                    Random().nextInt(250).toString(),
+                imageUrl: 'https://i.picsum.photos/id/157/250/250.jpg?hmac=HXuLMXMrCQQDtUchnRYfnQELipdHzy9Dnoq3cNvs7l8',
                 name: faker.sport.name() + " equipment",
                 price: _generateRandomDecimal(20),
                 category: "Sport equipment",
