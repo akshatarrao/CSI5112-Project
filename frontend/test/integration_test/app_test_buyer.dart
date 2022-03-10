@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:flutter_login/src/widgets/animated_button.dart';
-import 'package:flutter_login/src/widgets/animated_text_form_field.dart';
 
 import 'package:csi5112_frontend/main.dart' as app;
 
