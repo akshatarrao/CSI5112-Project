@@ -31,6 +31,7 @@ class ItemList extends StatefulWidget {
   User user;
   DateTime invoiceTime;
   String orderId;
+  bool? unitTest;
 
   // It is unfortunate that we have to input lots of optional data, but nullable check is just impossible to deal with in a clean way
   ItemList(
@@ -40,14 +41,14 @@ class ItemList extends StatefulWidget {
       required this.isInvoice,
       required this.user,
       required this.invoiceTime,
-      required this.orderId})
+      required this.orderId, this.unitTest})
       : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ItemListState();
 
   /// Easy way to get clean state page with default inputs
-  static ItemList getDefaultEmptyPage(User user) {
+  static ItemList getDefaultEmptyPage(User user, unitTest) {
     return ItemList(
       // {} is changing
       //ignore: prefer_const_literals_to_create_immutables
@@ -57,6 +58,7 @@ class ItemList extends StatefulWidget {
       user: user,
       invoiceTime: DateTime.fromMillisecondsSinceEpoch(0),
       orderId: "",
+      unitTest: unitTest,
     );
   }
 }
@@ -73,6 +75,10 @@ class _ItemListState extends State<ItemList> {
   ];
 
   void fetchItems() async {
+    if(widget.unitTest==true){
+      items = Item.getDefaultFakeData();
+      return;
+    }
     List<Item> fetchedItems = [];
     var url = Uri.parse('https://localhost:7156/api/Item?page=0&per_page=10');
     var response = await http.get(url);
@@ -212,7 +218,8 @@ class _ItemListState extends State<ItemList> {
                       isReviewStage: isReviewStage,
                       isInvoice: widget.isInvoice,
                       getItemCount: getItemCount,
-                      updateItemCount: updateItemCount);
+                      updateItemCount: updateItemCount,
+                  unitTest: widget.unitTest);
                 }).toList() +
                 [
                   Center(
@@ -295,7 +302,7 @@ class _ItemListState extends State<ItemList> {
         onPressed: () {
           Navigator.of(context).pushReplacement(FadePageRoute(
             builder: (context) => MyHomePage(
-              redirected: ItemList.getDefaultEmptyPage(widget.user),
+              redirected: ItemList.getDefaultEmptyPage(widget.user, widget.unitTest),
               currentUser: widget.user,
             ),
             settings: const RouteSettings(name: ItemList.routeName),
@@ -491,15 +498,18 @@ class _ItemListState extends State<ItemList> {
 }
 
 // Build card item
+// The state values are not intended to be final
+//ignore: must_be_immutable
 class ListItem extends StatefulWidget {
-  const ListItem(
+  ListItem(
       {Key? key,
       required this.item,
       required this.updateTotal,
       required this.isReviewStage,
       required this.updateItemCount,
       required this.getItemCount,
-      required this.isInvoice})
+      required this.isInvoice,
+      this.unitTest})
       : super(key: key);
   final Item item;
   final bool isReviewStage;
@@ -509,6 +519,7 @@ class ListItem extends StatefulWidget {
   final Function(double) updateTotal;
   final Function(Item, int) updateItemCount;
   final Function(Item) getItemCount;
+  bool? unitTest;
 
   @override
   State<StatefulWidget> createState() => _ListItem();
@@ -605,7 +616,7 @@ class _ListItem extends State<ListItem> {
           padding: const EdgeInsets.all(20),
           child: ClipRRect(
               borderRadius: BorderRadius.circular(25.0),
-              child: Image.network(widget.item.imageUrl, fit: BoxFit.fill)),
+              child: widget.unitTest==true?const Text("placeholder"):Image.network(widget.item.imageUrl, fit: BoxFit.fill)),
         ),
       ],
     );

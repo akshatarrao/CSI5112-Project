@@ -328,7 +328,7 @@ class _LoginScreentState extends State<LoginScreen> {
     if(response.statusCode == 200) {
       return User.fromListJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to get Question Date from Service');
+      throw Exception('Failed to get User Data from Service');
     }
 
   }

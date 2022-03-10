@@ -17,10 +17,11 @@ int numQuestions = 0;
 // ignore: must_be_immutable
 class DiscussionForum extends StatefulWidget {
   bool isCustomer;
+  bool unitTest;
   String searchPhrase;
   User currentUser;
 
-  DiscussionForum({Key? key, required this.isCustomer, this.searchPhrase = "", required this.currentUser}) : super(key: key);
+  DiscussionForum({Key? key, required this.isCustomer, this.searchPhrase = "", this.unitTest = false, required this.currentUser}) : super(key: key);
 
   @override
   State<DiscussionForum> createState() => _DiscussionForumState();
@@ -60,12 +61,13 @@ class _DiscussionForumState extends State<DiscussionForum> {
                   return newQuestionButton(context);
                 } else {
                   return InkWell(
+                    key: const Key('QuestionCard'),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AnswerPage(questions[index].id,widget.currentUser)),
+                                AnswerPage(questions[index].id,widget.currentUser, unitTest: widget.unitTest)),
                       );
                     },
                     child: Padding(
@@ -233,6 +235,7 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
             Navigator.of(context).pop();
           },
           child: const Text('Close'),
+          key: const Key('CloseForm'),
         ),
       ],
     );
@@ -279,7 +282,9 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
 
   Future<List<Question>> getQuestions(String searchPhrase) async {
     final Response response;
-    if(searchPhrase == "") {
+    if (widget.unitTest == true) {
+      return Question.getFakeQuestionData();
+    } else if (searchPhrase == "") {
       response = await get(Uri.parse('https://localhost:7156/api/question'));
     } else {
       response = await get(Uri.parse('https://localhost:7156/api/question/__search__/' + searchPhrase));

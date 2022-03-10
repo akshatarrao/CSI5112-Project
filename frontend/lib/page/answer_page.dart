@@ -12,11 +12,13 @@ import '../component/theme_data.dart';
 
 int numAnswers = 0;
 
+// ignore: must_be_immutable
 class AnswerPage extends StatefulWidget {
   final int questionID;
   final User currentUser;
+  bool unitTest;
 
-  const AnswerPage(this.questionID, this.currentUser,{Key? key}) : super(key: key);
+  AnswerPage(this.questionID, this.currentUser, {Key? key, this.unitTest = false}) : super(key: key);
 
   @override
   State<AnswerPage> createState() => _AnswerPageState();
@@ -218,6 +220,11 @@ void postAnswer(String aDescription) {
   }
 
   Future<List<Question>> getQuestions() async {
+    
+    if(widget.unitTest == true) {
+      return Question.getFakeQuestionData();
+    }
+
     final response = await get(Uri.parse('https://localhost:7156/api/question'));
     
     if(response.statusCode == 200) {
@@ -229,6 +236,11 @@ void postAnswer(String aDescription) {
   }
 
   Future<List<Answer>> getAnswers() async {
+    
+    if(widget.unitTest == true) {
+      return Answer.getFakeAnswerData();
+    } 
+    
     final response = await get(Uri.parse('https://localhost:7156/api/answer'));
     
     if(response.statusCode == 200) {
