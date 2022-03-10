@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:csi5112_frontend/component/theme_data.dart';
-import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/order_history.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/page/merchant_home.dart';
