@@ -1,4 +1,4 @@
-name: flutter_test_integration
+name: flutter_test_integration_marchant
 on: push
 jobs:
   tests:
@@ -18,6 +18,8 @@ jobs:
         working-directory: ./backend_tests
       - name: Modify code for testing
         run: sed -i 's/bool bypassLogin = false;/bool bypassLogin = true;/g' ./frontend/lib/page/login_screen.dart
+      - name: Modify code for testing 2
+        run: sed -i 's/bool bypassCustomer = true;/bool bypassCustomer = false;/g' ./frontend/lib/page/login_screen.dart
       - name: Install and set Flutter version
         uses: subosito/flutter-action@v2.2.1
         with:
@@ -32,7 +34,7 @@ jobs:
         run: |
           dotnet run --project ../backend &
           chromedriver --port=4444 &
-          flutter drive  --driver=test/test_driver/integration_test.dart   --target=test/integration_test/app_test_buyer.dart   -d web-server
+          flutter drive  --driver=test/test_driver/integration_test.dart   --target=test/integration_test/app_test_merchant.dart   -d web-server
 
 
 

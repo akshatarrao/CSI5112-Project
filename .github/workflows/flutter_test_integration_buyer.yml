@@ -1,0 +1,39 @@
+name: flutter_test_integration_buyer
+on: push
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: ./backend_tests
+      - name: Build
+        run: dotnet build --no-restore
+        working-directory: ./backend_tests
+      - name: Modify code for testing
+        run: sed -i 's/bool bypassLogin = false;/bool bypassLogin = true;/g' ./frontend/lib/page/login_screen.dart
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v2.2.1
+        with:
+          flutter-version: '2.10.0'
+      - name: Restore packages
+        working-directory: ./frontend
+        run: flutter pub get
+      - uses: browser-actions/setup-chrome@latest
+      - run: chrome --version
+      - name: Run tests
+        working-directory: ./frontend
+        run: |
+          dotnet run --project ../backend &
+          chromedriver --port=4444 &
+          flutter drive  --driver=test/test_driver/integration_test.dart   --target=test/integration_test/app_test_buyer.dart   -d web-server
+
+
+
+
