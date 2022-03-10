@@ -28,10 +28,11 @@ jobs:
       - uses: browser-actions/setup-chrome@latest
       - run: chrome --version
       - name: Run tests
+        working-directory: ./frontend
         run: |
-          dotnet run --project ./backend &
+          dotnet run --project ../backend &
           chromedriver --port=4444 &
-          flutter drive   --driver=frontend/test/test_driver/integration_test.dart   --target=frontend/test/integration_test/app_test_buyer.dart   -d web-server
+          flutter drive  --driver=frontend/test/test_driver/integration_test.dart   --target=frontend/test/integration_test/app_test_buyer.dart   -d web-server
 
 
 
