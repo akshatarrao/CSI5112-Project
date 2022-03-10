@@ -1,3 +1,5 @@
+import 'package:csi5112_frontend/dataModel/item.dart';
+
 class OrderHistory {
   late DateTime orderDate;
   late int orderId;
@@ -6,7 +8,7 @@ class OrderHistory {
   late int itemsCount;
 
   // Historical items list stored as a snapshot
-  late String itemsSnapshot;
+  late Map<Item, int> itemsSnapshot;
 
   OrderHistory(this.orderDate, this.isPaid, this.orderId, this.amount,
       this.itemsCount, this.itemsSnapshot);
@@ -17,9 +19,26 @@ class OrderHistory {
     isPaid = json['isPaid'] == true ? "Paid" : "Unpaid";
     amount = json['amount'];
     itemsCount = json['items'].split(',').length;
-    itemsSnapshot = json['items'];
+    itemsSnapshot = parseItem(json['items']);
     OrderHistory(orderDate, isPaid, orderId, amount, itemsCount, itemsSnapshot);
   }
-
-  
+  Map<Item, int> parseItem(String snapshot) {
+    String editedSnapshot = snapshot.substring(1, snapshot.length - 1);
+    final Map<Item, int> midSnapshot = <Item, int>{};
+    List<String> itemsTotal = editedSnapshot.split(',');
+    for (var i = 0; i < itemsTotal.length; i++) {
+      String itemsCountSplit =
+          itemsTotal[i].substring(0, itemsTotal[i].length - 1);
+      int qty = int.parse(itemsTotal[i].substring(itemsTotal[i].length - 1));
+      List<String> itemSplit = itemsCountSplit.split(';');
+      Item feedItem = Item(
+          category: itemSplit[1],
+          name: itemSplit[0].substring(1),
+          description: itemSplit[2],
+          price: double.parse(itemSplit[5].substring(0, itemSplit.length - 2)),
+          imageUrl: itemSplit[3]);
+      midSnapshot[feedItem] = qty;
+    }
+    return midSnapshot;
+  }
 }

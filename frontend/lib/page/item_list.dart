@@ -10,6 +10,7 @@ import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -62,7 +63,14 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   //final items = Item.getDefaultFakeData();
-    List<Item> items=<Item>[Item(category: "category", name: "nullFlagHackItem", description: "description", price: 0, imageUrl: "imageUrl")];
+  List<Item> items = <Item>[
+    Item(
+        category: "category",
+        name: "nullFlagHackItem",
+        description: "description",
+        price: 0,
+        imageUrl: "imageUrl")
+  ];
 
   void fetchItems() async {
     List<Item> fetchedItems = [];
@@ -83,8 +91,6 @@ class _ItemListState extends State<ItemList> {
   void initState() {
     fetchItems();
     super.initState();
-
-
   }
 
   int perPage = 10;
@@ -129,7 +135,7 @@ class _ItemListState extends State<ItemList> {
     // Since fetch is done async and Future is just not woking. I hacked
     // the items to have a default value and use that as a flag to check
     // if the value is retrived to avoid out of range loading error
-    if(items.first.name=="nullFlagHackItem"){
+    if (items.first.name == "nullFlagHackItem") {
       return const CircularProgressIndicator();
     }
     widget.selectedItems = widget.selectedItems;
@@ -345,6 +351,7 @@ class _ItemListState extends State<ItemList> {
             isReviewStage = false;
             widget.invoiceTime = DateTime.now();
             widget.orderId = Faker().guid.guid();
+            postOrder();
           });
         },
         child: CenteredText.getCenteredText("Confirm"),
@@ -429,6 +436,57 @@ class _ItemListState extends State<ItemList> {
             });
           },
         ));
+  }
+
+  void postOrder() {
+    // This code was initially generated from postman code snippet and then modified to be more general
+    // Also, used this method to get the submitted text:
+    // https://stackoverflow.com/questions/51390824/capture-data-from-textformfield-on-flutter-for-http-post-request
+    var headers = {'Content-Type': 'application/json'};
+
+    var request =
+        Request('POST', Uri.parse('https://localhost:7156/api/OrderHistory'));
+    request.body = json.encode({
+      "isPaid": true,
+      "amount": widget.total,
+      "user": {
+        "username": widget.user.name,
+        "password": widget.user.password,
+        "userType": widget.user.userType,
+        "id": widget.user.id
+      },
+      "items": createItemData(getMinSelectedItems()),
+      "time": DateTime.now().toIso8601String(),
+      "id": widget.orderId,
+    });
+    request.headers.addAll(headers);
+
+    request.send();
+  }
+
+  String createItemData(Map<Item, int> selectedItem) {
+    String itemSnapshot = "";
+    for (var k in selectedItem.keys) {
+      itemSnapshot = itemSnapshot +
+          "\"" +
+          k.name +
+          ";" +
+          k.category +
+          ";" +
+          k.description +
+          ";" +
+          k.imageUrl +
+          ";" +
+          widget.orderId +
+          ";" +
+          k.price.toString() +
+          "\"" +
+          ":" +
+          selectedItem[k].toString() +
+          ",";
+    }
+    print("{" + itemSnapshot + "}");
+    return "{" + itemSnapshot + "}";
   }
 }
 

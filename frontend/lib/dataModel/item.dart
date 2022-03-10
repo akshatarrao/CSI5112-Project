@@ -57,11 +57,5 @@ class Item {
     description = json['description'];
     name = json['name'];
     imageUrl = json['imageUrl'];
-    Item(
-        category: category,
-        name: name,
-        description: description,
-        price: price,
-        imageUrl: imageUrl);
   }
 }
