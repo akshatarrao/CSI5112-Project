@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:csi5112_frontend/dataModel/item.dart';
+import 'package:csi5112_frontend/dataModel/user.dart';
+import 'package:csi5112_frontend/page/customer_home.dart';
+import 'package:csi5112_frontend/page/merchant_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,8 +15,10 @@ import 'package:http/http.dart' as http;
 //ignore: must_be_immutable
 class ProductPage extends StatefulWidget {
   static const routeName = '/product-setup';
+  User currentUser;
 
-  ProductPage({Key? key}) : super(key: key);
+  ProductPage({Key? key, required this.currentUser}) : super(key: key);
+
   List<Item> itemss = <Item>[
     Item(
         category: "category",
@@ -54,16 +60,61 @@ class _ProductPageState extends State<ProductPage> {
     }
   }
 
-  void deleteItem(id) async {
+  void deleteItem(context, id) async {
     var url = Uri.parse('https://localhost:7156/api/Item/' "$id");
     var response = await http.delete(url);
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                MerchantPage(currentUser: widget.currentUser)));
     if (response.statusCode == 200) {
       // var itemsJson = json.decode(response.body);
       // for (var item in itemsJson) {
       //   fetchedItems.add(Item.fromJson(item));
       // }
-      setState(() {});
+
     }
+  }
+
+  void addItem(context, name, description, category, price, imageUrl) async {
+    var headers = {'Content-Type': 'application/json'};
+    var rng = Random();
+    var rand = rng.nextInt(20) + 40;
+    var request =
+        http.Request('POST', Uri.parse('https://localhost:7156/api/Item/'));
+
+    request.body = json.encode({
+      "name": name,
+      "category": category,
+      "description": description,
+      "imageUrl": imageUrl,
+      "price": price,
+      "id": rand
+    });
+    request.headers.addAll(headers);
+
+    request.send();
+  }
+
+  void updateItem(
+      context, id, name, description, category, price, imageUrl) async {
+    var headers = {'Content-Type': 'application/json'};
+
+    var request = http.Request(
+        'PUT', Uri.parse('https://localhost:7156/api/Item/' "$id"));
+
+    request.body = json.encode({
+      "name": name,
+      "category": category,
+      "description": description,
+      "imageUrl": imageUrl,
+      "price": price,
+      "id": id
+    });
+    request.headers.addAll(headers);
+
+    request.send();
   }
 
   @override
@@ -225,7 +276,8 @@ class _ProductPageState extends State<ProductPage> {
                     primary: Colors.red,
                     shadowColor: Colors.white,
                     shape: const StadiumBorder()),
-                onPressed: () => {deleteItem(product.id)} //deleteItem()
+                onPressed: () =>
+                    {deleteItem(context, product.id)} //deleteItem()
                 ),
           ),
         ],
@@ -276,6 +328,11 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   Widget itemDetail(BuildContext context, Item? product) {
+    String name = product?.name ?? "";
+    double price = product?.price ?? 0;
+    String category = product?.category ?? "";
+    String description = product?.description ?? "";
+    String imageUrl = product?.imageUrl ?? "";
     return AlertDialog(
       insetPadding: const EdgeInsets.all(10),
       backgroundColor: CustomColors.cardColor,
@@ -292,7 +349,78 @@ class _ProductPageState extends State<ProductPage> {
       // Unnecessary logic to make lint pass
       title:
           product != null ? Text("Edit " + (product.name)) : const Text("Add"),
-      content: buildEditPopup(product),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            // controller: _name,
+            initialValue: name,
+            decoration: const InputDecoration(
+              hintText: "Enter Item Name",
+              labelText: 'Item Name',
+            ),
+            onChanged: (value) {
+              setState(() {
+                name = value;
+              });
+            },
+          ),
+          TextFormField(
+            //controller: _price,
+            initialValue: price.toStringAsFixed(2),
+            decoration: const InputDecoration(
+              hintText: 'Enter Item Price...',
+              labelText: 'Price',
+            ),
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9\.]')),
+            ],
+            onChanged: (value) {
+              setState(() {
+                price = double.parse(value);
+              });
+            },
+          ),
+          TextFormField(
+              //controller: _description,
+              initialValue: description,
+              decoration: const InputDecoration(
+                hintText: 'Enter a description...',
+                labelText: 'Description',
+              ),
+              onChanged: (value) {
+                description = value;
+              }),
+          TextFormField(
+            //controller: _category,
+            initialValue: category,
+            decoration: const InputDecoration(
+              hintText: 'Enter Category...',
+              labelText: 'Category',
+            ),
+            onChanged: (value) {
+              setState(() {
+                category = value;
+              });
+            },
+          ),
+          TextFormField(
+            //controller: _imageUrl,
+            initialValue: imageUrl,
+            decoration: const InputDecoration(
+              hintText: 'Enter image URL...',
+              labelText: 'Image URL',
+            ),
+            onChanged: (value) {
+              setState(() {
+                imageUrl = value;
+              });
+            },
+          ),
+        ],
+      ),
+      //buildEditPopup(product),
       actions: <Widget>[
         ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -300,7 +428,19 @@ class _ProductPageState extends State<ProductPage> {
               shadowColor: Colors.white,
               shape: const StadiumBorder()),
           onPressed: () {
+            if (product == null) {
+              addItem(context, name, description, category, price, imageUrl);
+            } else {
+              updateItem(context, product.id, name, description, category,
+                  price, imageUrl);
+            }
+
             Navigator.of(context).pop();
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        MerchantPage(currentUser: widget.currentUser)));
           },
           child: const Text('Save'),
         ),

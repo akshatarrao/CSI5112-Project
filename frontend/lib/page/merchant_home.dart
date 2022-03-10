@@ -125,9 +125,9 @@ class _MerchantPageState extends State<MerchantPage>
         return DiscussionForum(
             isCustomer: false, currentUser: widget.currentUser);
       case 'Modify Items':
-        return ProductPage();
+        return ProductPage(currentUser: widget.currentUser);
       default:
-        return ProductPage();
+        return ProductPage(currentUser: widget.currentUser);
     }
   }
 }
