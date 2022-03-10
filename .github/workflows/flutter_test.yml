@@ -14,7 +14,9 @@ jobs:
         working-directory: ./frontend
         run: flutter pub get
       - name: Ignore Integration Tests
-        run: rm -rf ./frontend/test/integration_test
+        run: |
+          rm -rf ./frontend/test/integration_test
+          rm -rf ./frontend/test/test_driver
       - name: Analyze
         run: flutter analyze
         working-directory: ./frontend
