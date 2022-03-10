@@ -13,6 +13,8 @@ jobs:
       - name: Restore packages
         working-directory: ./frontend
         run: flutter pub get
+      - name: Ignore Integration Tests
+        run: rm -rf ./frontend/test/integration_test
       - name: Analyze
         run: flutter analyze
         working-directory: ./frontend
