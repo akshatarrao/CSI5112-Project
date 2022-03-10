@@ -1,4 +1,4 @@
-name: flutter_test
+name: flutter_test_integration
 on: push
 jobs:
   tests:
@@ -17,7 +17,7 @@ jobs:
         run: dotnet build --no-restore
         working-directory: ./backend_tests
       - name: Modify code for testing
-        run: sed -i 's/bool bypassLogin = false;/bool bypassLogin = true;/g' ./frontend/lib/login_screen.dart
+        run: sed -i 's/bool bypassLogin = false;/bool bypassLogin = true;/g' ./frontend/lib/page/login_screen.dart
       - name: Install and set Flutter version
         uses: subosito/flutter-action@v2.2.1
         with:
