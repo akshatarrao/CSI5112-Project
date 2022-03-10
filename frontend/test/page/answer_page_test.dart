@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('answer page ...', (tester) async {
-    // TODO: Implement test
-    User user = User(name: "admin@gmail.com", password: "admin", userType: "buyer", id: 0);
+  testWidgets('answer page', (tester) async {
+    User user = User(name: "fake", password: "fake", userType: "buyer", id: -1);
     
     Widget testWidget = MediaQuery(
       data: const MediaQueryData(),
@@ -18,7 +17,11 @@ void main() {
     
     expect(find.text('Question 1 Title'), findsWidgets);
 
+    expect(find.text('Reply By: UserX'), findsWidgets);
+
     expect(find.text('Answer 1 explanation. Some More Text. Even more text so it goes across more than one line.'), findsWidgets);
+
+    expect(find.text('Submit'), findsOneWidget);
 
   });
 }

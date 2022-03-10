@@ -61,12 +61,13 @@ class _DiscussionForumState extends State<DiscussionForum> {
                   return newQuestionButton(context);
                 } else {
                   return InkWell(
+                    key: const Key('QuestionCard'),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AnswerPage(questions[index].id,widget.currentUser)),
+                                AnswerPage(questions[index].id,widget.currentUser, unitTest: widget.unitTest)),
                       );
                     },
                     child: Padding(
