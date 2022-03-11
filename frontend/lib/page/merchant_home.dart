@@ -17,7 +17,8 @@ class MerchantPage extends StatefulWidget {
   Widget? redirected;
   User currentUser;
 
-  MerchantPage({Key? key, this.redirected, required this.currentUser}) : super(key: key);
+  MerchantPage({Key? key, this.redirected, required this.currentUser})
+      : super(key: key);
 
   @override
   _MerchantPageState createState() => _MerchantPageState();
@@ -50,24 +51,23 @@ class _MerchantPageState extends State<MerchantPage>
   @override
   Widget build(BuildContext context) {
     // Added so when refressing Discussion Forum Page it gets the correct title
-    widget.redirected is DiscussionForum ? currentPage = 2 : null; 
+    widget.redirected is DiscussionForum ? currentPage = 2 : null;
     // This one doesn't help as as when clicking on an order from the order history page the returned page is not a OrderHistoryPage Class
-    widget.redirected is OrderHistoryPage ? currentPage = 1 : null;  
-    
+    widget.redirected is OrderHistoryPage ? currentPage = 1 : null;
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
           children: <Widget>[
             SideMenu(
-              onMenuItemSelection: (pageIndex) {
-                swipeAnimationKey.currentState?.hideNavigationDrawer();
-                setState(() {
-                  currentPage = pageIndex;
-                });
-              },
-              menuItems: merchantMenuItems,
-              currentPage: currentPage
-            ),
+                onMenuItemSelection: (pageIndex) {
+                  swipeAnimationKey.currentState?.hideNavigationDrawer();
+                  setState(() {
+                    currentPage = pageIndex;
+                  });
+                },
+                menuItems: merchantMenuItems,
+                currentPage: currentPage),
             SwipeAnimation(
               key: swipeAnimationKey,
               navigationDrawerOpened: (isOpened) {
@@ -119,13 +119,15 @@ class _MerchantPageState extends State<MerchantPage>
   Widget _getbody(BuildContext context, MenuItem menuItem) {
     switch (menuItem.menuName) {
       case 'Order History':
-        return OrderHistoryPage(isCustomer: false, currentUser: widget.currentUser);
+        return OrderHistoryPage(
+            isCustomer: false, currentUser: widget.currentUser);
       case 'Discussion forum':
-        return DiscussionForum(isCustomer: false,currentUser: widget.currentUser);
+        return DiscussionForum(
+            isCustomer: false, currentUser: widget.currentUser);
       case 'Modify Items':
-        return ProductPage();
+        return ProductPage(currentUser: widget.currentUser);
       default:
-        return ProductPage();
+        return ProductPage(currentUser: widget.currentUser);
     }
   }
 }

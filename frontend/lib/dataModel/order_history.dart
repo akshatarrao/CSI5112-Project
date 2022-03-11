@@ -32,11 +32,14 @@ class OrderHistory {
       int qty = int.parse(itemsTotal[i].substring(itemsTotal[i].length - 1));
       List<String> itemSplit = itemsCountSplit.split(';');
       Item feedItem = Item(
-          category: itemSplit[1],
-          name: itemSplit[0].substring(1),
-          description: itemSplit[2],
-          price: double.parse(itemSplit[5].substring(0, itemSplit.length - 2)),
-          imageUrl: itemSplit[3]);
+        category: itemSplit[1],
+        name: itemSplit[0].substring(1),
+        description: itemSplit[2],
+        price: double.parse(itemSplit[5].substring(0, itemSplit.length - 2)),
+        imageUrl: itemSplit[3],
+        id: int.parse(itemSplit[4]),
+      );
+
       midSnapshot[feedItem] = qty;
     }
     return midSnapshot;

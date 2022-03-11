@@ -41,7 +41,8 @@ class ItemList extends StatefulWidget {
       required this.isInvoice,
       required this.user,
       required this.invoiceTime,
-      required this.orderId, this.unitTest})
+      required this.orderId,
+      this.unitTest})
       : super(key: key);
 
   @override
@@ -71,11 +72,12 @@ class _ItemListState extends State<ItemList> {
         name: "nullFlagHackItem",
         description: "description",
         price: 0,
-        imageUrl: "imageUrl")
+        imageUrl: "imageUrl",
+        id: 0)
   ];
 
   void fetchItems() async {
-    if(widget.unitTest==true){
+    if (widget.unitTest == true) {
       items = Item.getDefaultFakeData();
       return;
     }
@@ -219,7 +221,7 @@ class _ItemListState extends State<ItemList> {
                       isInvoice: widget.isInvoice,
                       getItemCount: getItemCount,
                       updateItemCount: updateItemCount,
-                  unitTest: widget.unitTest);
+                      unitTest: widget.unitTest);
                 }).toList() +
                 [
                   Center(
@@ -302,7 +304,8 @@ class _ItemListState extends State<ItemList> {
         onPressed: () {
           Navigator.of(context).pushReplacement(FadePageRoute(
             builder: (context) => MyHomePage(
-              redirected: ItemList.getDefaultEmptyPage(widget.user, widget.unitTest),
+              redirected:
+                  ItemList.getDefaultEmptyPage(widget.user, widget.unitTest),
               currentUser: widget.user,
             ),
             settings: const RouteSettings(name: ItemList.routeName),
@@ -615,7 +618,9 @@ class _ListItem extends State<ListItem> {
           padding: const EdgeInsets.all(20),
           child: ClipRRect(
               borderRadius: BorderRadius.circular(25.0),
-              child: widget.unitTest==true?const Text("placeholder"):Image.network(widget.item.imageUrl, fit: BoxFit.fill)),
+              child: widget.unitTest == true
+                  ? const Text("placeholder")
+                  : Image.network(widget.item.imageUrl, fit: BoxFit.fill)),
         ),
       ],
     );
