@@ -2,6 +2,7 @@
 // It is easier for type check to pass if we just use containers
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
@@ -41,7 +42,8 @@ class ItemList extends StatefulWidget {
       required this.isInvoice,
       required this.user,
       required this.invoiceTime,
-      required this.orderId, this.unitTest})
+      required this.orderId,
+      this.unitTest})
       : super(key: key);
 
   @override
@@ -75,12 +77,12 @@ class _ItemListState extends State<ItemList> {
   ];
 
   void fetchItems() async {
-    if(widget.unitTest==true){
+    if (widget.unitTest == true) {
       items = Item.getDefaultFakeData();
       return;
     }
     List<Item> fetchedItems = [];
-    var url = Uri.parse('https://localhost:7156/api/Item?page=0&per_page=10');
+    var url = Uri.parse('https://localhost:7156/api/Item?page=0&per_page=20');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var itemsJson = json.decode(response.body);
@@ -219,7 +221,7 @@ class _ItemListState extends State<ItemList> {
                       isInvoice: widget.isInvoice,
                       getItemCount: getItemCount,
                       updateItemCount: updateItemCount,
-                  unitTest: widget.unitTest);
+                      unitTest: widget.unitTest);
                 }).toList() +
                 [
                   Center(
@@ -302,7 +304,8 @@ class _ItemListState extends State<ItemList> {
         onPressed: () {
           Navigator.of(context).pushReplacement(FadePageRoute(
             builder: (context) => MyHomePage(
-              redirected: ItemList.getDefaultEmptyPage(widget.user, widget.unitTest),
+              redirected:
+                  ItemList.getDefaultEmptyPage(widget.user, widget.unitTest),
               currentUser: widget.user,
             ),
             settings: const RouteSettings(name: ItemList.routeName),
@@ -455,7 +458,7 @@ class _ItemListState extends State<ItemList> {
         Request('POST', Uri.parse('https://localhost:7156/api/OrderHistory'));
     request.body = json.encode({
       "isPaid": true,
-      "amount": widget.total,
+      "amount": widget.total.toStringAsFixed(2),
       "user": {
         "username": widget.user.name,
         "password": widget.user.password,
@@ -464,7 +467,7 @@ class _ItemListState extends State<ItemList> {
       },
       "items": createItemData(getMinSelectedItems()),
       "time": DateTime.now().toIso8601String(),
-      "id": widget.orderId,
+      "id": Random().nextInt(100),
     });
     request.headers.addAll(headers);
 
@@ -484,8 +487,6 @@ class _ItemListState extends State<ItemList> {
           ";" +
           k.imageUrl +
           ";" +
-          widget.orderId +
-          ";" +
           k.price.toString() +
           "\"" +
           ":" +
@@ -493,7 +494,7 @@ class _ItemListState extends State<ItemList> {
           ",";
     }
     print("{" + itemSnapshot + "}");
-    return "{" + itemSnapshot + "}";
+    return "{" + itemSnapshot.substring(0, itemSnapshot.length - 1) + "}";
   }
 }
 
@@ -616,7 +617,9 @@ class _ListItem extends State<ListItem> {
           padding: const EdgeInsets.all(20),
           child: ClipRRect(
               borderRadius: BorderRadius.circular(25.0),
-              child: widget.unitTest==true?const Text("placeholder"):Image.network(widget.item.imageUrl, fit: BoxFit.fill)),
+              child: widget.unitTest == true
+                  ? const Text("placeholder")
+                  : Image.network(widget.item.imageUrl, fit: BoxFit.fill)),
         ),
       ],
     );

@@ -28,8 +28,8 @@ public class OrderHistory
     public static List<OrderHistory> GetFakeData()
     {
         Dictionary<string,int> items = new Dictionary<string,int>();
-        items.Add("Apple;Fruit;Deserunt earum atque maxime assumenda quisquam aspernatur magni vitae neque itaque dolor.;https://i.picsum.photos/id/157/250/250.jpg?hmac=HXuLMXMrCQQDtUchnRYfnQELipdHzy9Dnoq3cNvs7l8;1;5.99",2);
-        items.Add("Banana;Fruit;Deserunt earum atque maxime assumenda quisquam aspernatur magni vitae neque itaque dolor.;https://i.picsum.photos/id/157/250/250.jpg?hmac=HXuLMXMrCQQDtUchnRYfnQELipdHzy9Dnoq3cNvs7l8;2;5.99",5);
+        items.Add("Apple;Fruit;Deserunt earum atque maxime assumenda quisquam aspernatur magni vitae neque itaque dolor.;https://i.picsum.photos/id/157/250/250.jpg?hmac=HXuLMXMrCQQDtUchnRYfnQELipdHzy9Dnoq3cNvs7l8;5.99",2);
+        items.Add("Banana;Fruit;Deserunt earum atque maxime assumenda quisquam aspernatur magni vitae neque itaque dolor.;https://i.picsum.photos/id/157/250/250.jpg?hmac=HXuLMXMrCQQDtUchnRYfnQELipdHzy9Dnoq3cNvs7l8;5.99",5);
         string itemSnapShot = JsonSerializer.Serialize(items);
         return new List<OrderHistory> () {
             new OrderHistory(true, 20.5, DateTime.Parse("2017-05-02T07:34:42-5:00"), itemSnapShot,0, User.GetFakeData()[0]),

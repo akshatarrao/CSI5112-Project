@@ -27,15 +27,17 @@ class OrderHistory {
     final Map<Item, int> midSnapshot = <Item, int>{};
     List<String> itemsTotal = editedSnapshot.split(',');
     for (var i = 0; i < itemsTotal.length; i++) {
+      print(itemsTotal.length);
       String itemsCountSplit =
           itemsTotal[i].substring(0, itemsTotal[i].length - 1);
+
       int qty = int.parse(itemsTotal[i].substring(itemsTotal[i].length - 1));
       List<String> itemSplit = itemsCountSplit.split(';');
       Item feedItem = Item(
           category: itemSplit[1],
           name: itemSplit[0].substring(1),
           description: itemSplit[2],
-          price: double.parse(itemSplit[5].substring(0, itemSplit.length - 2)),
+          price: double.parse(itemSplit[4].substring(0, itemSplit.length - 2)),
           imageUrl: itemSplit[3]);
       midSnapshot[feedItem] = qty;
     }
