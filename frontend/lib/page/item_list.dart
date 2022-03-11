@@ -73,7 +73,8 @@ class _ItemListState extends State<ItemList> {
         name: "nullFlagHackItem",
         description: "description",
         price: 0,
-        imageUrl: "imageUrl")
+        imageUrl: "imageUrl",
+        id: 0)
   ];
 
   void fetchItems() async {
@@ -493,8 +494,7 @@ class _ItemListState extends State<ItemList> {
           selectedItem[k].toString() +
           ",";
     }
-    print("{" + itemSnapshot + "}");
-    return "{" + itemSnapshot.substring(0, itemSnapshot.length - 1) + "}";
+    return "{" + itemSnapshot + "}";
   }
 }
 

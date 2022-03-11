@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:csi5112_frontend/dataModel/item.dart';
 
 class OrderHistory {
@@ -6,7 +8,7 @@ class OrderHistory {
   late String isPaid;
   late double amount;
   late int itemsCount;
-
+  var rng = Random();
   // Historical items list stored as a snapshot
   late Map<Item, int> itemsSnapshot;
 
@@ -34,11 +36,14 @@ class OrderHistory {
       int qty = int.parse(itemsTotal[i].substring(itemsTotal[i].length - 1));
       List<String> itemSplit = itemsCountSplit.split(';');
       Item feedItem = Item(
-          category: itemSplit[1],
-          name: itemSplit[0].substring(1),
-          description: itemSplit[2],
-          price: double.parse(itemSplit[4].substring(0, itemSplit.length - 2)),
-          imageUrl: itemSplit[3]);
+        category: itemSplit[1],
+        name: itemSplit[0].substring(1),
+        description: itemSplit[2],
+        price: double.parse(itemSplit[5].substring(0, itemSplit.length - 2)),
+        imageUrl: itemSplit[3],
+        id: rng.nextInt(20) + 40,
+      );
+
       midSnapshot[feedItem] = qty;
     }
     return midSnapshot;
