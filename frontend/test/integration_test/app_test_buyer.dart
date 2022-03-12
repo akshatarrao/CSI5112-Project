@@ -10,6 +10,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   group('end-to-end test', () {
+    // Combine everything into one test to avoid some kinda of unknown failures
     testWidgets('all tests',
         (WidgetTester tester) async {
        app.main();
