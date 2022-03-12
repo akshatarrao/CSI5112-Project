@@ -12,10 +12,10 @@ jobs:
           dotnet-version: 6.0.x
       - name: Restore dependencies
         run: dotnet restore
-        working-directory: ./backend_tests
+        working-directory: ./backend
       - name: Build
         run: dotnet build --no-restore
-        working-directory: ./backend_tests
+        working-directory: ./backend
       - name: Modify code for testing
         run: sed -i 's/bool bypassLogin = false;/bool bypassLogin = true;/g' ./frontend/lib/page/login_screen.dart
       - name: Install and set Flutter version
@@ -30,6 +30,7 @@ jobs:
       - name: Run tests
         working-directory: ./frontend
         run: |
+          dotnet dev-certs https --trust
           dotnet run --project ../backend &
           chromedriver --port=4444 &
           flutter drive  --driver=test/test_driver/integration_test.dart   --target=test/integration_test/app_test_buyer.dart   -d web-server
