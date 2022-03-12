@@ -67,7 +67,7 @@ class _AnswerPageState extends State<AnswerPage> {
                           subTitle: Text(questions[widget.questionID].description,
                               style: CustomText.textDescription),
                           avatar: Avatar(
-                              name: questions[widget.questionID].user,
+                              name: questions[widget.questionID].user.name,
                               shape: AvatarShape.circle(16)),
                           icon: Container(
                             height: 30,
@@ -218,10 +218,10 @@ void postAnswer(String aDescription,List<Question> questions) {
   "title": question.title,
   "description": question.description,
   "user": {
-          "username": user.name,
-          "password": user.password,
-          "userType": user.userType,
-          "id": user.id
+          "username": question.user.name,
+          "password": question.user.password,
+          "userType": question.user.userType,
+          "id": question.user.id
         },
   "time": DateTime.now().toIso8601String(),
   "replies": question.replies + 1,

@@ -79,7 +79,7 @@ class _DiscussionForumState extends State<DiscussionForum> {
                         subTitle: Text(questions[index].description,
                             style: CustomText.textDescription),
                         avatar: Avatar(
-                            name: questions[index].user,
+                            name: questions[index].user.name,
                             shape: AvatarShape.circle(16)),
                         icon: Container(
                           height: 30,
