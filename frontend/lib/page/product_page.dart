@@ -40,7 +40,7 @@ class _ProductPageState extends State<ProductPage> {
         description: "description",
         price: 0,
         id: 0,
-        imageUrl: "imageUrl")
+        imageUrl: 'https://i.picsum.photos/id/157/250/250.jpg?hmac=HXuLMXMrCQQDtUchnRYfnQELipdHzy9Dnoq3cNvs7l8')
   ];
   int perPage = 10;
   void fetchItems(_perpage) async {
