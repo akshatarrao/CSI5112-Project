@@ -30,7 +30,7 @@ jobs:
       - name: Run tests
         working-directory: ./frontend
         run: |
-          echo "yes" | dotnet dev-certs https --trust
+          ECHO "yes" | dotnet dev-certs https --trust
           dotnet run --project ../backend &
           chromedriver --port=4444 &
           flutter drive  --driver=test/test_driver/integration_test.dart   --target=test/integration_test/app_test_buyer.dart   -d web-server
