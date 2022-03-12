@@ -494,7 +494,7 @@ class _ItemListState extends State<ItemList> {
           selectedItem[k].toString() +
           ",";
     }
-    return "{" + itemSnapshot + "}";
+    return "{" + itemSnapshot.substring(0, itemSnapshot.length - 1) + "}";
   }
 }
 

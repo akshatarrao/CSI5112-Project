@@ -39,7 +39,7 @@ class OrderHistory {
         category: itemSplit[1],
         name: itemSplit[0].substring(1),
         description: itemSplit[2],
-        price: double.parse(itemSplit[5].substring(0, itemSplit.length - 2)),
+        price: double.parse(itemSplit[4].substring(0, itemSplit.length - 2)),
         imageUrl: itemSplit[3],
         id: rng.nextInt(20) + 40,
       );
