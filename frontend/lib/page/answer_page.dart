@@ -102,7 +102,7 @@ class _AnswerPageState extends State<AnswerPage> {
                 index -= 1;
                 if (index == answers.length) {
 
-                  return newAnswerRow(context);
+                  return newAnswerRow(context, questions);
 
                 } else if (widget.questionID == answers[index].questionID) {
                   // Card class template: https://api.flutter.dev/flutter/material/Card-class.html
@@ -142,7 +142,7 @@ class _AnswerPageState extends State<AnswerPage> {
           ));
   }
 
-Widget newAnswerRow(BuildContext context) {
+Widget newAnswerRow(BuildContext context, List<Question> questions) {
   final _aDescription = TextEditingController();
   
   return Padding(padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
@@ -163,7 +163,7 @@ Widget newAnswerRow(BuildContext context) {
                                     shadowColor: Colors.white,
                                     shape: const StadiumBorder()),
                                 onPressed: () {
-                                  postAnswer(_aDescription.text);
+                                  postAnswer(_aDescription.text,questions);
                                   Navigator.of(context).pop();
                                   Navigator.push(
                                     context,
@@ -181,7 +181,7 @@ Widget newAnswerRow(BuildContext context) {
 }
 
 
-void postAnswer(String aDescription) {
+void postAnswer(String aDescription,List<Question> questions) {
 
     // This code was initially generated from postman code snippet and then modified to be more general 
     // Also, used this method to get the submitted text:
@@ -207,6 +207,30 @@ void postAnswer(String aDescription) {
     request.headers.addAll(headers);
 
     request.send();
+     // This is just a temp solution since this logics should be handled on the server side (to avoid
+    // data integraty issue caused by possible user network drop post first call). However, since we
+    // are on fake data, it is hard to achieve true singleton.
+     // TO be removed when connected to real db
+     var request2 = Request('PUT', Uri.parse('https://localhost:7156/api/question/'+ widget.questionID.toString()));
+    Question question =  questions.where((e) => e.id == widget.questionID).first;
+    request2.body = json.encode({
+
+  "title": question.title,
+  "description": question.description,
+  "user": {
+          "username": user.name,
+          "password": user.password,
+          "userType": user.userType,
+          "id": user.id
+        },
+  "time": DateTime.now().toIso8601String(),
+  "replies": question.replies + 1,
+  "id": question.id
+
+    });
+    request2.headers.addAll(headers);
+
+    request2.send();
 
     //StreamedResponse response = await request.send();
 

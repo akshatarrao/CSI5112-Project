@@ -65,6 +65,8 @@ flutter drive   --driver=test/test_driver/integration_test.dart   --target=test/
 flutter drive   --driver=test/test_driver/integration_test.dart   --target=test/integration_test/app_test_merchant.dart   -d web-server
 ```
 
+Please note: The github action interation testing workflow is likely failing since we cannot easily trust self-sign cert on linux. 
+The workflow is mainly to show the integration test setup process
 
 # References
 1. https://github.com/NearHuscarl/flutter_login
