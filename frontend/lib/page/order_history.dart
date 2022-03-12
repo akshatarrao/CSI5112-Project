@@ -89,6 +89,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                       total: order.amount,
                                       user: widget.currentUser,
                                       orderId: order.orderId.toString(),
+                                      fromOrderHistory: true,
                                     ),
                                   )
                                 : MerchantPage(
@@ -100,6 +101,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                                       total: order.amount,
                                       user: widget.currentUser,
                                       orderId: order.orderId.toString(),
+                                      fromOrderHistory: true,
                                     ),
                                   ),
                             settings:

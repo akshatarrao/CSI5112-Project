@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
+import 'package:csi5112_frontend/page/order_history.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,6 +34,7 @@ class ItemList extends StatefulWidget {
   DateTime invoiceTime;
   String orderId;
   bool? unitTest;
+  bool fromOrderHistory;
 
   // It is unfortunate that we have to input lots of optional data, but nullable check is just impossible to deal with in a clean way
   ItemList(
@@ -43,6 +45,7 @@ class ItemList extends StatefulWidget {
       required this.user,
       required this.invoiceTime,
       required this.orderId,
+        required this.fromOrderHistory,
       this.unitTest})
       : super(key: key);
 
@@ -60,6 +63,7 @@ class ItemList extends StatefulWidget {
       user: user,
       invoiceTime: DateTime.fromMillisecondsSinceEpoch(0),
       orderId: "",
+      fromOrderHistory: false,
       unitTest: unitTest,
     );
   }
@@ -192,7 +196,7 @@ class _ItemListState extends State<ItemList> {
           ? Row(children: [buildGoBackButton(), buildConfirmButton()])
           : widget.isInvoice
               ? Row(
-                  children: [buildPrintButton(), buildResetButton()],
+                  children: [buildPrintButton(), widget.fromOrderHistory?buildBackToHistoryPageButton():buildResetButton()],
                 )
               : buildReviewButton()
     ]);
@@ -313,6 +317,30 @@ class _ItemListState extends State<ItemList> {
           ));
         },
         child: const Text("Restart"),
+      ),
+    );
+  }
+
+  Container buildBackToHistoryPageButton() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      width: 160,
+      height: 90,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            primary: const Color(0xff161616),
+            shadowColor: Colors.white,
+            shape: const StadiumBorder()),
+        onPressed: () {
+          Navigator.of(context).pushReplacement(FadePageRoute(
+            builder: (context) => MyHomePage(
+              redirected:
+                  OrderHistoryPage(isCustomer: widget.user.userType=="buyer", currentUser: widget.user),
+              currentUser: widget.user,
+            ),
+          ));
+        },
+        child: const Text("Back to Order History"),
       ),
     );
   }
@@ -494,7 +522,7 @@ class _ItemListState extends State<ItemList> {
           selectedItem[k].toString() +
           ",";
     }
-    return "{" + itemSnapshot + "}";
+    return "{" + itemSnapshot.substring(0,itemSnapshot.length-1) + "}";
   }
 }
 
