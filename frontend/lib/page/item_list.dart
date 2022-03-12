@@ -216,7 +216,7 @@ class _ItemListState extends State<ItemList> {
                         0,
                         isReviewStage || widget.isInvoice
                             ? getMinSelectedItems().length
-                            : perPage)
+                            : min(perPage,items.length))
                     .map<Widget>((item) {
                   return ListItem(
                       item: item,

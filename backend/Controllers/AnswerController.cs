@@ -37,6 +37,13 @@ public class AnswerController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Post(Answer newAnswer) {
         await _answerView.CreateAsync(newAnswer);
+        QuestionView questionView = new QuestionView();
+        Question question = await questionView.GetByIdAsync(newAnswer.questionId);
+        //  Currently this code does not work due to QuestionView created here is not the same view used when we make question API call.
+        //  But this should be resolve once we have a single data source -> Database
+        question.replies =question.replies +1;
+        Console.WriteLine(question.replies);
+        await questionView.UpdateAsync(newAnswer.questionId, question);
         return CreatedAtAction(nameof(Get), new {id = newAnswer.id}, newAnswer);
     }
 
