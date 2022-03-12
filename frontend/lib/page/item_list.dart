@@ -22,6 +22,8 @@ import '../component/theme_data.dart';
 import 'customer_home.dart';
 import 'package:http/http.dart' as http;
 
+import 'merchant_home.dart';
+
 // The state values are not intended to be final
 //ignore: must_be_immutable
 class ItemList extends StatefulWidget {
@@ -332,13 +334,14 @@ class _ItemListState extends State<ItemList> {
             shadowColor: Colors.white,
             shape: const StadiumBorder()),
         onPressed: () {
-          Navigator.of(context).pushReplacement(FadePageRoute(
-            builder: (context) => MyHomePage(
-              redirected:
-                  OrderHistoryPage(isCustomer: widget.user.userType=="buyer", currentUser: widget.user),
-              currentUser: widget.user,
-            ),
-          ));
+          Navigator.of(context).pop();
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => widget.user.userType=="buyer"
+              ? MyHomePage(redirected: OrderHistoryPage(isCustomer: true, currentUser: widget.user), currentUser: widget.user)
+              : MerchantPage(redirected: OrderHistoryPage(isCustomer: false, currentUser: widget.user), currentUser: widget.user)
+            )
+          );
         },
         child: const Text("Back to Order History"),
       ),

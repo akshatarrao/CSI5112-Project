@@ -40,6 +40,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       for (var order in ordersJson) {
         orders.add(OrderHistory.fromJson(order));
       }
+      setState(() {});
     }
   }
 
