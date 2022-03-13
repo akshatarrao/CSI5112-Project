@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/page/order_history.dart';
+import 'package:csi5112_frontend/util/constants.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';
@@ -89,7 +90,7 @@ class _ItemListState extends State<ItemList> {
       return;
     }
     List<Item> fetchedItems = [];
-    var url = Uri.parse('https://localhost:7156/api/Item?page=0&per_page=20');
+    var url = Uri.parse(Constants.baseApi+'/Item?page=0&per_page=20');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var itemsJson = json.decode(response.body);
@@ -487,7 +488,7 @@ class _ItemListState extends State<ItemList> {
     var headers = {'Content-Type': 'application/json'};
 
     var request =
-        Request('POST', Uri.parse('https://localhost:7156/api/OrderHistory'));
+        Request('POST', Uri.parse(Constants.baseApi+'/OrderHistory'));
     request.body = json.encode({
       "isPaid": true,
       "amount": widget.total.toStringAsFixed(2),

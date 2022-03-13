@@ -5,6 +5,7 @@ import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/page/merchant_home.dart';
+import 'package:csi5112_frontend/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,7 +48,7 @@ class _ProductPageState extends State<ProductPage> {
     List<Item> fetchedItems = [];
 
     var url = Uri.parse(
-        'https://localhost:7156/api/Item?page=0&per_page=' "$_perpage");
+        Constants.baseApi+'/Item?page=0&per_page=' "$_perpage");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var itemsJson = json.decode(response.body);
@@ -61,7 +62,7 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   void deleteItem(context, id) async {
-    var url = Uri.parse('https://localhost:7156/api/Item/' "$id");
+    var url = Uri.parse(Constants.baseApi+'/Item/' "$id");
     var response = await http.delete(url);
     Navigator.pushReplacement(
         context,
@@ -82,7 +83,7 @@ class _ProductPageState extends State<ProductPage> {
     var rng = Random();
     var rand = rng.nextInt(20) + 40;
     var request =
-        http.Request('POST', Uri.parse('https://localhost:7156/api/Item/'));
+        http.Request('POST', Uri.parse(Constants.baseApi+'/Item/'));
 
     request.body = json.encode({
       "name": name,
@@ -102,7 +103,7 @@ class _ProductPageState extends State<ProductPage> {
     var headers = {'Content-Type': 'application/json'};
 
     var request = http.Request(
-        'PUT', Uri.parse('https://localhost:7156/api/Item/' "$id"));
+        'PUT', Uri.parse(Constants.baseApi +'/Item/' + id.toString()));
 
     request.body = json.encode({
       "name": name,

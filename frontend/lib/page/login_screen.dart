@@ -322,7 +322,7 @@ class _LoginScreentState extends State<LoginScreen> {
 
 
   Future<List<User>> getUsers() async {
-    final Response response= await get(Uri.parse('https://localhost:7156/api/user/'));
+    final Response response= await get(Uri.parse(Constants.baseApi+'/user/'));
 
 
     if(response.statusCode == 200) {

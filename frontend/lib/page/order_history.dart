@@ -4,6 +4,7 @@ import 'package:csi5112_frontend/component/theme_data.dart';
 import 'package:csi5112_frontend/dataModel/order_history.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/page/merchant_home.dart';
+import 'package:csi5112_frontend/util/constants.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   fetchOrders() async {
     int userId = widget.currentUser.id;
     var url =
-        Uri.parse('https://localhost:7156/api/OrderHistory?userId=' "$userId");
+        Uri.parse(Constants.baseApi+ '/OrderHistory?userId=' "$userId");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var ordersJson = json.decode(response.body);
