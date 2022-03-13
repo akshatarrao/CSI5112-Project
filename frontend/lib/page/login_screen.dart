@@ -116,7 +116,7 @@ class _LoginScreentState extends State<LoginScreen> {
       if (bypassCustomer) {
         currentUser = User(name: "Tester" + IDstr, password: "fake", userType: "buyer", id:randID);
       } else {
-        currentUser = User(name: "Tester" + IDstr, password: "fake", userType: "merchant", id:randID);
+        currentUser = User(name: "MerchantTester", password: "fake", userType: "merchant", id:1); // ID needs to be 1 to match a merchant user in User data for integration tests
       }
     }
 

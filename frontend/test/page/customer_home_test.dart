@@ -20,5 +20,7 @@ void main() {
 
     expect(find.text('0'), findsWidgets); // This should be present as starting amount for number of products to buy  - seen in Widget Inspector
 
+    // NOTE: More extensive testing done as integration tests
+
   });
 }

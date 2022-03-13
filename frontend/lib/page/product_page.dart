@@ -202,7 +202,10 @@ class _ProductPageState extends State<ProductPage> {
               ],
             ),
           ),
-        ]));
+        ],
+        // Key located in Column instead of directly in Container to make integration tests work
+        key: const Key("ProductCard"))
+    );
   }
 
   Padding buildEditButton(BuildContext context, Item product) {
@@ -215,6 +218,7 @@ class _ProductPageState extends State<ProductPage> {
               height: 40,
               width: 80,
               child: ElevatedButton(
+                key: const Key("DetailsButton"),
                 child: const Text('Details'),
                 style: ElevatedButton.styleFrom(
                     primary: const Color(0xff161616),
@@ -244,6 +248,7 @@ class _ProductPageState extends State<ProductPage> {
             height: 40,
             width: 100,
             child: ElevatedButton(
+              key: const Key("loadMore"),
               child: const Text('Load More'),
               style: ElevatedButton.styleFrom(
                   primary: const Color(0xff161616),
@@ -301,6 +306,7 @@ class _ProductPageState extends State<ProductPage> {
             height: 40,
             width: 80,
             child: ElevatedButton(
+                key: const Key("DeleteButton"),
                 child: const Text('Delete'),
                 style: ElevatedButton.styleFrom(
                     primary: Colors.red,
@@ -385,6 +391,7 @@ class _ProductPageState extends State<ProductPage> {
         children: [
           TextFormField(
             // controller: _name,
+            key: const Key('EnterName'),
             initialValue: name,
             decoration: const InputDecoration(
               hintText: "Enter Item Name",
@@ -398,6 +405,7 @@ class _ProductPageState extends State<ProductPage> {
           ),
           TextFormField(
             //controller: _price,
+            key: const Key('EnterPrice'),
             initialValue: price.toStringAsFixed(2),
             decoration: const InputDecoration(
               hintText: 'Enter Item Price...',
@@ -414,6 +422,7 @@ class _ProductPageState extends State<ProductPage> {
           ),
           TextFormField(
               //controller: _description,
+              key: const Key('EnterDescription'),
               initialValue: description,
               decoration: const InputDecoration(
                 hintText: 'Enter a description...',
@@ -424,6 +433,7 @@ class _ProductPageState extends State<ProductPage> {
               }),
           TextFormField(
             //controller: _category,
+            key: const Key('EnterCategory'),
             initialValue: category,
             decoration: const InputDecoration(
               hintText: 'Enter Category...',
@@ -437,6 +447,7 @@ class _ProductPageState extends State<ProductPage> {
           ),
           TextFormField(
             //controller: _imageUrl,
+            key: const Key('EnterImageURL'),
             initialValue: imageUrl,
             decoration: const InputDecoration(
               hintText: 'Enter image URL...',
@@ -500,6 +511,7 @@ class _ProductPageState extends State<ProductPage> {
       mainAxisSize: MainAxisSize.min,
       children: [
         TextFormField(
+          key: const Key('EditName'),
           initialValue: name,
           decoration: const InputDecoration(
             hintText: "Enter Item Name",
@@ -512,6 +524,7 @@ class _ProductPageState extends State<ProductPage> {
           },
         ),
         TextFormField(
+          key: const Key('EditPrice'),
           initialValue: price.toStringAsFixed(2),
           decoration: const InputDecoration(
             hintText: 'Enter Item Price...',
@@ -527,6 +540,7 @@ class _ProductPageState extends State<ProductPage> {
           },
         ),
         TextFormField(
+            key: const Key('EditDescription'),
             initialValue: description,
             decoration: const InputDecoration(
               hintText: 'Enter a description...',
@@ -536,6 +550,7 @@ class _ProductPageState extends State<ProductPage> {
               description = value;
             }),
         TextFormField(
+          key: const Key('EditCategory'),
           initialValue: category,
           decoration: const InputDecoration(
             hintText: 'Enter Category...',
@@ -548,6 +563,7 @@ class _ProductPageState extends State<ProductPage> {
           },
         ),
         TextFormField(
+          key: const Key('EditImageURL'),
           initialValue: imageUrl,
           decoration: const InputDecoration(
             hintText: 'Enter image URL...',
