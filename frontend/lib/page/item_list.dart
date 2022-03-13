@@ -568,6 +568,7 @@ class _ListItem extends State<ListItem> {
   Widget buildCard(BuildContext context) {
     int count = widget.getItemCount(widget.item);
     return Container(
+      key: const Key("ItemCard"),
       margin: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
       width: 480,
       decoration: const BoxDecoration(
@@ -681,6 +682,7 @@ class _ListItem extends State<ListItem> {
 
   Visibility buildPlusIconButton(bool visible) {
     return Visibility(
+        key: const Key("PlusButton"),
         visible: visible,
         maintainSize: true,
         maintainAnimation: true,

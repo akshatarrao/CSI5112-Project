@@ -103,6 +103,7 @@ class _SideMenuState extends State<SideMenu> {
                           ],
                         ),
                         onTap: (){
+                          Navigator.of(context).pop();
                           Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => const LoginScreen()),
