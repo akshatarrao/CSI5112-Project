@@ -43,6 +43,9 @@ the tests will be disabled.
 
 
 ### API spec
+
+The data model and service functions are documented in the format of openAPI. See [official documents](https://swagger.io/specification/) for how to interpret the below specs
+
 <details>
   <summary>Click to see the spec</summary>
   
