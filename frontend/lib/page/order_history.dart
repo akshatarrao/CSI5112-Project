@@ -31,22 +31,36 @@ class OrderHistoryPage extends StatefulWidget {
 class _OrderHistoryPageState extends State<OrderHistoryPage> {
   List<OrderHistory> orders = List<OrderHistory>.empty(growable: true);
 
-  fetchOrders() async {
+  Future<void> fetchOrders(String value) async {
+    List<OrderHistory> fetchedOrders = [];
+    List<OrderHistory> queryOrders = [];
     int userId = widget.currentUser.id;
     var url = Uri.parse(Constants.baseApi + '/OrderHistory?userId=' "$userId");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var ordersJson = json.decode(response.body);
       for (var order in ordersJson) {
-        orders.add(OrderHistory.fromJson(order));
+        fetchedOrders.add(OrderHistory.fromJson(order));
       }
-      setState(() {});
+
+      queryOrders = fetchedOrders
+          .where((element) => element.orderId
+              .toString()
+              .toLowerCase()
+              .contains(value.toLowerCase()))
+          .toList();
+      if (queryOrders.isNotEmpty) {
+        fetchedOrders = queryOrders;
+      }
+      setState(() {
+        orders = fetchedOrders;
+      });
     }
   }
 
   @override
   void initState() {
-    fetchOrders();
+    fetchOrders("");
     super.initState();
   }
 
@@ -70,7 +84,9 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
           child: Column(
             children: <Widget>[
               CupertinoSearchTextField(
-                onChanged: (value) {},
+                onChanged: (value) {
+                  fetchOrders(value);
+                },
               ),
               Expanded(
                 child: GridView(
