@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:csi5112_frontend/component/theme_data.dart';
@@ -32,7 +33,7 @@ class _LoginScreentState extends State<LoginScreen> {
 
   bool bypassLogin = false;
   bool bypassCustomer = true;
-  User currentUser = User(name: "fake", password: "fake", userType: "hh",id:-1);
+  late User currentUser;
   
   // This is by no means secure and production ready, but since user
   // login is not in the scope of the project, it is hacked here so we
@@ -104,6 +105,21 @@ class _LoginScreentState extends State<LoginScreen> {
   }
 
   FlutterLogin buildFlutterLogin(BuildContext context, List<User> users) {
+    // Setting a buyer or mertchant user if bypassing Login - this is used for integration tests
+    if(bypassLogin) {
+      Random randGen = Random();
+      // Get a large number so that change of getting same number is low for integration testsing 
+      // Want to create a "new" user for each testing
+      int randID = randGen.nextInt(100000) + 10;  
+      // ignore: non_constant_identifier_names
+      String IDstr = randID.toString();
+      if (bypassCustomer) {
+        currentUser = User(name: "Tester" + IDstr, password: "fake", userType: "buyer", id:randID);
+      } else {
+        currentUser = User(name: "MerchantTester", password: "fake", userType: "merchant", id:1); // ID needs to be 1 to match a merchant user in User data for integration tests
+      }
+    }
+
     return FlutterLogin(
     logoTag: Constants.logoTag,
     titleTag: Constants.titleTag,
@@ -322,7 +338,7 @@ class _LoginScreentState extends State<LoginScreen> {
 
 
   Future<List<User>> getUsers() async {
-    final Response response= await get(Uri.parse('https://localhost:7156/api/user/'));
+    final Response response= await get(Uri.parse(Constants.baseApi+'/user/'));
 
 
     if(response.statusCode == 200) {

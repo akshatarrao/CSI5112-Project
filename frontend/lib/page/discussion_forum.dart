@@ -4,6 +4,7 @@ import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/page/answer_page.dart';
 import 'package:csi5112_frontend/page/customer_home.dart';
 import 'package:csi5112_frontend/page/merchant_home.dart';
+import 'package:csi5112_frontend/util/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
@@ -250,7 +251,7 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
       'Content-Type': 'application/json'
     };
 
-    var request = Request('POST', Uri.parse('https://localhost:7156/api/question'));
+    var request = Request('POST', Uri.parse(Constants.baseApi+'/question'));
     User user = widget.currentUser;
     request.body = json.encode({
         "title": qTitle,
@@ -285,9 +286,9 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
     if (widget.unitTest == true) {
       return Question.getFakeQuestionData();
     } else if (searchPhrase == "") {
-      response = await get(Uri.parse('https://localhost:7156/api/question'));
+      response = await get(Uri.parse(Constants.baseApi+'/question'));
     } else {
-      response = await get(Uri.parse('https://localhost:7156/api/question/__search__/' + searchPhrase));
+      response = await get(Uri.parse(Constants.baseApi+'/question/__search__/' + searchPhrase));
     }
     
     

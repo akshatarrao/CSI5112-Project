@@ -4,6 +4,7 @@ import 'package:avatars/avatars.dart';
 import 'package:csi5112_frontend/dataModel/answer.dart';
 import 'package:csi5112_frontend/dataModel/question.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
+import 'package:csi5112_frontend/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart';
@@ -190,7 +191,7 @@ void postAnswer(String aDescription,List<Question> questions) {
       'Content-Type': 'application/json'
     };
 
-    var request = Request('POST', Uri.parse('https://localhost:7156/api/answer'));
+    var request = Request('POST', Uri.parse(Constants.baseApi+'/answer'));
     User user = widget.currentUser;
     request.body = json.encode({
       "answer": aDescription,
@@ -211,7 +212,7 @@ void postAnswer(String aDescription,List<Question> questions) {
     // data integraty issue caused by possible user network drop post first call). However, since we
     // are on fake data, it is hard to achieve true singleton.
      // TO be removed when connected to real db
-     var request2 = Request('PUT', Uri.parse('https://localhost:7156/api/question/'+ widget.questionID.toString()));
+     var request2 = Request('PUT', Uri.parse(Constants.baseApi+'/question/'+ widget.questionID.toString()));
     Question question =  questions.where((e) => e.id == widget.questionID).first;
     request2.body = json.encode({
 
@@ -249,7 +250,7 @@ void postAnswer(String aDescription,List<Question> questions) {
       return Question.getFakeQuestionData();
     }
 
-    final response = await get(Uri.parse('https://localhost:7156/api/question'));
+    final response = await get(Uri.parse(Constants.baseApi+'/question'));
     
     if(response.statusCode == 200) {
       return Question.fromListJson(jsonDecode(response.body));
@@ -265,7 +266,7 @@ void postAnswer(String aDescription,List<Question> questions) {
       return Answer.getFakeAnswerData();
     } 
     
-    final response = await get(Uri.parse('https://localhost:7156/api/answer'));
+    final response = await get(Uri.parse(Constants.baseApi+'/answer'));
     
     if(response.statusCode == 200) {
       return Answer.fromListJson(jsonDecode(response.body));

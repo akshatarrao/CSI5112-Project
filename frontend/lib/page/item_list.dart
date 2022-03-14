@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/page/order_history.dart';
+import 'package:csi5112_frontend/util/constants.dart';
 import 'package:csi5112_frontend/util/custom_route.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/cupertino.dart';
@@ -528,7 +529,7 @@ class _ItemListState extends State<ItemList> {
     var headers = {'Content-Type': 'application/json'};
 
     var request =
-        Request('POST', Uri.parse('https://localhost:7156/api/OrderHistory'));
+        Request('POST', Uri.parse(Constants.baseApi + '/OrderHistory'));
     request.body = json.encode({
       "isPaid": true,
       "amount": widget.total.toStringAsFixed(2),
@@ -608,6 +609,7 @@ class _ListItem extends State<ListItem> {
   Widget buildCard(BuildContext context) {
     int count = widget.getItemCount(widget.item);
     return Container(
+      key: const Key("ItemCard"),
       margin: const EdgeInsets.only(top: 8, bottom: 8, left: 8, right: 8),
       width: 480,
       decoration: const BoxDecoration(
@@ -721,6 +723,7 @@ class _ListItem extends State<ListItem> {
 
   Visibility buildPlusIconButton(bool visible) {
     return Visibility(
+        key: const Key("PlusButton"),
         visible: visible,
         maintainSize: true,
         maintainAnimation: true,
