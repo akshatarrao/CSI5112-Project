@@ -47,7 +47,7 @@ class ItemList extends StatefulWidget {
       required this.user,
       required this.invoiceTime,
       required this.orderId,
-        required this.fromOrderHistory,
+      required this.fromOrderHistory,
       this.unitTest})
       : super(key: key);
 
@@ -73,6 +73,7 @@ class ItemList extends StatefulWidget {
 
 class _ItemListState extends State<ItemList> {
   //final items = Item.getDefaultFakeData();
+  int page = 0;
   List<Item> items = <Item>[
     Item(
         category: "category",
@@ -83,18 +84,28 @@ class _ItemListState extends State<ItemList> {
         id: 0)
   ];
 
-  void fetchItems() async {
+  void fetchItems(String value) async {
     if (widget.unitTest == true) {
       items = Item.getDefaultFakeData();
       return;
     }
     List<Item> fetchedItems = [];
-    var url = Uri.parse('https://localhost:7156/api/Item?page=0&per_page=20');
+    List<Item> queryItem = [];
+
+    var url = Uri.parse('https://application.egrotech.net/api/Item');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var itemsJson = json.decode(response.body);
       for (var item in itemsJson) {
         fetchedItems.add(Item.fromJson(item));
+      }
+
+      queryItem = fetchedItems
+          .where((element) =>
+              element.name.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+      if (queryItem.isNotEmpty) {
+        fetchedItems = queryItem;
       }
       setState(() {
         items = fetchedItems;
@@ -104,11 +115,11 @@ class _ItemListState extends State<ItemList> {
 
   @override
   void initState() {
-    fetchItems();
+    fetchItems("");
     super.initState();
   }
 
-  int perPage = 10;
+  int perPage = 8;
   bool isReviewStage = false;
   bool isRevisit = false;
 
@@ -172,7 +183,9 @@ class _ItemListState extends State<ItemList> {
                 buildHeader(),
                 !(isReviewStage || widget.isInvoice)
                     ? CupertinoSearchTextField(
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          fetchItems(value);
+                        },
                       )
                     : Container(),
                 Expanded(flex: 7, child: buildItemListGridView(countWidth)),
@@ -198,7 +211,12 @@ class _ItemListState extends State<ItemList> {
           ? Row(children: [buildGoBackButton(), buildConfirmButton()])
           : widget.isInvoice
               ? Row(
-                  children: [buildPrintButton(), widget.fromOrderHistory?buildBackToHistoryPageButton():buildResetButton()],
+                  children: [
+                    buildPrintButton(),
+                    widget.fromOrderHistory
+                        ? buildBackToHistoryPageButton()
+                        : buildResetButton()
+                  ],
                 )
               : buildReviewButton()
     ]);
@@ -218,7 +236,7 @@ class _ItemListState extends State<ItemList> {
                         0,
                         isReviewStage || widget.isInvoice
                             ? getMinSelectedItems().length
-                            : min(perPage,items.length))
+                            : min(perPage, items.length))
                     .map<Widget>((item) {
                   return ListItem(
                       item: item,
@@ -336,12 +354,17 @@ class _ItemListState extends State<ItemList> {
         onPressed: () {
           Navigator.of(context).pop();
           Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => widget.user.userType=="buyer"
-              ? MyHomePage(redirected: OrderHistoryPage(isCustomer: true, currentUser: widget.user), currentUser: widget.user)
-              : MerchantPage(redirected: OrderHistoryPage(isCustomer: false, currentUser: widget.user), currentUser: widget.user)
-            )
-          );
+              context,
+              MaterialPageRoute(
+                  builder: (context) => widget.user.userType == "buyer"
+                      ? MyHomePage(
+                          redirected: OrderHistoryPage(
+                              isCustomer: true, currentUser: widget.user),
+                          currentUser: widget.user)
+                      : MerchantPage(
+                          redirected: OrderHistoryPage(
+                              isCustomer: false, currentUser: widget.user),
+                          currentUser: widget.user)));
         },
         child: const Text("Back to Order History"),
       ),
@@ -474,10 +497,28 @@ class _ItemListState extends State<ItemList> {
           child: CenteredText.getCenteredText('Load more...'),
           onPressed: () {
             setState(() {
+              page = page + 1;
               perPage = perPage + 5;
+              addMoreItems(page);
             });
           },
         ));
+  }
+
+  Future<void> addMoreItems(int page) async {
+    List<Item> fetchedItems = [];
+    String urlPart = "https://application.egrotech.net/api/Item?page=";
+    var url = Uri.parse(urlPart + page.toString() + "&per_page=10");
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var itemsJson = json.decode(response.body);
+      for (var item in itemsJson) {
+        fetchedItems.add(Item.fromJson(item));
+      }
+      setState(() {
+        items = items + fetchedItems;
+      });
+    }
   }
 
   void postOrder() {
@@ -525,7 +566,7 @@ class _ItemListState extends State<ItemList> {
           selectedItem[k].toString() +
           ",";
     }
-    return "{" + itemSnapshot.substring(0,itemSnapshot.length-1) + "}";
+    return "{" + itemSnapshot.substring(0, itemSnapshot.length - 1) + "}";
   }
 }
 
