@@ -9,7 +9,7 @@ Please ensure your flutter version is `^2.10.0`
 Ensure all dependencies are installed
 
 ```
-flutter pub get
+flutter pub get 
 ```
 
 ### Run
