@@ -40,15 +40,23 @@ This workflow is created, so we can manually build backend service for debugging
 ### docker-release.yml
 Usually triggered by new release event. This workflow release docker images to the docker hub
 
+See https://hub.docker.com/r/egrocsi5112/docker-repo/tags for the images
+
 ### dotnet_test.yml, flutter_test.yml, flutter_test_integration-marchant.yml, flutter_test_integration_buyer.yml
 Those workflows are created to run all tests cases on every commit to ensure the quality of the project 
 
 ### ecs-release.yml
 Usually triggered by new release event. Release new images to ECS for deployment
 
+See https://application.egrotech.net/api/user (Replace "user" to access other endpoints) to access the backend server 
+
 ### release-flutter.yml
 Usually triggered by new release event. Sync s3 frontend files for deployment
 
+See https://applicationweb.egrotech.net/#/auth to access the frontend application
 
+
+## Please note: It is possible that `https://hub.docker.com/r/egrocsi5112/docker-repo/tags `,`https://application.egrotech.net` and `https://applicationweb.egrotech.net` are not functional due to stage 3 development.
+If that is the case, please contact the team and we are happy to re-deploy the stage 2 version of the code upon request.
 
 ## Database README.md is currently under construction 
