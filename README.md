@@ -55,8 +55,26 @@ Usually triggered by new release event. Sync s3 frontend files for deployment
 
 See https://applicationweb.egrotech.net/#/auth to access the frontend application
 
-
-## Please note: It is possible that `https://hub.docker.com/r/egrocsi5112/docker-repo/tags `,`https://application.egrotech.net` and `https://applicationweb.egrotech.net` are not functional due to stage 3 development.
+```callout {type: 'info', title: 'Note for Deployment'}
+  Please note: It is possible that
+ https://hub.docker.com/r/egrocsi5112/docker-repo/tags
+ https://application.egrotech.net 
+ https://applicationweb.egrotech.net are not functional due to stage 3 development.
 If that is the case, please contact the team and we are happy to re-deploy the stage 2 version of the code upon request.
+```
+  
+## 
+## Deployment 
+
+<b>Public Docker Repository</b> : egrocsi5112/docker-repo<br>
+<b>AWS Account Name</b> : Egro-CSI5112<br>
+<b>AWS Account ID</b> : 014292004360<br>
+<b>AWS Region</b>: US East (N. Virginia)us-east-1)<br>
+<b>ECR Repository</b> : egro-csi5112<br>
+<b>S3 Bucket</b> : egro-data-files<br>
+<b>Route 53 domain</b> : egrotech.net<br>
+<b>Cloud front distribution domain name</b> : https://d181w1uf7wk3a2.cloudfront.net<br>
+<b>Public endpoint for Backend deployed on ECS</b> : https://application.egrotech.net/api/user<br>
+<b>Public endpoint for Website deployed on Cloud front</b>:https://applicationweb.egrotech.net/#/auth<br>
 
 ## Database README.md is currently under construction 
