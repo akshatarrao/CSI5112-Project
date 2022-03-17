@@ -9,7 +9,7 @@ Please ensure your flutter version is `^2.10.0`
 Ensure all dependencies are installed
 
 ```
-flutter pub get
+flutter pub get 
 ```
 
 ### Run
@@ -39,6 +39,16 @@ All development code are under `./lib`.
 To bypass login screen for faster development, flip `bypassLogin` and/or `bypassCustomer` in `./lib/login_screen`
 
 ### Test
+
+Due to the poor choice of using flutter_login package, we are not able to test the login page. However, 
+the package itself is [tested](https://github.com/NearHuscarl/flutter_login/tree/master/test).
+
+* The Item list page and order history page is tested via "buy an apple" workflow in `./test/integration_test/app_test_buyer.dart`
+* The Product setup page is tested in `./test/integration_test/app_test_merchant.dart`
+* The Question/Answer Forum is tested in `./test/page/answer_page_test.dart` and `./test/page/discussion_forum_test.dart` as unit tests (They were created early)
+* The navigation between pages are also tested in `./test/integration_test/app_test_buyer.dart` and `./test/integration_test/app_test_merchant.dart`
+
+Therefore, the project has test coverage for all pages in some format. In addition, most of the API endpoints are tested separately in `../backend_test` project. 
 
 #### Unit Test
 Use the below command to run unit tests
