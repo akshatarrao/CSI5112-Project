@@ -101,10 +101,15 @@ class _ItemListState extends State<ItemList> {
         fetchedItems.add(Item.fromJson(item));
       }
       queryItem = fetchedItems
-          .where((element) => element.name
-              .toString()
-              .toLowerCase()
-              .contains(value.toLowerCase()))
+          .where((element) =>
+              element.name
+                  .toString()
+                  .toLowerCase()
+                  .contains(value.toLowerCase()) ||
+              element.category
+                  .toString()
+                  .toLowerCase()
+                  .contains(value.toLowerCase()))
           .toList();
       if (queryItem.isNotEmpty) {
         fetchedItems = queryItem;
