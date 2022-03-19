@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import '../dataModel/item.dart';
 import 'customer_home.dart';
 import 'item_list.dart';
 
@@ -55,15 +54,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       }
       setState(() {
         if (value.isNotEmpty && queryOrders.isEmpty) {
-          orders = [
-            OrderHistory(
-                orderDate: DateTime.now(),
-                isPaid: "true",
-                orderId: 99999,
-                amount: 0.0,
-                itemsCount: 0,
-                itemsSnapshot: {Item.getDefaultFakeData()[1]: 1})
-          ];
+          orders = [];
         } else {
           orders = fetchedOrders;
         }
@@ -102,7 +93,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                 },
               ),
               Expanded(
-                  child: orders[0].orderId != 99999
+                  child: orders.isNotEmpty
                       ? GridView(
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
