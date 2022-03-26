@@ -12,8 +12,13 @@ class OrderHistory {
   // Historical items list stored as a snapshot
   late Map<Item, int> itemsSnapshot;
 
-  OrderHistory(this.orderDate, this.isPaid, this.orderId, this.amount,
-      this.itemsCount, this.itemsSnapshot);
+  OrderHistory(
+      {required this.orderDate,
+      required this.isPaid,
+      required this.orderId,
+      required this.amount,
+      required this.itemsCount,
+      required this.itemsSnapshot});
 
   OrderHistory.fromJson(Map<String, dynamic> json) {
     orderDate = DateTime.parse(json['time']);
@@ -22,7 +27,6 @@ class OrderHistory {
     amount = json['amount'];
     itemsCount = json['items'].split(',').length;
     itemsSnapshot = parseItem(json['items']);
-    OrderHistory(orderDate, isPaid, orderId, amount, itemsCount, itemsSnapshot);
   }
   Map<Item, int> parseItem(String snapshot) {
     String editedSnapshot = snapshot.substring(1, snapshot.length - 1);

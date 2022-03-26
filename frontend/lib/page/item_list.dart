@@ -90,8 +90,8 @@ class _ItemListState extends State<ItemList> {
       items = Item.getDefaultFakeData();
       return;
     }
-    List<Item> fetchedItems = [];
-    List<Item> queryItem = [];
+    List<Item> fetchedItems = List<Item>.empty(growable: true);
+    List<Item> queryItem = List<Item>.empty(growable: true);
 
     var url = Uri.parse('https://application.egrotech.net/api/Item');
     var response = await http.get(url);
@@ -100,16 +100,34 @@ class _ItemListState extends State<ItemList> {
       for (var item in itemsJson) {
         fetchedItems.add(Item.fromJson(item));
       }
-
       queryItem = fetchedItems
           .where((element) =>
-              element.name.toLowerCase().contains(value.toLowerCase()))
+              element.name
+                  .toString()
+                  .toLowerCase()
+                  .contains(value.toLowerCase()) ||
+              element.category
+                  .toString()
+                  .toLowerCase()
+                  .contains(value.toLowerCase()))
           .toList();
       if (queryItem.isNotEmpty) {
         fetchedItems = queryItem;
       }
       setState(() {
-        items = fetchedItems;
+        if (value.isNotEmpty && queryItem.isEmpty) {
+          items = [
+            Item(
+                category: "Empty",
+                name: "Empty",
+                description: "Empty",
+                price: 0.0,
+                imageUrl: "",
+                id: 1)
+          ];
+        } else {
+          items = fetchedItems;
+        }
       });
     }
   }
@@ -189,7 +207,24 @@ class _ItemListState extends State<ItemList> {
                         },
                       )
                     : Container(),
-                Expanded(flex: 7, child: buildItemListGridView(countWidth)),
+                items[0].name != "Empty"
+                    ? Expanded(
+                        flex: 7, child: buildItemListGridView(countWidth))
+                    : Expanded(
+                        flex: 7,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("No Items Found",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                        color: CustomColors.textColorPrimary,
+                                        fontSize: 12),
+                                    fontWeight: FontWeight.w500,
+                                    decoration: TextDecoration.none)),
+                          ],
+                        )),
                 Expanded(flex: 1, child: buildFooter())
               ],
             ),

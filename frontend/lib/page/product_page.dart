@@ -6,6 +6,7 @@ import 'package:csi5112_frontend/dataModel/item.dart';
 import 'package:csi5112_frontend/dataModel/user.dart';
 import 'package:csi5112_frontend/page/merchant_home.dart';
 import 'package:csi5112_frontend/util/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -41,28 +42,56 @@ class _ProductPageState extends State<ProductPage> {
         description: "description",
         price: 0,
         id: 0,
-        imageUrl: 'https://i.picsum.photos/id/157/250/250.jpg?hmac=HXuLMXMrCQQDtUchnRYfnQELipdHzy9Dnoq3cNvs7l8')
+        imageUrl:
+            'https://i.picsum.photos/id/157/250/250.jpg?hmac=HXuLMXMrCQQDtUchnRYfnQELipdHzy9Dnoq3cNvs7l8')
   ];
   int perPage = 10;
-  void fetchItems(_perpage) async {
+  void fetchItems(_perpage, value) async {
     List<Item> fetchedItems = [];
+    List<Item> queryItem = List<Item>.empty(growable: true);
 
-    var url = Uri.parse(
-        Constants.baseApi+'/Item?page=0&per_page=' "$_perpage");
+    var url =
+        Uri.parse(Constants.baseApi + '/Item?page=0&per_page=' "$_perpage");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var itemsJson = json.decode(response.body);
       for (var item in itemsJson) {
         fetchedItems.add(Item.fromJson(item));
       }
+      queryItem = fetchedItems
+          .where((element) =>
+              element.name
+                  .toString()
+                  .toLowerCase()
+                  .contains(value.toLowerCase()) ||
+              element.category
+                  .toString()
+                  .toLowerCase()
+                  .contains(value.toLowerCase()))
+          .toList();
+      if (queryItem.isNotEmpty) {
+        fetchedItems = queryItem;
+      }
       setState(() {
-        items = fetchedItems;
+        if (value.isNotEmpty && queryItem.isEmpty) {
+          items = [
+            Item(
+                category: "Empty",
+                name: "Empty",
+                description: "Empty",
+                price: 0.0,
+                imageUrl: "",
+                id: 1)
+          ];
+        } else {
+          items = fetchedItems;
+        }
       });
     }
   }
 
   void deleteItem(context, id) async {
-    var url = Uri.parse(Constants.baseApi+'/Item/' "$id");
+    var url = Uri.parse(Constants.baseApi + '/Item/' "$id");
     var response = await http.delete(url);
     Navigator.pushReplacement(
         context,
@@ -82,8 +111,7 @@ class _ProductPageState extends State<ProductPage> {
     var headers = {'Content-Type': 'application/json'};
     var rng = Random();
     var rand = rng.nextInt(20) + 40;
-    var request =
-        http.Request('POST', Uri.parse(Constants.baseApi+'/Item/'));
+    var request = http.Request('POST', Uri.parse(Constants.baseApi + '/Item/'));
 
     request.body = json.encode({
       "name": name,
@@ -103,7 +131,7 @@ class _ProductPageState extends State<ProductPage> {
     var headers = {'Content-Type': 'application/json'};
 
     var request = http.Request(
-        'PUT', Uri.parse(Constants.baseApi +'/Item/' + id.toString()));
+        'PUT', Uri.parse(Constants.baseApi + '/Item/' + id.toString()));
 
     request.body = json.encode({
       "name": name,
@@ -120,7 +148,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   void initState() {
-    fetchItems(perPage);
+    fetchItems(perPage, "");
     super.initState();
   }
 
@@ -142,9 +170,28 @@ class _ProductPageState extends State<ProductPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             children: <Widget>[
-              Expanded(
-                child: buildGrid(countWidth, products, context),
-              )
+              CupertinoSearchTextField(onChanged: (value) {
+                fetchItems(perPage, value);
+              }),
+              items[0].name != "Empty"
+                  ? Expanded(
+                      child: buildGrid(countWidth, products, context),
+                    )
+                  : Expanded(
+                      flex: 7,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("No Items Found",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      color: CustomColors.textColorPrimary,
+                                      fontSize: 12),
+                                  fontWeight: FontWeight.w500,
+                                  decoration: TextDecoration.none)),
+                        ],
+                      ))
             ],
           ),
         ),
@@ -181,31 +228,31 @@ class _ProductPageState extends State<ProductPage> {
           ],
           borderRadius: const BorderRadius.all(Radius.circular(25)),
         ),
-        child: Column(children: <Widget>[
-          Expanded(
-            flex: 5,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                buildProductInfo(product),
-                buildProductImage(product.imageUrl)
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                buildEditButton(context, product),
-                buildDeleteButton(context, product)
-              ],
-            ),
-          ),
-        ],
-        // Key located in Column instead of directly in Container to make integration tests work
-        key: const Key("ProductCard"))
-    );
+        child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 5,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    buildProductInfo(product),
+                    buildProductImage(product.imageUrl)
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    buildEditButton(context, product),
+                    buildDeleteButton(context, product)
+                  ],
+                ),
+              ),
+            ],
+            // Key located in Column instead of directly in Container to make integration tests work
+            key: const Key("ProductCard")));
   }
 
   Padding buildEditButton(BuildContext context, Item product) {
@@ -255,7 +302,7 @@ class _ProductPageState extends State<ProductPage> {
                   shadowColor: Colors.white,
                   shape: const StadiumBorder()),
               onPressed: () {
-                fetchItems(perPage + 6);
+                fetchItems(perPage + 6, "");
                 setState(() {
                   perPage = perPage + 6;
                 });
