@@ -22,7 +22,8 @@ sequenceDiagram
     participant backend
     participant database
     frontend->>backend: User actions trigger API calls such as /orderhistory/{id}/?userID={userId}
-    backend<<->>database: Lookup user permission based on the url query input and retrive data from the database
+    backend->>database: Lookup user permission based on the url query input and query data from the database
+    database->>backend: Return stored data base on the input query
     backend->>frontend: Frontend read API response and display the data
 ```
 
