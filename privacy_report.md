@@ -6,11 +6,24 @@
 
 # Introduction
 
-## What is the Problem?
+At the day May 25th, 2018, General Data Protection Regulation(GDPR) became applicable[1]. This European regulation restricted how a business can collect and use user data. Since the CSI5112-Project(the project) is designed to be used by public, it is important that the project respect the regulation, so it can be used in European markets. As of today, the project does not follow the industry best practices in order to protect user's privacy due to the scope and timeline limitation of the project. This document is created to discuss future possible design iterations to address this issue. 
 
-##  Why It is Important?
 
 # Current Status 
+
+Currently, there are a few privacy related requirements in the project:
+* The buyer shall view their own order history
+* The merchant shall view all buyers' order history
+
+The current implementation to control the above discussed requirements is:
+```mermaid
+  graph TD;
+      A-->B;
+      A-->C;
+      B-->D;
+      C-->D;
+```
+
 
 # Possible Solutions
 
@@ -59,3 +72,7 @@ db per user
 
 ### Audit Logs
 recover if bad thing happened 
+
+
+# Reference
+[1] https://gdpr-info.eu/
