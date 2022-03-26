@@ -17,11 +17,13 @@ Currently, there are a few privacy related requirements in the project:
 
 The current implementation to control the above discussed requirements is:
 ```mermaid
-  graph TD;
-      A-->B;
-      A-->C;
-      B-->D;
-      C-->D;
+sequenceDiagram
+    participant frontend
+    participant backend
+    participant database
+    frontend->>backend: User actions trigger API calls such as /orderhistory/{id}/?userID={userId}
+    backend<<->>database: Lookup user permission based on the url query input and retrive data from the database
+    backend->>frontend: Frontend read API response and display the data
 ```
 
 
