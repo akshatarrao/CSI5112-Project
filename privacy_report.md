@@ -101,16 +101,40 @@ Due to the following shortcoming, this approach is abandoned:
 * It may reduce the request turn around time due to the extra authentication computation on the backend side. 
 
 
-### Task 2: Define Scope of All READ Operations
+## Task 2: Define Scope of All READ Operations
 
 ### Proposed Solution 
 
+As mentioned in the previous sections, once the user information and its permission scope is retrieved, the system should use the knowledge to query database data. To do that, for every single endpoint, if the result may be impact by user permission, a custom logic is required to alter the base query based on the scope before sending the query to the database. 
 
-
-pre-db Server side filter 
- use index, less compute, may skip query per business logic
+A few benefits of this approach are:
+* If the criteria to define the permission scope is indexed, the database computation time can be reduced by utilizing the indexes. 
+* The backend may be able to early return some invalid queries to reduce database workload.
 
 ### Implementation
+
+The pseudocode of order history search can be:
+```python
+def search_order_history(request):
+    session = request.cookie.session
+    if not validate(session):
+        raise AuthError()
+    user = find_user_via_session(session)
+    order_history = send_db_query(user.permission)
+    return api_ok(order_histroy)
+
+def send_db_query(permission):
+    base_query = Order_history.query
+    if permission == "buyer":
+        # Append scope to the query
+        return base_query.filter(Order_history.user==permission.user).all()
+    elif permission == "merchant":
+        # Return all results
+        return base_query.all()
+    else:
+        # invalid permission
+        return []
+```
 
 ### Alternative Consideration
 post-db server side filter 
@@ -118,7 +142,7 @@ post-db server side filter
 fe filter 
 
 
-### Task 3: Error Headlining for Unauthorised READ Operations
+## Task 3: Error Headlining for Unauthorised READ Operations
 
 ### Proposed Solution 
 
