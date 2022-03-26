@@ -27,13 +27,26 @@ sequenceDiagram
     backend->>frontend: Frontend read API response and display the data
 ```
 
+This design has a major security defeat because the permission control solely relies on the `userID` input that can be easily manipulated. The following sections will discuss steps to resolve this security defeat. 
 
 # Possible Solutions
 
 ## Pre-Task: User authentication
 
 ### Proposed Solution  
-user session management with cookies/local storage
+In order to maintain the current user information in the system and ensure this information cannot be maliciously manipulated, the user information needs to be communicated and stored in a secure and encrypted way instead of passing the user id directly in plain text. Currently, the industry standard is to use cookies to perform user session management. A simplified workflow is:
+```mermaid
+sequenceDiagram
+    participant frontend
+    participant backend
+    frontend->>backend: A user attampts in via one type of authentication such as Basic auth, SSO, MFA, etc. 
+    backend->>frontend: Validate user's credentials with database. If it is determined legit, generate, store a session token/identifier and send back to the frontend via `set-cookie` header. 
+    frontend->>frontend: Store the return token as a cookie
+    frontend->>backend: For all subsequent API requests, automaticlly attach the session token cookie
+    backend->>backend: Read the seesion token value from the API request, find the corresponding user information, lookup user permission based on the said information and get data from the database.
+    backend->>frontend: Return the data to frontend to display
+```
+
 
 ### Implementation
 
@@ -75,6 +88,9 @@ db per user
 
 ### Audit Logs
 recover if bad thing happened 
+
+### Grant Permission
+allow users to view other users history
 
 
 # Reference
