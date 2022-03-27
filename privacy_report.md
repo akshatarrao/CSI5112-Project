@@ -236,3 +236,8 @@ def retrieve_data():
     
 ```
 
+    
+# Referenced Articles
+* https://developer.okta.com/docs/concepts/session/
+* https://www.loginradius.com/blog/start-with-identity/user-session-management/
+* https://flask-session.readthedocs.io/en/latest/
