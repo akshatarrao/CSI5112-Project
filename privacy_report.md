@@ -1,12 +1,12 @@
 
 # Introduction
 
-At the day May 25th, 2018, [General Data Protection Regulation(GDPR)](https://gdpr-info.eu/) became applicable. This European regulation restricted how a business can collect and use user data. Since the CSI5112-Project(the project) is designed to be used by public, it is important that the project respect the regulation, so it can be used in European markets. As of today, the project does not follow the industry best practices in order to protect user's privacy due to the scope and timeline limitation of the project. This document is created to discuss future possible design iterations to address this issue. 
+At the day May 25th, 2018, [General Data Protection Regulation(GDPR)](https://gdpr-info.eu/) became applicable. This European regulation restricted how a business can collect and use user data. Since the CSI5112-Project(the project) is designed to be used by the public, it is important that the project respect the regulation, so it can be used in European markets. As of today, the project does not follow the industry best practices in order to protect users' privacy due to the scope and timeline limitation of the project. This document is created to discuss future possible design iterations to address this issue. 
 
 
 # Current Status 
 
-Currently, there are a few privacy related requirements in the project:
+Currently, there are a few privacy-related requirements in the project:
 * The buyer shall view their own order history
 * The merchant shall view all buyers' order history
 
@@ -34,11 +34,11 @@ In order to maintain the current user information in the system and ensure this 
 sequenceDiagram
     participant frontend
     participant backend
-    frontend->>backend: A user attampts to login via one type of authentications such as Basic auth, SSO, MFA, etc
-    backend->>frontend: Validate user's credentials with database. If it is determined legit, generate, store a session token/identifier and send back to the frontend via `set-cookie` header (or other agreed formats)
-    frontend->>frontend: Store the return token as a cookie
-    frontend->>backend: For all subsequent API requests, automaticlly attach the session token cookie
-    backend->>backend: Read the seesion token value from the API request, find the corresponding user information, lookup user permission based on the said information and get data from the database
+    frontend->>backend: A user attempts to login via one type of authentications such as Basic auth, SSO, MFA, etc
+    backend->>frontend: Validate user's credentials with the database. If it is determined legit, generate, store a session token/identifier and send back to the frontend via `set-cookie` header (or other agreed formats)
+    frontend->>frontend: Store the returned token as a cookie
+    frontend->>backend: For all subsequent API requests, automatically attach the session token cookie
+    backend->>backend: Read the session token value from the API request, find the corresponding user information, lookup user permission based on the said information and get data from the database
     backend->>frontend: Return the data to frontend to display
 ```
 
@@ -46,7 +46,7 @@ In this workflow, user information is read-only. The ability to set the current 
 
 ### Implementation
 
-ASP.NET Core has a built-in [session management package](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0). The developer can follow the tutorial to enable the session management for the project. 
+ASP.NET Core has a built-in [session management package](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/app-state?view=aspnetcore-6.0). The developer can follow the tutorial to enable session management for the project. 
 
 On the frontend side, [flutter_session](https://pub.dev/packages/flutter_session) package is available. It allows developers to store and retrieve any string (session cookie in this use case) globally.
 
@@ -86,21 +86,21 @@ def display_order_history():
 
 ### Alternative Consideration
 
-#### Attach user auth to every API requests
+#### Attach user auth to every API request
 
-An alternative approach is to consider all API requests from the frontend independent. For every request originated from frontend, a basic auth (or other type of one-step authentication method) is attached to the request. Once the backend receives the request, it validates the authentication and compute the value. 
+An alternative approach is to consider all API requests from the frontend independently. For every request originated from frontend, a basic auth (or other types of one-step authentication method) is attached to the request. Once the backend receives the request, it validates the authentication and computes the value. 
 
 Due to the following shortcoming, this approach is abandoned:
 * It is unrealistic to implement MFA or SSO since those authentication approaches require user actions.
-* Since it is unrealistic to ask user to input the authentication for every request the project may make in real time, the authentication has to be stored somewhere locally which can be looked up by malicious actors or software programs.
-* It may reduce the request turn around time due to the extra authentication computation on the backend side. 
+* Since it is unrealistic to ask users to input the authentication for every request the project may make in real time, the authentication has to be stored somewhere locally which can be looked up by malicious actors or software programs.
+* It may reduce the request turnaround time due to the extra authentication computation on the backend side. 
 
 
 ## Task 2: Define Scope of All READ Operations
 
 ### Proposed Solution 
 
-As mentioned in the previous sections, once the user information and its permission scope is retrieved, the system should use the knowledge to query database data. To do that, for every single endpoint, if the result may be impact by user permission, a custom logic is required to alter the base query based on the scope before sending the query to the database. 
+As mentioned in the previous sections, once the user information and its permission scope are retrieved, the system should use the knowledge to query database data. To do that, for every single endpoint, if the result may be impacted by user permission, custom logic is required to alter the base query based on the scope before sending the query to the database. 
 
 A few benefits of this approach are:
 * If the criteria to define the permission scope is indexed, the database computation time can be reduced by utilizing the indexes. 
@@ -150,10 +150,10 @@ def search_order_history(request):
     
     return api_ok(order_histroy)
 ```
-The downside of this approach is that the system could not utilize existing indexes in the database and can only perform a CPU based in memory filter based on basic algorithm which may not be able to handle huge dataset and have a reduced performance comparing to the proposed approach. Therefore, this approach is abandoned. 
+The downside of this approach is that the system could not utilize existing indexes in the database and can only perform a CPU based in memory filter based on basic algorithms which may not be able to handle huge datasets and have a reduced performance compared to the proposed approach. Therefore, this approach is abandoned. 
 #### Frontend Filter
 
-Another approach is to allow backend to return the data without consideration of user permissions and give the responsibility to the frontend. For example, one version of pseudocode can be:
+Another approach is to allow the backend to return the data without consideration of user permissions and give the responsibility to the frontend. For example, one version of pseudocode can be:
 ```python
 # Frontend code
 def display_order_history():
@@ -161,19 +161,19 @@ def display_order_history():
     display_data  = res.data.filter(this.user.permission)
     display(display_data)
 ```
-One major flaw of this approach is that additional data that the user may not have permission to view is communicated via open network. It will increase the size of data communicated and slow down the response time. More importantly, malicious users can view the pre-filtered data either with browser developer tools or completely bypass the frontend. Therefore, this approach is abandoned. 
+One major flaw of this approach is that additional data that the user may not have permission to view is communicated via an open network. It will increase the size of data communicated and slow down the response time. More importantly, malicious users can view the pre-filtered data either with browser developer tools or completely bypass the frontend. Therefore, this approach is abandoned. 
 
 ## Task 3: Error Headlining for Unauthorised READ Operations
 
 ### Proposed Solution 
 
-It is important for the system to gracefully handle unauthorised operations so the user experience is to user's satisfaction. There are three ways that the system can prevent and/or recover for this kind of errors.
+It is important for the system to gracefully handle unauthorized operations so the user experience is to users' satisfaction. There are three ways that the system can prevent and/or recover from this kind of error.
 
 #### Prevent the Actions
-If the system can identify invalid actions based on the information that is available to the frontend, it can hide the action trigger to prevent the invalid requests being made. For example, since the frontend has the user permission information based on the user type, it can choose not to display the "search order history based on username" filter because this user type can only view their own order history.  
+If the system can identify invalid actions based on the information that is available to the frontend, it can hide the action trigger to prevent invalid requests from being made. For example, since the frontend has the user permission information based on the user type, it can choose not to display the "search order history based on username" filter because this user type can only view their own order history.  
 
 #### Return Empty Results
-If the frontend does not have enough information to dramatically provide UI triggers, it should be prepared to display an empty result. For example, independently of the previous section, when a user A tries to search order history of another user B but A does not have sufficient permission, the backend should return an empty result. The frontend should be able to handle this use case.
+If the frontend does not have enough information to dramatically provide UI triggers, it should be prepared to display an empty result. For example, independently of the previous section, when user A tries to search a order history of another user B but A does not have sufficient permission, the backend should return an empty result. The frontend should be able to handle this use case.
 
 #### Advice Solution
 In addition to the previous section, after handling the empty result, the system can advise the user on how to retrieve the desired data. For example, the system can also display a message "Please connect customer support to request access to order ID 123" so the user will not feel lost. 
@@ -213,17 +213,17 @@ def display_order_history():
 ## Additional Privacy Assurance Enhancement 
 
 ### Physical Isolation 
-The above approach should be sufficient for most of the use case. However, in some extreme and rare use case, a business may be looking for a more theoretically proven approach to guarantee its user's privacy (e.g., classified-material trading). In those case, providing an independent database for every single user can be considered. In this case, every database is hosted on a set of dedicated hardware and only contains data related to one particular user. This can provide the insurance of data isolation from the physical isolation. No user can accidentally access other users' data. 
+The above approach should be sufficient for most of the use cases. However, in some extreme and rare use cases, a business may be looking for a more theoretically proven approach to guarantee its user's privacy (e.g., classified-material trading). In those cases, providing an independent database for every single user can be considered. In this case, every database is hosted on a set of dedicated hardware and only contains data related to one particular user. This can provide the insurance of data isolation from physical isolation. No user can accidentally access other users' data. 
 
 Of course, in this approach, the merchant side features have to be extracted to an independent software instead of sharing code with the buyer side features to avoid any data consolidation features being exposed to the buyer side.   
 
 In addition, one unintentional benefit is that the system can support better horizontal scaling due to the support of user-based architectural design. 
 
 ### Audit Logs
-Pending on user agreement, the system can keep an audit log trail to keep track of who accessed what data at when. In the unfortunate case of privacy violation, the system can inform user what information was leaked at what time so the users can perform necessary actions to avoid further damages. 
+Pending on user agreement, the system can keep an audit log trail to keep track of who accessed what data at when. In the unfortunate case of privacy violation, the system can inform users what information was leaked at what time so the users can take necessary actions to avoid further damages. 
 
 ### Grant Permission
-To give user more control of their data, the system could support permission granting features to allow user B to access user A's data if user A consents. This can be done by introducing a new database linkage such as "<user> allows <user> to view <data>". For every request made to the backend, it will allow the database to include additional data based on the linkage. The developer can implement the following pseudocode:
+To give users more control of their data, the system could support permission granting features to allow user B to access user A's data if user A consents. This can be done by introducing a new database linkage such as "<user> allows <user> to view <data>". For every request made to the backend, it will allow the database to include additional data based on the linkage. The developer can implement the following pseudocode:
 ```python
 # Backend setup linkage (frontend code is omitted because it could be just a button-to-API trigger )
 def set_linkage(owner, target_user, data):
