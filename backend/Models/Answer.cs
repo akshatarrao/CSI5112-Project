@@ -1,15 +1,29 @@
+using System.Text.Json.Serialization;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace backend.Models;
 
 
+[BsonIgnoreExtraElements]
 public class Answer
 {
+    //[BsonId][BsonRepresentation(BsonType.ObjectId)]//[BsonElement("_id")] //Actual name in mongoDB is "_id"
+    //public string? mongoId { get; set; }
+    
+    [BsonId]
+    public ObjectId? mongoId { get; set; }
+
     public String answer { get; set; }
+    
+    [JsonPropertyName("user")]
     public User user {get; set; }
 
     public DateTime time {get;set;}
 
     public int questionId {get;set;}
     
+    [BsonElement("id")]
     public Int64 id { get; set; }
     
     public Answer(string answer, User user,DateTime time , int questionId, Int64 id) {

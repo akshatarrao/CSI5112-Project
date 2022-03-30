@@ -1,3 +1,5 @@
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace backend.Models;
 
 // Enum support in C# is horrible. Fake Enum this way
@@ -8,6 +10,7 @@ public static class UserType
 
 }
 
+[BsonIgnoreExtraElements]
 public class User
 {
     public String username { get; set; }

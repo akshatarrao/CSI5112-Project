@@ -191,7 +191,7 @@ void postAnswer(String aDescription,List<Question> questions) {
       'Content-Type': 'application/json'
     };
 
-    var request = Request('POST', Uri.parse(Constants.baseApi+'/answer'));
+    var request = Request('POST', Uri.parse(Constants.baseApiDB+'/answer'));
     User user = widget.currentUser;
     request.body = json.encode({
       "answer": aDescription,
@@ -212,7 +212,7 @@ void postAnswer(String aDescription,List<Question> questions) {
     // data integraty issue caused by possible user network drop post first call). However, since we
     // are on fake data, it is hard to achieve true singleton.
      // TO be removed when connected to real db
-     var request2 = Request('PUT', Uri.parse(Constants.baseApi+'/question/'+ widget.questionID.toString()));
+     var request2 = Request('PUT', Uri.parse(Constants.baseApiDB+'/question/'+ widget.questionID.toString()));
     Question question =  questions.where((e) => e.id == widget.questionID).first;
     request2.body = json.encode({
 
@@ -250,7 +250,7 @@ void postAnswer(String aDescription,List<Question> questions) {
       return Question.getFakeQuestionData();
     }
 
-    final response = await get(Uri.parse(Constants.baseApi+'/question'));
+    final response = await get(Uri.parse(Constants.baseApiDB+'/question'));
     
     if(response.statusCode == 200) {
       return Question.fromListJson(jsonDecode(response.body));
@@ -266,7 +266,7 @@ void postAnswer(String aDescription,List<Question> questions) {
       return Answer.getFakeAnswerData();
     } 
     
-    final response = await get(Uri.parse(Constants.baseApi+'/answer'));
+    final response = await get(Uri.parse(Constants.baseApiDB+'/answer'));
     
     if(response.statusCode == 200) {
       return Answer.fromListJson(jsonDecode(response.body));

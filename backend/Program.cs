@@ -1,3 +1,4 @@
+using backend.Models;
 using backend.Views;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,9 +13,15 @@ builder.Services.AddCors(options =>
                       });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null); //Edited based on lecture
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Connecting to MongoDB as done in lecture
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection(nameof(DatabaseSettings)));
+var options = builder.Configuration.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
+builder.Services.AddSingleton<DatabaseSettings>(); // TODO: Figure out why having "options" as parameter breaks the code, currently using a insecure work around
+
 
 builder.Services.AddSingleton<UserView>();
 builder.Services.AddSingleton<ItemView>();
