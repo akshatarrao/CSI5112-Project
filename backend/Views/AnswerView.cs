@@ -29,6 +29,7 @@ public class AnswerView
     {
         //answers.Add(answer);
         // TODO: May need to do something about ID
+        answer.mongoId = null;
         await _answers.InsertOneAsync(answer);
     }
 

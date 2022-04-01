@@ -1,6 +1,7 @@
 import 'package:csi5112_frontend/dataModel/user.dart';
 
 class Question {
+  String? mongoID;
   int id;
   String title;
   String description;
@@ -8,12 +9,13 @@ class Question {
   DateTime date;
   int replies;
 
-  Question(this.id, this.title, this.description, this.user, this.date,
-      this.replies);
+  Question(this.id, this.title, this.description, this.user, this.date, this.replies);
+  Question.withMongoID(this.mongoID, this.id, this.title, this.description, this.user, this.date, this.replies);
 
   factory Question.fromJson(Map<String, dynamic> json) {
     User user = User.fromJson(json['user']);
-    return Question(
+    return Question.withMongoID(
+      json['mongoId'],
       json['id'],
       json['title'],
       json['description'],

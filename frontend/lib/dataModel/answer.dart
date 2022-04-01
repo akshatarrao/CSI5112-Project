@@ -1,4 +1,5 @@
 class Answer {
+  String? mongoID;
   int id;
   String answer;
   String user;
@@ -6,9 +7,11 @@ class Answer {
   int questionID;
 
   Answer(this.id, this.answer, this.user, this.date, this.questionID);
+  Answer.withMongoID(this.mongoID, this.id, this.answer, this.user, this.date, this.questionID);
 
   factory Answer.fromJson(Map<String, dynamic> json) {
-    return Answer(
+    return Answer.withMongoID(
+      json['mongoId'],
       json['id'],
       json['answer'],
       json['user']['username'],

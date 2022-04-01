@@ -251,7 +251,7 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
       'Content-Type': 'application/json'
     };
 
-    var request = Request('POST', Uri.parse(Constants.baseApi+'/question'));
+    var request = Request('POST', Uri.parse(Constants.baseApiDB+'/question'));
     User user = widget.currentUser;
     request.body = json.encode({
         "title": qTitle,
@@ -286,9 +286,9 @@ Widget newQuestionPopup(BuildContext context, isCustomer) {
     if (widget.unitTest == true) {
       return Question.getFakeQuestionData();
     } else if (searchPhrase == "") {
-      response = await get(Uri.parse(Constants.baseApi+'/question'));
+      response = await get(Uri.parse(Constants.baseApiDB+'/question'));
     } else {
-      response = await get(Uri.parse(Constants.baseApi+'/question/__search__/' + searchPhrase));
+      response = await get(Uri.parse(Constants.baseApiDB+'/question/__search__/' + searchPhrase));
     }
     
     
