@@ -21,7 +21,7 @@ public class OrderHistoryView
         var settings = MongoClientSettings.FromConnectionString("mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority");
         var client = new MongoClient(settings);
         var database = client.GetDatabase("egroDB");
-        _orderHistorys = database.GetCollection<OrderHistory>("orderhistory");
+        _orderHistorys = database.GetCollection<OrderHistory>("order");
         _usersOrderHistory=database.GetCollection<User>("user");
     }
 
