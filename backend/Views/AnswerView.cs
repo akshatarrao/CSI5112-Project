@@ -70,7 +70,9 @@ public class AnswerView
         //}
         //
         //return Status.NOT_FOUND;
-
+        Answer oldAnswer=await _answers.Find(ans => ans.id == id).FirstOrDefaultAsync();
+        String savedMongoId=oldAnswer.mongoId;
+        newAnswer.mongoId=savedMongoId;
         ReplaceOneResult r = await _answers.ReplaceOneAsync(answer => answer.id == newAnswer.id, newAnswer);
         bool v = (r.IsModifiedCountAvailable) && (r.ModifiedCount == 1);
         if(v){

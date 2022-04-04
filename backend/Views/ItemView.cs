@@ -69,7 +69,10 @@ public class ItemView
         // }
 
         // return Status.NOT_FOUND;
- ReplaceOneResult r = await _items.ReplaceOneAsync(item => item.id == newItem.id, newItem);
+        Item oldItem=await _items.Find(item => item.id == id).FirstOrDefaultAsync();
+        String savedMongoId=oldItem.mongoId;
+        newItem.mongoId=savedMongoId;
+        ReplaceOneResult r = await _items.ReplaceOneAsync(item => item.id == newItem.id, newItem);
         bool v = (r.IsModifiedCountAvailable) && (r.ModifiedCount == 1);
         if(v){
             return Status.SUCCESS;

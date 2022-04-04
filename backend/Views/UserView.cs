@@ -60,7 +60,10 @@ public class UserView
         // }
 
         // return Status.NOT_FOUND;
-        ReplaceOneResult r = await _users.ReplaceOneAsync(orderhistory => orderhistory.id == newUser.id, newUser);
+        User oldUser=await _users.Find(user => user.id == id).FirstOrDefaultAsync();
+        String savedMongoId=oldUser.mongoId;
+        newUser.mongoId=savedMongoId;
+        ReplaceOneResult r = await _users.ReplaceOneAsync(user => user.id == newUser.id, newUser);
         bool v = (r.IsModifiedCountAvailable) && (r.ModifiedCount == 1);
         if(v){
             return Status.SUCCESS;

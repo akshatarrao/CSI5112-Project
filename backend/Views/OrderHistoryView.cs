@@ -86,6 +86,10 @@ public class OrderHistoryView
         // }
 
         // return Status.NOT_FOUND;
+
+        OrderHistory oldOrder=await _orderHistorys.Find(order => order.id == id).FirstOrDefaultAsync();
+        String savedMongoId=oldOrder.mongoId;
+        newOrderHistory.mongoId=savedMongoId;
         ReplaceOneResult r = await _orderHistorys.ReplaceOneAsync(orderhistory => orderhistory.id == newOrderHistory.id, newOrderHistory);
         bool v = (r.IsModifiedCountAvailable) && (r.ModifiedCount == 1);
         if(v){

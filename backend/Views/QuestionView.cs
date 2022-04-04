@@ -76,7 +76,16 @@ public class QuestionView
         //} else {
         //    return Status.NOT_FOUND;
         //}
-
+        Question oldQuestion=await _questions.Find(ques => ques.id == id).FirstOrDefaultAsync();
+        String savedMongoId=oldQuestion.mongoId;
+        newQuestion.mongoId=savedMongoId;
+        ReplaceOneResult r = await _questions.ReplaceOneAsync(question => question.id == newQuestion.id, newQuestion);
+        bool v = (r.IsModifiedCountAvailable) && (r.ModifiedCount == 1);
+        if(v){
+           return Status.SUCCESS;
+        } else {
+           return Status.NOT_FOUND;
+        }
         // TODO: Need to fix this, current problem with not having the MongoDB _id when trying to replace document
         return Status.SUCCESS;
     }
