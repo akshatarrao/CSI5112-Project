@@ -89,5 +89,15 @@ If that is the case, please contact the team and we are happy to re-deploy the s
 ![image](https://user-images.githubusercontent.com/98192648/161603832-d7d33fed-8a9f-480f-8203-ff2deb13f1fe.png)
   ![image](https://user-images.githubusercontent.com/98192648/161603883-d4d74cec-aa70-4c8f-8385-990b195a228e.png)
 
+ ### The indexes created for each collections and their justifications are described below
+  Note: Realistically, no custom index is needed for this project. This section is forward looking in anticipate of larger data volumn, busier traffic and more out of scope features.    
+  ![image](https://user-images.githubusercontent.com/98192648/161604120-b04f5eea-4f3e-40d2-9952-7cb1885dcbaa.png)
+  ```
+  id: Default index
+  answer: This is used to insrease text search
+  questionId: This is used to quickly query answers within the question socpe
+  
+  ```
+  
 
 
