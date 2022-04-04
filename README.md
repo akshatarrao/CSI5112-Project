@@ -63,7 +63,7 @@ See https://applicationweb.egrotech.net/#/auth to access the frontend applicatio
 If that is the case, please contact the team and we are happy to re-deploy the stage 2 version of the code upon request.
 ```
   
-## 
+
 ## Deployment 
 
 <b>Public Docker Repository</b> : egrocsi5112/docker-repo<br>
@@ -77,4 +77,17 @@ If that is the case, please contact the team and we are happy to re-deploy the s
 <b>Public endpoint for Backend deployed on ECS</b> : https://application.egrotech.net/api/user<br>
 <b>Public endpoint for Website deployed on Cloud front</b>:https://applicationweb.egrotech.net/#/auth<br>
 
-## Database README.md is currently under construction 
+## Database
+  
+  The database is hosted via `cloud.mongodb.com`
+  See below for a preview of the database and data collection examples
+  ![image](https://user-images.githubusercontent.com/98192648/161603379-ad367526-5979-4d62-9fc7-6ed9548d5e3d.png)
+  
+![image](https://user-images.githubusercontent.com/98192648/161603717-bb9f1c52-6198-45fe-9c44-14be4a94ef8b.png)
+  ![image](https://user-images.githubusercontent.com/98192648/161603758-b46d95fd-20d9-4375-af36-6107d20ea3e6.png)
+  ![image](https://user-images.githubusercontent.com/98192648/161603792-3b01256d-a6a0-4efe-b9ad-0a270d06bfab.png)
+![image](https://user-images.githubusercontent.com/98192648/161603832-d7d33fed-8a9f-480f-8203-ff2deb13f1fe.png)
+  ![image](https://user-images.githubusercontent.com/98192648/161603883-d4d74cec-aa70-4c8f-8385-990b195a228e.png)
+
+
+
