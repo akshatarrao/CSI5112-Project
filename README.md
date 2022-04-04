@@ -94,10 +94,42 @@ If that is the case, please contact the team and we are happy to re-deploy the s
   ![image](https://user-images.githubusercontent.com/98192648/161604120-b04f5eea-4f3e-40d2-9952-7cb1885dcbaa.png)
   ```
   id: Default index
-  answer: This is used to insrease text search
+  answer: This is used to insrease text search speed
   questionId: This is used to quickly query answers within the question socpe
   
   ```
   
-
-
+![image](https://user-images.githubusercontent.com/98192648/161604853-08d83467-57e0-4b8d-ac04-c292f35a5e7a.png)
+```
+  id: Default index
+  name: This is used to insrease text search speed
+  description: This is used to insrease text search speed 
+  category: This is used to insrease text search speed
+  price: This is used to query items with in certain price order/range
+```
+![image](https://user-images.githubusercontent.com/98192648/161605185-3605e5cc-6c29-432d-9946-3a7e5bf735fc.png)
+```
+  id: Default index
+  items: This is used to insrease text search speed
+  amount: This is used to query orders with in certain price order/range
+  ```
+  
+  ![image](https://user-images.githubusercontent.com/98192648/161605381-75c6a63e-8238-4c4e-924c-8abc19ace18e.png)
+```
+  id: Default index
+  title: This is used to insrease text search speed
+  description: This is used to insrease text search speed
+  replies: This is used to query questions with in certain replies order/range
+  
+  ```
+  
+  ![image](https://user-images.githubusercontent.com/98192648/161605663-e3a0df8c-1c37-4ee8-8b54-9863fa10a686.png)
+```
+  id: Default index
+  username: This is used to insrease login user match speed
+  userType: This is used to insrease login user match speed
+  ```
+  
+  Note: Currently, datetimes are not indexed in all collections because they are represented using string. It does not make sense to index them as it is. In order to index them, we need to (out of scope):
+  1. Migrate all string datetime to isodate datatype
+  2. Create index so the computation can be done targeting the assumption of time instead of string
