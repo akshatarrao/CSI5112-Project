@@ -31,7 +31,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreentState extends State<LoginScreen> {
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
-  bool bypassLogin = true;
+  bool bypassLogin = false;
   bool bypassCustomer = true;
   late User currentUser;
 
