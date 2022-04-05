@@ -31,7 +31,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreentState extends State<LoginScreen> {
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
 
-  bool bypassLogin = false;
+  bool bypassLogin = true;
   bool bypassCustomer = true;
   late User currentUser;
 
@@ -123,7 +123,7 @@ class _LoginScreentState extends State<LoginScreen> {
             name: "Tester" + IDstr,
             password: "fake",
             userType: "buyer",
-            id: randID);
+            id: 2); // This needs to be the user ID of a existing buyer user for retreiving orders in integrated test
       } else {
         currentUser = User(
             name: "MerchantTester",

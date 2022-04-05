@@ -48,8 +48,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Order History'), findsWidgets); // Confirming the page loaded
       expect(find.text('Search'), findsWidgets); // Confirming hte page loaded
-      expect(find.text('Paid'), findsNothing); // Checking that no orders are present
-      expect(find.text('Order Number:'), findsNothing); // Checking that no orders are present
+      
+      // Now that the backend is connected to the database, orders by tester persist over time
+      // can no longer assume that no orders are present initially.
+      //expect(find.text('Paid'), findsNothing); // Checking that no orders are present
+      //expect(find.text('Order Number:'), findsNothing); // Checking that no orders are present
 
       // Nav to Item List - Place an Order
       await tester.tap(find.byType(AnimatedIcon));
