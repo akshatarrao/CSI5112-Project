@@ -23,12 +23,10 @@ public class ItemView
         string connection_string = configuration.GetValue<string>("CONNECTION_STRING");
         if (string.IsNullOrEmpty(connection_string)) {
             // default - should not be used
-            connection_string = "mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority";
+            connection_string = "mongodb+srv://LocalUser:LHHr1wXGKkzmABiu@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority";
         }
 
-        // TODO: Remove the below code later
         var settings = MongoClientSettings.FromConnectionString(connection_string);
-        //var settings = MongoClientSettings.FromConnectionString("mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority");
         var client = new MongoClient(settings);
         var database = client.GetDatabase("egroDB");
         _items = database.GetCollection<Item>("item");
@@ -77,7 +75,7 @@ public class ItemView
 
         // return Status.NOT_FOUND;
         Item oldItem=await _items.Find(item => item.id == id).FirstOrDefaultAsync();
-        String savedMongoId=oldItem.mongoId;
+        String? savedMongoId=oldItem.mongoId;
         newItem.mongoId=savedMongoId;
         ReplaceOneResult r = await _items.ReplaceOneAsync(item => item.id == newItem.id, newItem);
         bool v = (r.IsModifiedCountAvailable) && (r.ModifiedCount == 1);

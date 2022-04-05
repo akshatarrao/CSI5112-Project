@@ -18,11 +18,9 @@ public class AnswerView
          string connection_string = configuration.GetValue<string>("CONNECTION_STRING");
         if (string.IsNullOrEmpty(connection_string)) {
             // default - should not be used
-            connection_string = "mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority";
+            connection_string = "mongodb+srv://LocalUser:LHHr1wXGKkzmABiu@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority";
         }
-        // NOTE: Connection code from MongoDB webstite (As method shown in lecture was not working)
-        // TODO: Remove the below code later
-       // var settings = MongoClientSettings.FromConnectionString("mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority");
+
         var settings = MongoClientSettings.FromConnectionString(connection_string);
         var client = new MongoClient(settings);
         var database = client.GetDatabase("egroDB");
@@ -76,7 +74,7 @@ public class AnswerView
         //
         //return Status.NOT_FOUND;
         Answer oldAnswer=await _answers.Find(ans => ans.id == id).FirstOrDefaultAsync();
-        String savedMongoId=oldAnswer.mongoId;
+        String? savedMongoId=oldAnswer.mongoId;
         newAnswer.mongoId=savedMongoId;
         ReplaceOneResult r = await _answers.ReplaceOneAsync(answer => answer.id == newAnswer.id, newAnswer);
         bool v = (r.IsModifiedCountAvailable) && (r.ModifiedCount == 1);

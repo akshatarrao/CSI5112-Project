@@ -20,12 +20,10 @@ public class OrderHistoryView
         string connection_string = configuration.GetValue<string>("CONNECTION_STRING");
         if (string.IsNullOrEmpty(connection_string)) {
             // default - should not be used
-            connection_string = "mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority";
+            connection_string = "mongodb+srv://LocalUser:LHHr1wXGKkzmABiu@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority";
         }
 
-        // TODO: Remove the below code later
         var settings = MongoClientSettings.FromConnectionString(connection_string);
-        //var settings = MongoClientSettings.FromConnectionString("mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority");
         var client = new MongoClient(settings);
         var database = client.GetDatabase("egroDB");
         _orderHistorys = database.GetCollection<OrderHistory>("order");
@@ -95,7 +93,7 @@ public class OrderHistoryView
         // return Status.NOT_FOUND;
 
         OrderHistory oldOrder=await _orderHistorys.Find(order => order.id == id).FirstOrDefaultAsync();
-        String savedMongoId=oldOrder.mongoId;
+        String? savedMongoId=oldOrder.mongoId;
         newOrderHistory.mongoId=savedMongoId;
         ReplaceOneResult r = await _orderHistorys.ReplaceOneAsync(orderhistory => orderhistory.id == newOrderHistory.id, newOrderHistory);
         bool v = (r.IsModifiedCountAvailable) && (r.ModifiedCount == 1);
