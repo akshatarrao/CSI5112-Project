@@ -10,15 +10,22 @@ public class QuestionView
     //private readonly List<Question> questions = Question.GetFakeData();
     private readonly IMongoCollection<Question> _questions;
 
-    public QuestionView(IOptions<DatabaseSettings> DatabaseSettings) {
+    public QuestionView(IOptions<DatabaseSettings> DatabaseSettings,IConfiguration configuration) {
         //var settings = MongoClientSettings.FromConnectionString(DatabaseSettings.Value.ConnectionString);
         //settings.ServerApi = new ServerApi(ServerApiVersion.V1);
         //var client = new MongoClient(settings);
         //var database = client.GetDatabase(DatabaseSettings.Value.DatabaseName);
         
         // NOTE: Connection code from MongoDB webstite (As method shown in lecture was not working)
+        string connection_string = configuration.GetValue<string>("CONNECTION_STRING");
+        if (string.IsNullOrEmpty(connection_string)) {
+            // default - should not be used
+            connection_string = "mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority";
+        }
+
         // TODO: Remove the below code later
-        var settings = MongoClientSettings.FromConnectionString("mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority");
+        var settings = MongoClientSettings.FromConnectionString(connection_string);
+        //var settings = MongoClientSettings.FromConnectionString("mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority");
         var client = new MongoClient(settings);
         var database = client.GetDatabase("egroDB");
         _questions = database.GetCollection<Question>("question");
