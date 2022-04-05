@@ -82,7 +82,8 @@ If that is the case, please contact the team and we are happy to re-deploy the s
   The database is hosted via `cloud.mongodb.com`
   
   To view the database data directly with MongoDB Shell, you can use the following read-only access:
-  mongosh "mongodb+srv://cluster0.i2uat.mongodb.net/egroDB" --apiVersion 1 --username egroRead --password NyPnFHjz9u0k8prP
+  
+  <i>mongosh "mongodb+srv://cluster0.i2uat.mongodb.net/egroDB" --apiVersion 1 --username egroRead --password NyPnFHjz9u0k8prP</i>
   
   See below for a preview of the database and data collection examples
   ![image](https://user-images.githubusercontent.com/98192648/161603379-ad367526-5979-4d62-9fc7-6ed9548d5e3d.png)
