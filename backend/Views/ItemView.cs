@@ -23,7 +23,7 @@ public class ItemView
         string connection_string = configuration.GetValue<string>("CONNECTION_STRING");
         if (string.IsNullOrEmpty(connection_string)) {
             // default - should not be used
-            connection_string = "YOUR_MONGODB_STRING";
+            connection_string = "mongodb+srv://TempUser:3spipFz9vczf1QJP@cluster0.i2uat.mongodb.net/egroDB?retryWrites=true&w=majority";
         }
 
         // TODO: Remove the below code later
