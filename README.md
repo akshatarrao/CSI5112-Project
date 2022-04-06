@@ -76,7 +76,9 @@ If that is the case, please contact the team and we are happy to re-deploy the s
 <b>Cloud front distribution domain name</b> : https://d181w1uf7wk3a2.cloudfront.net<br>
 <b>Public endpoint for Backend deployed on ECS</b> : https://application.egrotech.net/api/user<br>
 <b>Public endpoint for Website deployed on Cloud front</b>:https://applicationweb.egrotech.net/#/auth<br>
-
+<b>S3 link :</b> https://egro-data-files.s3.amazonaws.com/#/auth<br>
+<b>EC2 link after updating the mongo DB connection string : </b> http://3.95.234.197/api/item
+  
 ## Database
   
   The database is hosted via `cloud.mongodb.com`
